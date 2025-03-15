@@ -12,6 +12,9 @@ ASCII_TITLE = """
   [ Press Enter to start ]
 """
 
+def set_window_size():
+    os.system('mode con: cols=80 lines=24' if os.name == 'nt' else 'printf "\e[8;24;80t"')
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -53,6 +56,7 @@ def display_health_bars(player, enemy=None):
 
     player_health_bar = f"Player: {player.name} | Health: {health_bar(player.health, 100)}"
     print(player_health_bar)
+    print(f"Agi: {player.agi} | Str: {player.str} | Amour: {player.amour} | Int: {player.int} | Stam: {player.stam}")
     if enemy:
         enemy_health_bar = f"Enemy: {enemy.name} | Health: {health_bar(enemy.health, 30)}"
         print(enemy_health_bar)

@@ -1,18 +1,30 @@
 import os
-from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom
+from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom, set_window_size
 from text_rpg.player import Player
 from text_rpg.enemy import Enemy
 from text_rpg.utils import clear_screen
 
 class Game:
     def __init__(self):
+        set_window_size()
         self.player = self.create_character()
 
     def create_character(self):
         clear_screen()
         display_hud()
         name = input("Enter your character's name: ").strip()
-        return Player(name)
+        points = 10
+        stats = {"agi": 0, "str": 0, "amour": 0, "int": 0, "stam": 0}
+        while points > 0:
+            print(f"You have {points} points to distribute.")
+            for stat in stats:
+                value = int(input(f"Enter points for {stat} (current: {stats[stat]}): ").strip())
+                if value <= points:
+                    stats[stat] += value
+                    points -= value
+                else:
+                    print(f"Not enough points. You have {points} points left.")
+        return Player(name, agi=stats["agi"], str=stats["str"], amour=stats["amour"], int=stats["int"], stam=stats["stam"])
 
     def battle(self, enemy):
         print(f"A wild {enemy.name} appears!")
@@ -46,8 +58,8 @@ class Game:
                 clear_screen()
                 display_health_bars(self.player)
                 print("+----------------------+\n"
-                      "|  [yes] Explore      |\n"
-                      "|  [no]  Quit        |\n"
+                      "|  [yes] Explore       |\n"
+                      "|  [no]  Quit          |\n"
                       "+----------------------+\n")
                 action = input("Do you want to explore? ").strip().lower()
                 clear_bottom()
