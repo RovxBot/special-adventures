@@ -1,5 +1,5 @@
 import os
-from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player
+from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom
 from text_rpg.player import Player
 from text_rpg.enemy import Enemy
 from text_rpg.utils import clear_screen
@@ -20,7 +20,7 @@ class Game:
             clear_screen()
             display_health_bars(self.player, enemy)
             choice = self.player.choose_action()
-            clear_screen()
+            clear_bottom()
             if choice == "1":
                 self.player.attack_enemy(enemy)
                 if enemy.is_alive():
@@ -30,7 +30,7 @@ class Game:
                 wait_for_player()
                 break
             wait_for_player()
-            clear_screen()
+            clear_bottom()
         if not self.player.is_alive():
             print("You have been defeated...")
         elif not enemy.is_alive():
@@ -50,7 +50,7 @@ class Game:
                       "|  [no]  Quit        |\n"
                       "+----------------------+\n")
                 action = input("Do you want to explore? ").strip().lower()
-                clear_screen()
+                clear_bottom()
                 if action in ["yes", "no"]:
                     break
                 print("Invalid choice. Enter 'yes' or 'no'.")

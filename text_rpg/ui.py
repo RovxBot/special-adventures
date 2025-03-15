@@ -15,10 +15,13 @@ ASCII_TITLE = """
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def clear_bottom():
+    print("\033[H\033[J", end="")
+
 def display_hud():
-    print("+----------------------+\n"
-          "|       TEXT RPG       |\n"
-          "+----------------------+\n")
+    print("+--------------------------+\n"
+          "|        TEXT RPG          |\n"
+          "+--------------------------+\n")
 
 def show_welcome_screen():
     print(ASCII_TITLE)
@@ -28,10 +31,10 @@ def show_main_menu():
     clear_screen()
     display_hud()
     while True:
-        print("+----------------------+\n"
-              "|  [1] Start New Game |\n"
-              "|  [2] Quit           |\n"
-              "+----------------------+\n")
+        print("+--------------------------+\n"
+              "|  [1] Start New Game      |\n"
+              "|  [2] Quit                |\n"
+              "+--------------------------+\n")
         choice = input("Choose an option: ").strip()
         if choice == "1":
             break
@@ -53,7 +56,7 @@ def display_health_bars(player, enemy=None):
     if enemy:
         enemy_health_bar = f"Enemy: {enemy.name} | Health: {health_bar(enemy.health, 30)}"
         print(enemy_health_bar)
-    print("+----------------------+\n")
+    print("+--------------------------+\n")
 
 def wait_for_player():
     input("Press Enter to continue...")
