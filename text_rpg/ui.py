@@ -42,9 +42,18 @@ def show_main_menu():
             print("Invalid choice. Try again.")
 
 def display_health_bars(player, enemy=None):
-    player_health_bar = f"Player: {player.name} | Health: {'█' * (player.health // 10)}"
+    def health_bar(health, max_health):
+        bar_length = 20
+        health_ratio = health / max_health
+        bar = '█' * int(bar_length * health_ratio)
+        return f"\033[92m{bar.ljust(bar_length)}\033[0m"
+
+    player_health_bar = f"Player: {player.name} | Health: {health_bar(player.health, 100)}"
     print(player_health_bar)
     if enemy:
-        enemy_health_bar = f"Enemy: {enemy.name} | Health: {'█' * (enemy.health // 10)}"
+        enemy_health_bar = f"Enemy: {enemy.name} | Health: {health_bar(enemy.health, 30)}"
         print(enemy_health_bar)
     print("+----------------------+\n")
+
+def wait_for_player():
+    input("Press Enter to continue...")
