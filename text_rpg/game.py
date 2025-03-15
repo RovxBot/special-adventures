@@ -14,17 +14,19 @@ class Game:
         display_hud()
         name = input("Enter your character's name: ").strip()
         points = 10
-        stats = {"agi": 0, "str": 0, "amour": 0, "int": 0, "stam": 0}
+        stats = {"agi": 0, "str": 0, "int": 0, "stam": 0}
         while points > 0:
             print(f"You have {points} points to distribute.")
             for stat in stats:
+                if points == 0:
+                    break
                 value = int(input(f"Enter points for {stat} (current: {stats[stat]}): ").strip())
                 if value <= points:
                     stats[stat] += value
                     points -= value
                 else:
                     print(f"Not enough points. You have {points} points left.")
-        return Player(name, agi=stats["agi"], str=stats["str"], amour=stats["amour"], int=stats["int"], stam=stats["stam"])
+        return Player(name, agi=stats["agi"], str=stats["str"], int=stats["int"], stam=stats["stam"])
 
     def battle(self, enemy):
         print(f"A wild {enemy.name} appears!")
