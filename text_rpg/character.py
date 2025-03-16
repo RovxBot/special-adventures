@@ -16,14 +16,17 @@ class Character:
     def take_damage(self, damage):
         from random import randint
         if randint(1, 100) <= self.agi:
-            print(f"{self.name} dodges the attack!")
+            print(f"\033[93m{self.name} dodges the attack!\033[0m")
             return
         damage_taken = max(0, damage - self.defense)
+        mitigated_damage = damage - damage_taken
         self.health = max(0, self.health - damage_taken)
-        print(f"{self.name} takes {damage_taken} damage! Health: {self.health}")
+        print(f"\033[91m{self.name} takes {damage_taken} damage! Health: {self.health}\033[0m")
+        if mitigated_damage > 0:
+            print(f"\033[94m{self.name} blocks {mitigated_damage} damage!\033[0m")
 
     def attack_enemy(self, enemy):
         from random import randint
         damage = randint(1, self.attack)
-        print(f"{self.name} attacks {enemy.name} for {damage} damage!")
+        print(f"\033[92m{self.name} attacks {enemy.name} for {damage} damage!\033[0m")
         enemy.take_damage(damage)

@@ -1,4 +1,6 @@
 import os
+import tkinter as tk
+from tkinter import messagebox
 
 ASCII_TITLE = """
   _____     _     _    ____  ____  
@@ -27,25 +29,35 @@ def display_hud():
           "+--------------------------+\n")
 
 def show_welcome_screen():
-    print(ASCII_TITLE)
-    input()
+    root = tk.Tk()
+    root.title("Text RPG")
+    label = tk.Label(root, text=ASCII_TITLE, font=("Courier", 12))
+    label.pack(pady=20)
+    button = tk.Button(root, text="Start", command=root.destroy)
+    button.pack(pady=10)
+    root.mainloop()
 
 def show_main_menu():
-    clear_screen()
+    def start_game():
+        root.destroy()
+        global game_choice
+        game_choice = "start"
+
+    def quit_game():
+        root.destroy()
+        global game_choice
+        game_choice = "quit"
+
+    root = tk.Tk()
+    root.title("Main Menu")
     display_hud()
-    while True:
-        print("+--------------------------+\n"
-              "|  [1] Start New Game      |\n"
-              "|  [2] Quit                |\n"
-              "+--------------------------+\n")
-        choice = input("Choose an option: ").strip()
-        if choice == "1":
-            break
-        elif choice == "2":
-            print("Goodbye!")
-            exit()
-        else:
-            print("Invalid choice. Try again.")
+    label = tk.Label(root, text="Main Menu", font=("Courier", 12))
+    label.pack(pady=20)
+    start_button = tk.Button(root, text="Start New Game", command=start_game)
+    start_button.pack(pady=10)
+    quit_button = tk.Button(root, text="Quit", command=quit_game)
+    quit_button.pack(pady=10)
+    root.mainloop()
 
 def display_health_bars(player, enemy=None):
     def health_bar(health, max_health):
@@ -63,4 +75,4 @@ def display_health_bars(player, enemy=None):
     print("+--------------------------+\n")
 
 def wait_for_player():
-    input("Press Enter to continue...")
+    messagebox.showinfo("Continue", "Press OK to continue...")
