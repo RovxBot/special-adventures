@@ -1,6 +1,6 @@
 import os
 import json
-from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom, set_window_size
+from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom, set_window_size, create_character_screen
 from text_rpg.player import Player
 from text_rpg.enemy import Enemy
 from text_rpg.utils import clear_screen
@@ -13,20 +13,7 @@ class Game:
     def create_character(self):
         clear_screen()
         display_hud()
-        name = input("Enter your character's name: ").strip()
-        points = 10
-        stats = {"agi": 0, "str": 0, "int": 0, "stam": 0}
-        while points > 0:
-            print(f"You have {points} points to distribute.")
-            for stat in stats:
-                if points == 0:
-                    break
-                value = int(input(f"Enter points for {stat} (current: {stats[stat]}): ").strip())
-                if value <= points:
-                    stats[stat] += value
-                    points -= value
-                else:
-                    print(f"Not enough points. You have {points} points left.")
+        name, stats = create_character_screen()
         return Player(name, agi=stats["agi"], str=stats["str"], int=stats["int"], stam=stats["stam"])
 
     def save_game(self):

@@ -14,6 +14,14 @@ ASCII_TITLE = """
   [ Press Enter to start ]
 """
 
+CHARACTER_CREATION_TITLE = """
+  ____ _               _              ____ _                 
+ / ___| |__   ___  ___| | _____ _ __ / ___| | ___  __ _ _ __  
+| |   | '_ \\ / _ \\/ __| |/ / _ \\ '__| |   | |/ _ \\/ _` | '_ \\ 
+| |___| | | |  __/ (__|   <  __/ |  | |___| |  __/ (_| | | | |
+ \\____|_| |_|\\___|\\___|_|\\_\\___|_|   \\____|_|\\___|\\__,_|_| |_|
+"""
+
 def set_window_size():
     os.system('mode con: cols=80 lines=24' if os.name == 'nt' else 'printf "\e[8;24;80t"')
 
@@ -76,3 +84,61 @@ def display_health_bars(player, enemy=None):
 
 def wait_for_player():
     messagebox.showinfo("Continue", "Press OK to continue...")
+
+def create_character_screen():
+    root = tk.Tk()
+    root.title("Character Creation")
+    
+    title_label = tk.Label(root, text=CHARACTER_CREATION_TITLE, font=("Courier", 12))
+    title_label.pack(pady=10)
+    
+    name_label = tk.Label(root, text="Enter your character's name:", font=("Courier", 12))
+    name_label.pack(pady=10)
+    name_entry = tk.Entry(root, font=("Courier", 12))
+    name_entry.pack(pady=10)
+
+    stats = {"agi": 0, "str": 0, "int": 0, "stam": 0}
+    points = 10
+    points_label = tk.Label(root, text=f"Points left: {points}", font=("Courier", 12))
+    points_label.pack(pady=10)
+
+    def update_points():
+        nonlocal points
+        points = 10 - sum(stats.values())
+        points_label.config(text=f"Points left: {points}")
+
+    def create_stat_row(stat):
+        frame = tk.Frame(root)
+        frame.pack(pady=5)
+        label = tk.Label(frame, text=f"{stat.capitalize()}: ", font=("Courier", 12))
+        label.pack(side=tk.LEFT)
+        entry = tk.Entry(frame, font=("Courier", 12), width=5)
+        entry.pack(side=tk.LEFT)
+        entry.insert(0, "0")
+
+        def on_change(*args):
+            try:
+                value = int(entry.get())
+                if value <= points:
+                    stats[stat] = value
+                    update_points()
+                else:
+                    entry.delete(0, tk.END)
+                    entry.insert(0, str(stats[stat]))
+            except ValueError:
+                entry.delete(0, tk.END)
+                entry.insert(0, str(stats[stat]))
+
+        entry.bind("<KeyRelease>", on_change)
+
+    for stat in stats:
+        create_stat_row(stat)
+
+    def on_submit():
+        root.destroy()
+
+    submit_button = tk.Button(root, text="Submit", command=on_submit)
+    submit_button.pack(pady=20)
+    root.mainloop()
+
+    return name_entry.get(), stats

@@ -1,4 +1,4 @@
-from text_rpg.game import Game
+from text_rpg.game import Game, new_function
 
 def main():
     try:
