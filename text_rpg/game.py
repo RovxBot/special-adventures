@@ -1,5 +1,6 @@
 import os
 import json
+import tkinter as tk
 from text_rpg.ui import display_hud, show_welcome_screen, show_main_menu, display_health_bars, wait_for_player, clear_bottom, set_window_size, create_character_screen
 from text_rpg.player import Player
 from text_rpg.enemy import Enemy
@@ -8,12 +9,16 @@ from text_rpg.utils import clear_screen
 class Game:
     def __init__(self):
         set_window_size()
+        self.root = tk.Tk()
+        self.root.title("Text RPG")
+        self.frame = tk.Frame(self.root)
+        self.frame.pack()
         self.player = self.create_character()
 
     def create_character(self):
         clear_screen()
         display_hud()
-        name, stats = create_character_screen()
+        name, stats = create_character_screen(self.root, self.frame)
         return Player(name, agi=stats["agi"], str=stats["str"], int=stats["int"], stam=stats["stam"])
 
     def save_game(self):
@@ -85,33 +90,38 @@ class Game:
         wait_for_player()
 
     def play(self):
-        show_welcome_screen()
-        show_main_menu()
-        global game_choice
-        if game_choice == "start":
-            print("Welcome to the Text RPG!")
-            while self.player.is_alive():
-                while True:
-                    clear_screen()
-                    display_health_bars(self.player)
-                    print("+----------------------+\n"
-                          "|  [yes] Explore       |\n"
-                          "|  [no]  Quit          |\n"
-                          "+----------------------+\n")
-                    action = input("Do you want to explore? ").strip().lower()
-                    clear_bottom()
-                    if action in ["yes", "no"]:
+        show_welcome_screen(self.root, self.frame)
+        while True:
+            show_main_menu(self.root, self.frame)
+            game_choice = input("Enter your choice: ").strip().lower()
+            if game_choice == "start":
+                print("Welcome to the Text RPG!")
+                while self.player.is_alive():
+                    while True:
+                        clear_screen()
+                        display_health_bars(self.player)
+                        print("+----------------------+\n"
+                              "|  [yes] Explore       |\n"
+                              "|  [no]  Quit          |\n"
+                              "+----------------------+\n")
+                        action = input("Do you want to explore? ").strip().lower()
+                        clear_bottom()
+                        if action in ["yes", "no"]:
+                            break
+                        print("Invalid choice. Enter 'yes' or 'no'.")
+                        wait_for_player()
+                    if action == "yes":
+                        enemy = Enemy("Goblin", health=30, attack=10, defense=3)
+                        self.battle(enemy)
+                    else:
+                        self.save_game()
+                        print("Goodbye!")
+                        wait_for_player()
                         break
-                    print("Invalid choice. Enter 'yes' or 'no'.")
-                    wait_for_player()
-                if action == "yes":
-                    enemy = Enemy("Goblin", health=30, attack=10, defense=3)
-                    self.battle(enemy)
-                else:
-                    self.save_game()
-                    print("Goodbye!")
-                    wait_for_player()
-                    break
-        elif game_choice == "quit":
-            print("Goodbye!")
-            wait_for_player()
+            elif game_choice == "quit":
+                print("Goodbye!")
+                wait_for_player()
+                break
+            else:
+                print("Invalid choice. Please enter 'start' or 'quit'.")
+                wait_for_player()

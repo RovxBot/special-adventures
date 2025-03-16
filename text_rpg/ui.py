@@ -36,36 +36,24 @@ def display_hud():
           "|        TEXT RPG          |\n"
           "+--------------------------+\n")
 
-def show_welcome_screen():
-    root = tk.Tk()
-    root.title("Text RPG")
-    label = tk.Label(root, text=ASCII_TITLE, font=("Courier", 12))
+def show_welcome_screen(root, frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    label = tk.Label(frame, text=ASCII_TITLE, font=("Courier", 12))
     label.pack(pady=20)
-    button = tk.Button(root, text="Start", command=root.destroy)
+    button = tk.Button(frame, text="Start", command=lambda: show_main_menu(root, frame))
     button.pack(pady=10)
-    root.mainloop()
 
-def show_main_menu():
-    def start_game():
-        root.destroy()
-        global game_choice
-        game_choice = "start"
-
-    def quit_game():
-        root.destroy()
-        global game_choice
-        game_choice = "quit"
-
-    root = tk.Tk()
-    root.title("Main Menu")
+def show_main_menu(root, frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
     display_hud()
-    label = tk.Label(root, text="Main Menu", font=("Courier", 12))
+    label = tk.Label(frame, text="Main Menu", font=("Courier", 12))
     label.pack(pady=20)
-    start_button = tk.Button(root, text="Start New Game", command=start_game)
+    start_button = tk.Button(frame, text="Start New Game", command=lambda: root.quit())
     start_button.pack(pady=10)
-    quit_button = tk.Button(root, text="Quit", command=quit_game)
+    quit_button = tk.Button(frame, text="Quit", command=root.quit)
     quit_button.pack(pady=10)
-    root.mainloop()
 
 def display_health_bars(player, enemy=None):
     def health_bar(health, max_health):
@@ -85,21 +73,21 @@ def display_health_bars(player, enemy=None):
 def wait_for_player():
     messagebox.showinfo("Continue", "Press OK to continue...")
 
-def create_character_screen():
-    root = tk.Tk()
-    root.title("Character Creation")
+def create_character_screen(root, frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
     
-    title_label = tk.Label(root, text=CHARACTER_CREATION_TITLE, font=("Courier", 12))
+    title_label = tk.Label(frame, text=CHARACTER_CREATION_TITLE, font=("Courier", 12))
     title_label.pack(pady=10)
     
-    name_label = tk.Label(root, text="Enter your character's name:", font=("Courier", 12))
+    name_label = tk.Label(frame, text="Enter your character's name:", font=("Courier", 12))
     name_label.pack(pady=10)
-    name_entry = tk.Entry(root, font=("Courier", 12))
+    name_entry = tk.Entry(frame, font=("Courier", 12))
     name_entry.pack(pady=10)
 
     stats = {"agi": 0, "str": 0, "int": 0, "stam": 0}
     points = 10
-    points_label = tk.Label(root, text=f"Points left: {points}", font=("Courier", 12))
+    points_label = tk.Label(frame, text=f"Points left: {points}", font=("Courier", 12))
     points_label.pack(pady=10)
 
     def update_points():
@@ -108,11 +96,11 @@ def create_character_screen():
         points_label.config(text=f"Points left: {points}")
 
     def create_stat_row(stat):
-        frame = tk.Frame(root)
-        frame.pack(pady=5)
-        label = tk.Label(frame, text=f"{stat.capitalize()}: ", font=("Courier", 12))
+        frame_stat = tk.Frame(frame)
+        frame_stat.pack(pady=5)
+        label = tk.Label(frame_stat, text=f"{stat.capitalize()}: ", font=("Courier", 12))
         label.pack(side=tk.LEFT)
-        entry = tk.Entry(frame, font=("Courier", 12), width=5)
+        entry = tk.Entry(frame_stat, font=("Courier", 12), width=5)
         entry.pack(side=tk.LEFT)
         entry.insert(0, "0")
 
@@ -135,10 +123,11 @@ def create_character_screen():
         create_stat_row(stat)
 
     def on_submit():
-        root.destroy()
+        root.quit()
 
-    submit_button = tk.Button(root, text="Submit", command=on_submit)
+    submit_button = tk.Button(frame, text="Submit", command=on_submit)
     submit_button.pack(pady=20)
     root.mainloop()
 
     return name_entry.get(), stats
+``` 
