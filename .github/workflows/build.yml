@@ -28,10 +28,11 @@ jobs:
         pyinstaller --onefile text_rpg/main.py
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: game
         path: dist/
+        if-no-files-found: warn
 
     - name: Create Release
       id: create_release
