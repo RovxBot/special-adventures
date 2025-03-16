@@ -130,4 +130,3 @@ def create_character_screen(root, frame):
     root.mainloop()
 
     return name_entry.get(), stats
-``` 
