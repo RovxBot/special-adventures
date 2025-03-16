@@ -6,15 +6,15 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: write  # Allow the workflow to create a release
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -34,19 +34,22 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: game
-        path: dist/
-        if-no-files-found: warn
+        path: dist/main.exe  # Ensure it's an .exe file
 
-    - name: Create Release
+    - name: Generate Alpha Version
+      id: get_version
+      run: echo "VERSION=v0.1.0-alpha.$(git rev-list --count HEAD)" >> $GITHUB_ENV
+
+    - name: Create Alpha Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.0.0
-        release_name: Release v1.0.0
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
         draft: false
-        prerelease: false
+        prerelease: true  # Mark as a pre-release
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
@@ -54,6 +57,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/main
-        asset_name: main
+        asset_path: dist/main.exe
+        asset_name: main.exe
         asset_content_type: application/octet-stream
