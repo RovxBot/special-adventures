@@ -20,6 +20,7 @@ text_rpg/
 - The game uses a simple stats system where the player has attributes like stamina, strength, agility, and intelligence.
 - The game will use a reputation system where the player's actions will affect how NPCs react to them.
 - Ability to save and load the game state.
+- Talent system that drives character and class progression
 
 ## Stats system
 - Stamina: Determines the player's health points (HP) and how much damage they can take.
