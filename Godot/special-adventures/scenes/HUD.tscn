@@ -14,18 +14,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilc2j"]
-bg_color = Color(0.776471, 0.729412, 0.407843, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.8, 0.8, 0.8, 0)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5j7a"]
 bg_color = Color(0.0509804, 0.0509804, 0.0980392, 0.8)
 border_width_left = 1
@@ -33,6 +21,18 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.454902, 0.427451, 0.25098, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilc2j"]
+bg_color = Color(0.776471, 0.729412, 0.407843, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -75,21 +75,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
 mouse_filter = 2
+theme_override_constants/separation = 5
 
 [node name="TopSection" type="HBoxContainer" parent="MainLayout"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.5  # Increased ratio to give more space to the top section
-theme_override_constants/separation = 10
+size_flags_stretch_ratio = 1.2
 mouse_filter = 2
 
 [node name="MainTextPanel" type="Panel" parent="MainLayout/TopSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
+size_flags_stretch_ratio = 2.5
 theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
 
 [node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopSection/MainTextPanel"]
@@ -120,12 +119,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/default_color = Color(0.945098, 0.945098, 0.945098, 1)
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 scroll_following = true
 
 [node name="RightPanel" type="VBoxContainer" parent="MainLayout/TopSection"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.8
 
 [node name="EnemiesPanel" type="Panel" parent="MainLayout/TopSection/RightPanel"]
 layout_mode = 2
@@ -150,7 +151,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 text = "Enemies"
 
 [node name="HSeparator" type="HSeparator" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer"]
@@ -161,18 +162,53 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
+[node name="ActionButtonsContainer" type="HBoxContainer" parent="MainLayout"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="SubmitButton" type="Button" parent="MainLayout/ActionButtonsContainer"]
+custom_minimum_size = Vector2(120, 35)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Submit"
+
+[node name="InputPanel" type="Panel" parent="MainLayout"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/InputPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/InputPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="GameTextInput" type="TextEdit" parent="MainLayout/InputPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter Text..."
+custom_minimum_size = Vector2(0, 40)
+
 [node name="BottomSection" type="HBoxContainer" parent="MainLayout"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.9  # Adjusted ratio for better fit
-theme_override_constants/separation = 10
 mouse_filter = 2
 
 [node name="PlayerStatsSection" type="VBoxContainer" parent="MainLayout/BottomSection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.2  # Give more space to player stats
-theme_override_constants/separation = 10
+size_flags_stretch_ratio = 1.2
 mouse_filter = 2
 
 [node name="PlayerStatusPanel" type="Panel" parent="MainLayout/BottomSection/PlayerStatsSection"]
@@ -218,8 +254,8 @@ custom_minimum_size = Vector2(150, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 value = 75.0
 show_percentage = false
 
@@ -236,8 +272,8 @@ custom_minimum_size = Vector2(150, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 value = 50.0
 show_percentage = false
 
@@ -254,47 +290,82 @@ custom_minimum_size = Vector2(150, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
 value = 25.0
 show_percentage = false
 
-[node name="InputPanel" type="Panel" parent="MainLayout/BottomSection/PlayerStatsSection"]
+[node name="StatsGridContainer" type="GridContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 5
+columns = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="GameTextInput" type="TextEdit" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer"]
+[node name="STRLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Enter Text..."
+theme_override_font_sizes/font_size = 12
+text = "STR:"
 
-[node name="SubmitButton" type="Button" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer"]
+[node name="STRValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
-theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
-text = "Submit"
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "10"
+
+[node name="STAMLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "STAM:"
+
+[node name="STAMValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "8"
+
+[node name="ARMORLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "ARMOR:"
+
+[node name="ARMORValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "5"
+
+[node name="INTLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "INT:"
+
+[node name="INTValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "12"
+
+[node name="AGILabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "AGI:"
+
+[node name="AGIValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "9"
 
 [node name="InventorySection" type="Panel" parent="MainLayout/BottomSection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
 
 [node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/InventorySection"]
 layout_mode = 1
@@ -336,96 +407,8 @@ item_2/text = "Leather Armor"
 [node name="RightSection" type="VBoxContainer" parent="MainLayout/BottomSection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.0  # Equal width with inventory
-theme_override_constants/separation = 10
+size_flags_stretch_ratio = 1.2
 mouse_filter = 2
-
-[node name="StatsPanel" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Panel" type="Panel" parent="MainLayout/BottomSection/RightSection/StatsPanel"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
-
-[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer"]
-layout_mode = 2
-
-[node name="Stats" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
-theme_override_font_sizes/font_size = 16
-text = "Character Stats"
-
-[node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="GridContainer" type="GridContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-columns = 2
-
-[node name="STR" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "STR"
-
-[node name="STRValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "10"
-
-[node name="STAM" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "STAM"
-
-[node name="STAMValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "8"
-
-[node name="INT" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "INT"
-
-[node name="INTValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "12"
-
-[node name="AGI" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "AGI"
-
-[node name="AGIValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "9"
-
-[node name="ARMOR" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "ARMOR"
-
-[node name="ARMORValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "5"
 
 [node name="EquippedPanel" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection"]
 layout_mode = 2
@@ -474,12 +457,12 @@ title = "Item Details"
 position = Vector2i(100, 100)
 size = Vector2i(380, 300)
 visible = false
-theme_override_colors/title_color = Color(0.776471, 0.729412, 0.407843, 1)
-theme_override_constants/title_height = 32
-theme_override_styles/embedded_border = SubResource("StyleBoxFlat_25ben")
 transient = true
 exclusive = true
 unresizable = true
+theme_override_colors/title_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_constants/title_height = 32
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_25ben")
 
 [node name="Panel" type="Panel" parent="ItemDialog"]
 anchors_preset = 15

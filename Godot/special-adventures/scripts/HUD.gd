@@ -139,17 +139,23 @@ func update_inventory(items: Array, player = null):
 
 # Update stats dynamically
 func update_stats(stats: Dictionary):
-	if not stats_values:
-		return
-
-	# Use GridContainer to organize stats
-	var grid = stats_values.get_node_or_null("GridContainer")
-	if grid:
+	# Update stats in the grid under player bars
+	var stats_grid = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer")
+	if stats_grid:
 		# Update existing labels in grid
 		for key in stats.keys():
-			var label = grid.get_node_or_null(key + "Value")
+			var label = stats_grid.get_node_or_null(key + "Value")
 			if label:
 				label.text = str(stats[key])
+				
+	# Also update the old stats grid if still present
+	if stats_values:
+		var grid = stats_values.get_node_or_null("GridContainer")
+		if grid:
+			for key in stats.keys():
+				var label = grid.get_node_or_null(key + "Value")
+				if label:
+					label.text = str(stats[key])
 
 # Update equipped items
 func update_equipped(equipped_items: Dictionary):

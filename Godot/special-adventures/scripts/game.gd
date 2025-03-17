@@ -7,8 +7,9 @@ var item_db  # Reference to the item database
 @onready var hud = $Hud  # Get the HUD instance
 # Update paths to match new HUD structure
 @onready var game_label = $Hud/MainLayout/TopSection/MainTextPanel/MarginContainer/VBoxContainer/TextZone
-@onready var submit_button = $Hud/MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer/SubmitButton
-@onready var game_text_input = $Hud/MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer/GameTextInput
+@onready var submit_button = $Hud/MainLayout/ActionButtonsContainer/SubmitButton
+@onready var game_text_input = $Hud/MainLayout/InputPanel/MarginContainer/HBoxContainer/GameTextInput
+@onready var input_panel = $Hud/MainLayout/InputPanel
 @onready var item_dialog = $Hud/ItemDialog
 
 func _ready():
@@ -41,7 +42,13 @@ func _ready():
 			if cancel_btn:
 				cancel_btn.pressed.connect(_on_cancel_button_pressed)
 	
+	# Show input panel at the beginning for name entry
+	if input_panel:
+		input_panel.visible = true
+		input_panel.custom_minimum_size = Vector2(0, 60)  # Set proper height for input panel
+	
 	game_label.text = "Enter your name:"
+	submit_button.text = "Submit"
 	submit_button.pressed.connect(_on_SubmitButton_pressed)  # Ensure signal is connected
 
 	var equipped_items = {
@@ -66,6 +73,13 @@ func _on_SubmitButton_pressed():
 	player = Player.new(player_name)
 	enemy = Enemy.new()
 	
+	# Set player name and hide input panel
+	if player_name != "":
+		# Make sure player name is set in the UI
+		var player_name_label = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/Player")
+		if player_name_label:
+			player_name_label.text = player_name
+	
 	var stats = {
 		"STR": player.strength,
 		"STAM": player.stamina,
@@ -76,6 +90,9 @@ func _on_SubmitButton_pressed():
 	hud.update_stats(stats)
 	
 	# Hide input field
+	if input_panel:
+		input_panel.visible = false
+		input_panel.custom_minimum_size = Vector2(0, 0)  # Remove height when not visible
 	game_text_input.hide()
 	submit_button.hide()
 	
@@ -102,6 +119,10 @@ func start_battle():
 	submit_button.text = "Attack"
 	submit_button.show()
 	submit_button.pressed.connect(_on_attack_pressed)  # Connect attack function
+	
+	if input_panel:
+		input_panel.visible = false
+		input_panel.custom_minimum_size = Vector2(0, 0)
 
 func _on_attack_pressed():
 	# Use the new attack system
@@ -373,3 +394,14 @@ func _on_cancel_button_pressed():
 	# Reset selections
 	hud.selected_inventory_index = -1
 	hud.selected_equipped_slot = ""
+
+# Update stats display in the new location
+func update_player_stats_display():
+	if player:
+		var stats_grid = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer")
+		if stats_grid:
+			stats_grid.get_node_or_null("STRValue").text = str(player.strength)
+			stats_grid.get_node_or_null("STAMValue").text = str(player.stamina)
+			stats_grid.get_node_or_null("INTValue").text = str(player.intelligence)
+			stats_grid.get_node_or_null("AGIValue").text = str(player.agility)
+			stats_grid.get_node_or_null("ARMORValue").text = str(player.armor)
