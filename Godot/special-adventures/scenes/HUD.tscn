@@ -1,0 +1,176 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwdkgcxifg7n2"]
+
+[ext_resource type="Script" uid="uid://51mc2ensci2w" path="res://scripts/HUD.gd" id="1_qpvh6"]
+
+[node name="Hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qpvh6")
+
+[node name="TextZone" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 881.0
+offset_bottom = 446.0
+
+[node name="SubmitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 364.0
+offset_top = 453.0
+offset_right = 427.0
+offset_bottom = 484.0
+text = "Submit"
+
+[node name="GameTextInput" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 19.0
+offset_top = 451.0
+offset_right = 351.0
+offset_bottom = 487.0
+placeholder_text = "Enter Text..."
+
+[node name="EnemyBars" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 900.0
+offset_right = 1150.0
+offset_bottom = 161.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EnemyBars"]
+layout_mode = 2
+
+[node name="Enemy 1" type="Label" parent="EnemyBars/HBoxContainer"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="EnemyBars"]
+layout_mode = 2
+
+[node name="Enemy 2" type="Label" parent="EnemyBars/HBoxContainer3"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer3"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="EnemyBars"]
+layout_mode = 2
+
+[node name="Enemy 3" type="Label" parent="EnemyBars/HBoxContainer2"]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer2"]
+layout_mode = 2
+
+[node name="PlayerStats" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 489.0
+offset_right = 356.0
+offset_bottom = 649.0
+
+[node name="Player" type="Label" parent="PlayerStats"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerStats"]
+layout_mode = 2
+
+[node name="HP" type="Label" parent="PlayerStats/HBoxContainer"]
+layout_mode = 2
+text = "Health"
+
+[node name="HPBar" type="ProgressBar" parent="PlayerStats/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PlayerStats"]
+layout_mode = 2
+
+[node name="Mana" type="Label" parent="PlayerStats/HBoxContainer2"]
+layout_mode = 2
+text = "Mana"
+
+[node name="ManaBar" type="ProgressBar" parent="PlayerStats/HBoxContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PlayerStats"]
+layout_mode = 2
+
+[node name="Exp" type="Label" parent="PlayerStats/HBoxContainer3"]
+layout_mode = 2
+text = "EXP"
+
+[node name="XPBar" type="ProgressBar" parent="PlayerStats/HBoxContainer3"]
+layout_mode = 2
+
+[node name="InventoryList" type="ItemList" parent="."]
+layout_mode = 0
+offset_left = 361.0
+offset_top = 489.0
+offset_right = 662.0
+offset_bottom = 645.0
+
+[node name="StatsPanel" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 665.0
+offset_top = 487.0
+offset_right = 883.0
+offset_bottom = 647.0
+
+[node name="Stats" type="Label" parent="StatsPanel"]
+layout_mode = 2
+text = "Player Stats"
+
+[node name="GridContainer" type="GridContainer" parent="StatsPanel"]
+layout_mode = 2
+columns = 2
+
+[node name="STR" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+text = "STR"
+
+[node name="STRValue" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+
+[node name="STAM" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+text = "STAM"
+
+[node name="STAMValue" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+
+[node name="INT" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+text = "INT"
+
+[node name="INTValue" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+
+[node name="AGI" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+text = "AGI"
+
+[node name="AGIValue" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+
+[node name="ARMOR" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+text = "ARMOR"
+
+[node name="ARMORValue" type="Label" parent="StatsPanel/GridContainer"]
+layout_mode = 2
+
+[node name="EquippedPanel" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 888.0
+offset_top = 484.0
+offset_right = 1154.0
+offset_bottom = 646.0
+
+[node name="Equipped" type="Label" parent="EquippedPanel"]
+layout_mode = 2
+text = "Equipped"
