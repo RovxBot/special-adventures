@@ -1,0 +1,32 @@
+[
+  {
+    "id": "health_potion",
+    "name": "Health Potion",
+    "rarity": "Common",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"heal": 20},
+    "description": "Restores 20 health when consumed.",
+    "level_requirement": 1
+  },
+  {
+    "id": "mana_potion",
+    "name": "Mana Potion",
+    "rarity": "Common",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"mana": 20},
+    "description": "Restores 20 mana when consumed.",
+    "level_requirement": 1
+  },
+  {
+    "id": "scroll_of_rage",
+    "name": "Scroll of Rage",
+    "rarity": "Magic",
+    "type": "Scroll",
+    "slot": "",
+    "stats": {"STR": 5},
+    "description": "Temporarily increases your strength by 5 for 3 turns.",
+    "level_requirement": 5
+  }
+]

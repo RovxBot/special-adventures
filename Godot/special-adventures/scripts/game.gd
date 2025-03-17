@@ -51,16 +51,20 @@ func _ready():
 	submit_button.text = "Submit"
 	submit_button.pressed.connect(_on_SubmitButton_pressed)  # Ensure signal is connected
 
+	# Update the equipped items to include all available slots
 	var equipped_items = {
-		"Head": "Helmet",
-		"Chest": "Armor",
-		"Hands": "Gloves",
-		"Feet": "Boots",
-		"Legs": "Leg Guards",
-		"Left Hand": "Shield",
-		"Right Hand": "Sword",
-		"Ring": "Magic Ring",
-		"Neck": "Amulet"
+		"Head": "Empty",
+		"Chest": "Empty",
+		"Hands": "Empty",
+		"Legs": "Empty",
+		"Feet": "Empty",
+		"Weapon": "Empty",
+		"Shield": "Empty",
+		"Ring": "Empty",
+		"Neck": "Empty",
+		"Back": "Empty",
+		"Belt": "Empty",
+		"Pants": "Empty"
 	}
 	hud.update_equipped(equipped_items)
 
@@ -229,6 +233,7 @@ func _on_inventory_item_selected(index):
 		var item_data = {
 			"type": item.type,
 			"description": item.description,
+			"rarity": item.rarity,  # Pass rarity to the dialog
 			"value": 10,  # Example value, you can add this to your Item class
 			"effects": []  # Build effects list from item stats
 		}
@@ -247,6 +252,7 @@ func _on_equipped_item_selected(slot):
 		var item_data = {
 			"type": item.type,
 			"description": item.description,
+			"rarity": item.rarity,  # Pass rarity to dialog
 			"value": 10,  # Example value
 			"effects": []
 		}

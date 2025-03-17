@@ -5,6 +5,7 @@ var _items = {}  # Dictionary to store all items by ID
 var _items_by_type = {}  # Dictionary to store items organized by type
 var _items_by_level = {}  # Dictionary to store items organized by level requirement
 var _items_by_slot = {}  # Dictionary to store items organized by equipment slot
+var _items_by_rarity = {}  # Dictionary to store items organized by rarity
 
 func _init():
 	load_database()
@@ -34,6 +35,7 @@ func load_database():
 	_items_by_type = {}
 	_items_by_level = {}
 	_items_by_slot = {}
+	_items_by_rarity = {}  # Initialize rarity dictionary
 	
 	# Process each item in the array
 	for item_entry in item_data:
@@ -47,8 +49,9 @@ func load_database():
 		var stats = item_entry.get("stats", {})
 		var desc = item_entry.get("description", "")
 		var level_req = item_entry.get("level_requirement", 1)
+		var rarity = item_entry.get("rarity", "Common")  # Default to Common if not specified
 		
-		var item = Item.new(name, type, slot, stats, desc, level_req)
+		var item = Item.new(name, type, slot, stats, desc, level_req, rarity)  # Add rarity parameter
 		
 		# Store by ID
 		_items[id] = item
@@ -68,6 +71,11 @@ func load_database():
 			_items_by_slot[slot] = []
 		if slot != "":
 			_items_by_slot[slot].append(item)
+			
+		# Store by rarity
+		if not _items_by_rarity.has(rarity):
+			_items_by_rarity[rarity] = []
+		_items_by_rarity[rarity].append(item)
 	
 	print("Loaded ", _items.size(), " items into database")
 
@@ -96,6 +104,12 @@ func get_items_by_level(level: int) -> Array:
 		if req_level <= level:
 			result.append_array(_items_by_level[req_level])
 	return result
+
+# Get items by rarity
+func get_items_by_rarity(rarity: String) -> Array:
+	if _items_by_rarity.has(rarity):
+		return _items_by_rarity[rarity]
+	return []
 
 # Get random item of specified type with level <= player_level
 func get_random_item(type: String = "", max_level: int = 100) -> Item:

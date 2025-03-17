@@ -1,0 +1,82 @@
+[
+  {
+    "id": "wooden_shield",
+    "name": "Wooden Shield",
+    "rarity": "Common",
+    "type": "Shield",
+    "slot": "Shield",
+    "stats": {"defense": 2},
+    "description": "A simple wooden shield.",
+    "level_requirement": 1
+  },
+  {
+    "id": "ring_of_strength",
+    "name": "Ring of Strength",
+    "rarity": "Magic",
+    "type": "Ring",
+    "slot": "Ring",
+    "stats": {"STR": 2},
+    "description": "A ring that enhances your strength.",
+    "level_requirement": 10
+  },
+  {
+    "id": "amulet_of_wisdom",
+    "name": "Amulet of Wisdom",
+    "rarity": "Magic",
+    "type": "Necklace",
+    "slot": "Neck",
+    "stats": {"INT": 2},
+    "description": "An amulet that enhances your intelligence.",
+    "level_requirement": 10
+  },
+  {
+    "id": "iron_round_shield",
+    "name": "Iron Round Shield",
+    "rarity": "Common",
+    "type": "Shield",
+    "slot": "Shield",
+    "stats": {"defense": 4},
+    "description": "A simple Iron ",
+    "level_requirement": 5
+  },
+  {
+    "id": "iron_tower_shield",
+    "name": "Iron Tower Shield",
+    "rarity": "Common",
+    "type": "Shield",
+    "slot": "Shield",
+    "stats": {"defense": 6},
+    "description": "A large Iron tower shield.",
+    "level_requirement": 10
+  },
+  {
+    "id": "banded_mithril_shield",
+    "name": "Banded Mithril Shield",
+    "rarity": "Magic",
+    "type": "Shield",
+    "slot": "Shield",
+    "stats": {"defense": 6, "STR": 2},
+    "description": "A Tower shield backed with mithril.",
+    "level_requirement": 12
+  },
+  {
+    "id": "ring_of_agility",
+    "name": "Ring of Agility",
+    "rarity": "Magic",
+    "type": "Ring",
+    "slot": "Ring",
+    "stats": {"AGI": 2},
+    "description": "A ring that enhances your agility.",
+    "level_requirement": 10
+  },
+  {
+    "id": "amulet_of_stamina",
+    "name": "Amulet of Stamina",
+    "rarity": "Magic",
+    "type": "Necklace",
+    "slot": "Neck",
+    "stats": {"STAM": 2},
+    "description": "An amulet that enhances your stamina.",
+    "level_requirement": 10
+  }
+]

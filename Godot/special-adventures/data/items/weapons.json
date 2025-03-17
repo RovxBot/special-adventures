@@ -1,0 +1,62 @@
+[
+  {
+    "id": "rusty_sword",
+    "name": "Rusty Sword",
+    "rarity": "Common",
+    "type": " 1h Sword",
+    "slot": "Weapon",
+    "stats": {"attack": 3},
+    "description": "An old rusty sword, barely usable.",
+    "level_requirement": 1
+  },
+  {
+    "id": "iron_sword",
+    "name": "Iron Sword",
+    "rarity": "Common",
+    "type": "1h Sword",
+    "slot": "Weapon",
+    "stats": {"attack": 5},
+    "description": "A standard iron sword.",
+    "level_requirement": 5
+  },
+  {
+    "id": "rangers_bow",
+    "name": "Ranger's Bow",
+    "rarity": "Magic",
+    "type": "Bow",
+    "slot": "Weapon",
+    "stats": {"attack": 6, "AGI": 2},
+    "description": "A finely crafted bow used by rangers.",
+    "level_requirement": 12
+  },
+  {
+    "id": "wizards_staff_of_resiistance",
+    "name": "Wizard's Staff of Resistance",
+    "rarity": "Rare",
+    "type": "Staff",
+    "slot": "Weapon",
+    "stats": {"attack": 4, "INT": 3, "resistance": 2},
+    "description": "A magical staff that enhances spellcasting.",
+    "level_requirement": 10
+  },
+  {
+    "id": "rusty_dagger",
+    "name": "Rusty Dagger",
+    "rarity": "Common",
+    "type": "Dagger",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "An old, rusty dagger.",
+    "level_requirement": 1
+  },
+  {
+    "id": "flimsy_hunters_bow",
+    "name": "Flimsy Hunter's Bow",
+    "rarity": "Common",
+    "type": "Bow",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "A weak but functional hunting bow.",
+    "level_requirement": 1
+  }
+]

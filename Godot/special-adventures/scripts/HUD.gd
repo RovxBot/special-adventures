@@ -122,7 +122,7 @@ func update_enemy_hp(enemies: Array):
 		container.add_child(hp_bar)
 		enemy_bars.add_child(container)
 
-# Update inventory list
+# Update inventory list to use rarity colors
 func update_inventory(items: Array, player = null):
 	if inventory_list:
 		inventory_list.clear()
@@ -130,8 +130,10 @@ func update_inventory(items: Array, player = null):
 		
 		for item in items:
 			if item is Item:
-				# Add the item name to the list
-				inventory_list.add_item(item.name)
+				# Add the item name with proper color based on rarity
+				var item_index = inventory_list.add_item(item.name)
+				var color = item.get_rarity_color()
+				inventory_list.set_item_custom_fg_color(item_index, color)
 			elif item is String:
 				inventory_list.add_item(item)
 			else:
@@ -157,8 +159,8 @@ func update_stats(stats: Dictionary):
 				if label:
 					label.text = str(stats[key])
 
-# Update equipped items
-func update_equipped(equipped_items: Dictionary):
+# Update equipped items with colors
+func update_equipped(equipped_items: Dictionary, equipped_colors: Dictionary = {}):
 	if not equipped_container:
 		return
 
@@ -178,25 +180,36 @@ func update_equipped(equipped_items: Dictionary):
 		button.name = "slot_" + slot
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.pressed.connect(_on_equipped_item_button_pressed.bind(slot))
-		# Fix: use the correct method to override theme color
-		button.add_theme_color_override("font_hover_color", Color(0.776471, 0.729412, 0.407843))
+		
+		# Apply rarity color if available
+		if equipped_colors.has(slot):
+			button.add_theme_color_override("font_color", equipped_colors[slot])
+			button.add_theme_color_override("font_hover_color", equipped_colors[slot])
+		else:
+			# Fix: use the correct method to override theme color
+			button.add_theme_color_override("font_hover_color", Color(0.776471, 0.729412, 0.407843))
+		
 		equipped_container.add_child(button)
 
-# Update equipped items from player object
+# Update equipped items from player object with rarity colors
 func update_equipped_from_player(player):
 	if player == null:
 		return
 		
 	current_player = player
 	var equipped_data = {}
+	var equipped_colors = {}  # Store color for each equipped item
+	
 	for slot in player.equipped_items:
 		if player.equipped_items[slot] != null:
 			var item = player.equipped_items[slot]
 			equipped_data[slot] = item.name
+			equipped_colors[slot] = item.get_rarity_color()
 		else:
 			equipped_data[slot] = "Empty"
+			equipped_colors[slot] = Color.WHITE
 	
-	update_equipped(equipped_data)
+	update_equipped(equipped_data, equipped_colors)
 
 # Handle inventory item selection
 func _on_inventory_item_selected(index):
@@ -212,7 +225,7 @@ func _on_equipped_item_button_pressed(slot):
 	selected_equipped_slot = slot
 	equipped_item_selected.emit(slot)
 
-# Show item dialog with options
+# Show item dialog with options and apply rarity color to the item name
 func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = true, item_data = null):
 	if not item_dialog:
 		print("ERROR: ItemDialog not found!")
@@ -231,10 +244,21 @@ func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = tr
 		print("ERROR: Dialog container not found!")
 		return
 		
-	# Update item name
+	# Update item name and apply color if rarity is available
 	var item_name_label = main_container.get_node_or_null("ItemName")
 	if item_name_label:
 		item_name_label.text = item_name
+		
+		# Apply rarity color if available
+		if item_data and "rarity" in item_data:
+			var color = Color.WHITE
+			match item_data.rarity:
+				"Common": color = Color.WHITE
+				"Magic": color = Color(0.0, 0.8, 0.0)  # Green
+				"Rare": color = Color(0.0, 0.5, 1.0)   # Blue
+				"Epic": color = Color(0.6, 0.0, 0.8)   # Purple
+			
+			item_name_label.add_theme_color_override("font_color", color)
 	
 	# Get item details section
 	var item_details = main_container.get_node_or_null("ScrollContainer/ItemDetails")

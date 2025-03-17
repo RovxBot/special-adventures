@@ -21,7 +21,7 @@ var agility: int = 12
 var armor: int = 5
 var resistance: int = 0  # Added resistance stat for magic defense
 
-# Equipment slots
+# Equipment slots - Adding all the new slots
 var equipped_items = {
 	"Head": null,
 	"Chest": null,
@@ -31,7 +31,10 @@ var equipped_items = {
 	"Weapon": null,
 	"Shield": null,
 	"Ring": null,
-	"Neck": null
+	"Neck": null,
+	"Back": null,    # New slot for capes
+	"Belt": null,    # New slot for belts
+	"Pants": null    # New slot for pants separate from legs
 }
 
 # Attack types
@@ -151,6 +154,11 @@ func equip_item(item: Item) -> bool:
 		print("Cannot equip - item not in inventory")
 		return false
 	
+	# Check if the slot exists in equipped_items
+	if not equipped_items.has(item.slot):
+		print("Cannot equip - invalid slot: ", item.slot)
+		return false
+	
 	# Unequip any existing item in this slot
 	if equipped_items[item.slot] != null:
 		unequip_item(item.slot)
@@ -208,19 +216,23 @@ func unequip_item(slot: String) -> Item:
 	return null
 
 func give_starter_equipment():
-	# Create basic clothing items (to be equipped)
-	var farmers_shirt = Item.new("Farmers Shirt", "Armor", "Chest", {"armor": 1}, "A simple shirt worn by farmers")
-	var farmers_slacks = Item.new("Farmers Slacks", "Armor", "Legs", {"armor": 1}, "Simple pants worn by farmers")
-	var farmers_boots = Item.new("Farmers Boots", "Armor", "Feet", {"armor": 1}, "Simple boots worn by farmers")
+	# Use the items from the database
+	var farmers_shirt = Item.new("Farmer's Shirt", "Cloth Armor", "Chest", {"armor": 1}, "A simple shirt worn by farmers")
+	var farmers_slacks = Item.new("Farmer's Slacks", "Cloth Armor", "Legs", {"armor": 1}, "Simple pants worn by farmers")
+	var farmers_boots = Item.new("Farmer's Boots", "Cloth Armor", "Feet", {"armor": 1}, "Simple boots worn by farmers")
+	
+	# Add new starter item - cape
+	var simple_cape = Item.new("Simple Linen Cape", "Cloth Armor", "Back", {"armor": 1}, "A flowing traveler's cape")
 	
 	# Create weapons (to be kept in inventory)
-	var rusty_dagger = Item.new("Rusted Dagger", "Weapon", "Weapon", {"attack": 1}, "An old, rusted dagger")
-	var hunters_bow = Item.new("Flimsy Hunters Bow", "Weapon", "Weapon", {"attack": 1}, "A weak but functional hunting bow")
+	var rusty_dagger = Item.new("Rusty Dagger", "Dagger", "Weapon", {"attack": 1}, "An old, rusted dagger")
+	var hunters_bow = Item.new("Flimsy Hunter's Bow", "Bow", "Weapon", {"attack": 1}, "A weak but functional hunting bow")
 	
 	# Add all items to inventory
 	inventory.append(farmers_shirt)
 	inventory.append(farmers_slacks)
 	inventory.append(farmers_boots)
+	inventory.append(simple_cape)  # Add cape to inventory
 	inventory.append(rusty_dagger)
 	inventory.append(hunters_bow)
 	
@@ -228,6 +240,6 @@ func give_starter_equipment():
 	equip_item(farmers_shirt)
 	equip_item(farmers_slacks)
 	equip_item(farmers_boots)
+	equip_item(simple_cape)  # Equip the cape
 	
-	# Weapons are left in inventory, not equipped
 	print("Starter equipment provided: Basic clothing equipped, weapons in inventory")

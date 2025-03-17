@@ -1,0 +1,62 @@
+[
+  {
+    "id": "leather_armor",
+    "name": "Leather Armor",
+    "rarity": "Common",
+    "type": "Leather Armor",
+    "slot": "Chest",
+    "stats": {"armor": 3},
+    "description": "Basic leather armor offering minimal protection.",
+    "level_requirement": 2
+  },
+  {
+    "id": "leather_boots",
+    "name": "Leather Boots",
+    "rarity": "Common",
+    "type": "Leather Armor",
+    "slot": "Feet",
+    "stats": {"armor": 2},
+    "description": "Comfortable leather boots.",
+    "level_requirement": 2
+  },
+  {
+    "id": "leather_gloves",
+    "name": "Leather Gloves",
+    "rarity": "Common",
+    "type": "Leather Armor",
+    "slot": "Hands",
+    "stats": {"armor": 2},
+    "description": "Leather gloves that provide some protection.",
+    "level_requirement": 2
+  },
+  {
+    "id": "leather_pants",
+    "name": "Leather Pants",
+    "rarity": "Common",
+    "type": "Leather Armor",
+    "slot": "Pants",
+    "stats": {"armor": 2},
+    "description": "Leather pants that provide some protection.",
+    "level_requirement": 2
+  },
+  {
+    "id": "farmers_work_belt",
+    "name": "Farmers Work Belt",
+    "rarity": "Common",
+    "type": "Leather Armor",
+    "slot": "Belt",
+    "stats": {"armor": 1},
+    "description": "Farmers tool belt.",
+    "level_requirement": 2
+  },
+  {
+    "id": "leather_boots_of_agility",
+    "name": "Leather Boots of Agility",
+    "rarity": "Magic",
+    "type": "Leather Armor",
+    "slot": "Feet",
+    "stats": {"armor": 2, "AGI": 1},
+    "description": "Comfortable leather boots.",
+    "level_requirement": 1
+  }
+]

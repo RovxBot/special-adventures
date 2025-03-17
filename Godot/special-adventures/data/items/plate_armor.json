@@ -1,0 +1,32 @@
+[
+  {
+    "id": "steel_helmet_of_might",
+    "name": "Steel Helmet of Might",
+    "rarity": "Magic",
+    "type": "Plate Armor",
+    "slot": "Head",
+    "stats": {"armor": 4, "STR": 1},
+    "description": "A sturdy steel helmet.",
+    "level_requirement": 8
+  },
+  {
+    "id": "iron_gauntlets_of_might",
+    "name": "Iron Gauntlets of Might",
+    "rarity": "Magic",
+    "type": "Plate Armor",
+    "slot": "Hands",
+    "stats": {"armor": 2, "STR": 1},
+    "description": "Iron gauntlets that protect your hands.",
+    "level_requirement": 5
+  },
+  {
+    "id": "knight_armor_of_fortitude",
+    "name": "Knight's Armor of Fortitude",
+    "rarity": "Magic",
+    "type": "Plate Armor",
+    "slot": "Chest",
+    "stats": {"armor": 8, "STAM": 2},
+    "description": "Heavy armor worn by knights.",
+    "level_requirement": 15
+  }
+]
