@@ -1,0 +1,173 @@
+[
+  {
+    "id": "rusty_sword",
+    "name": "Rusty Sword",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 3},
+    "description": "An old rusty sword, barely usable.",
+    "level_requirement": 1
+  },
+  {
+    "id": "wooden_shield",
+    "name": "Wooden Shield",
+    "type": "Shield",
+    "slot": "Shield",
+    "stats": {"defense": 2},
+    "description": "A simple wooden shield.",
+    "level_requirement": 1
+  },
+  {
+    "id": "leather_armor",
+    "name": "Leather Armor",
+    "type": "Armor",
+    "slot": "Chest",
+    "stats": {"armor": 3},
+    "description": "Basic leather armor offering minimal protection.",
+    "level_requirement": 1
+  },
+  {
+    "id": "iron_sword",
+    "name": "Iron Sword",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 5},
+    "description": "A standard iron sword.",
+    "level_requirement": 5
+  },
+  {
+    "id": "health_potion",
+    "name": "Health Potion",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"heal": 20},
+    "description": "Restores 20 health when consumed.",
+    "level_requirement": 1
+  },
+  {
+    "id": "mana_potion",
+    "name": "Mana Potion",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"mana": 20},
+    "description": "Restores 20 mana when consumed.",
+    "level_requirement": 1
+  },
+  {
+    "id": "steel_helmet",
+    "name": "Steel Helmet",
+    "type": "Armor",
+    "slot": "Head",
+    "stats": {"armor": 4, "STR": 1},
+    "description": "A sturdy steel helmet.",
+    "level_requirement": 8
+  },
+  {
+    "id": "iron_gauntlets",
+    "name": "Iron Gauntlets",
+    "type": "Armor",
+    "slot": "Hands",
+    "stats": {"armor": 2, "STR": 1},
+    "description": "Iron gauntlets that protect your hands.",
+    "level_requirement": 5
+  },
+  {
+    "id": "leather_boots",
+    "name": "Leather Boots",
+    "type": "Armor",
+    "slot": "Feet",
+    "stats": {"armor": 2, "AGI": 1},
+    "description": "Comfortable leather boots.",
+    "level_requirement": 1
+  },
+  {
+    "id": "ring_of_strength",
+    "name": "Ring of Strength",
+    "type": "Ring",
+    "slot": "Ring",
+    "stats": {"STR": 2},
+    "description": "A ring that enhances your strength.",
+    "level_requirement": 10
+  },
+  {
+    "id": "amulet_of_wisdom",
+    "name": "Amulet of Wisdom",
+    "type": "Trinket",
+    "slot": "Neck",
+    "stats": {"INT": 2},
+    "description": "An amulet that enhances your intelligence.",
+    "level_requirement": 10
+  },
+  {
+    "id": "rangers_bow",
+    "name": "Ranger's Bow",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 6, "AGI": 2},
+    "description": "A finely crafted bow used by rangers.",
+    "level_requirement": 12
+  },
+  {
+    "id": "knight_armor",
+    "name": "Knight's Armor",
+    "type": "Armor",
+    "slot": "Chest",
+    "stats": {"armor": 8, "STAM": 2},
+    "description": "Heavy armor worn by knights.",
+    "level_requirement": 15
+  },
+  {
+    "id": "wizards_staff",
+    "name": "Wizard's Staff",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 4, "INT": 3, "resistance": 2},
+    "description": "A magical staff that enhances spellcasting.",
+    "level_requirement": 10
+  },
+  {
+    "id": "farmers_shirt",
+    "name": "Farmer's Shirt",
+    "type": "Armor",
+    "slot": "Chest",
+    "stats": {"armor": 1},
+    "description": "A simple shirt worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "farmers_slacks",
+    "name": "Farmer's Slacks",
+    "type": "Armor",
+    "slot": "Legs",
+    "stats": {"armor": 1},
+    "description": "Simple pants worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "farmers_boots",
+    "name": "Farmer's Boots",
+    "type": "Armor",
+    "slot": "Feet",
+    "stats": {"armor": 1},
+    "description": "Simple boots worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "rusty_dagger",
+    "name": "Rusty Dagger",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "An old, rusty dagger.",
+    "level_requirement": 1
+  },
+  {
+    "id": "flimsy_hunters_bow",
+    "name": "Flimsy Hunter's Bow",
+    "type": "Weapon",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "A weak but functional hunting bow.",
+    "level_requirement": 1
+  }
+]

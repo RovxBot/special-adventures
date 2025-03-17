@@ -174,3 +174,5 @@ offset_bottom = 646.0
 [node name="Equipped" type="Label" parent="EquippedPanel"]
 layout_mode = 2
 text = "Equipped"
+
+[node name="ItemDialog" parent="." instance=ExtResource("2_xxxx")]

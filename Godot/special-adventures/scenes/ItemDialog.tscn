@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://d0hwvj3ekawuv"]
+
+[node name="ItemDialog" type="Window"]
+title = "Item Details"
+initial_position = 2
+size = Vector2i(300, 200)
+transient = true
+exclusive = true
+unresizable = true
+popup_window = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ItemDescription" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Item description will appear here."
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="EquipButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Unequip"
+
+[node name="DestroyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Destroy"
+
+[node name="CancelButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
