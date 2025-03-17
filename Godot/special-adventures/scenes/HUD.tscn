@@ -1,178 +1,615 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwdkgcxifg7n2"]
+[gd_scene load_steps=6 format=3 uid="uid://bwdkgcxifg7n2"]
 
 [ext_resource type="Script" uid="uid://51mc2ensci2w" path="res://scripts/HUD.gd" id="1_qpvh6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
+bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.776471, 0.729412, 0.407843, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilc2j"]
+bg_color = Color(0.776471, 0.729412, 0.407843, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5j7a"]
+bg_color = Color(0.0509804, 0.0509804, 0.0980392, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.454902, 0.427451, 0.25098, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25ben"]
+bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.776471, 0.729412, 0.407843, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Hud" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1.0
-offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_qpvh6")
 
-[node name="TextZone" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_right = 881.0
-offset_bottom = 446.0
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0784314, 0.0588235, 0.113725, 1)
 
-[node name="SubmitButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 364.0
-offset_top = 453.0
-offset_right = 427.0
-offset_bottom = 484.0
-text = "Submit"
+[node name="MainLayout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+mouse_filter = 2
 
-[node name="GameTextInput" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 19.0
-offset_top = 451.0
-offset_right = 351.0
-offset_bottom = 487.0
+[node name="TopSection" type="HBoxContainer" parent="MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5  # Increased ratio to give more space to the top section
+theme_override_constants/separation = 10
+mouse_filter = 2
+
+[node name="MainTextPanel" type="Panel" parent="MainLayout/TopSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopSection/MainTextPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopSection/MainTextPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainLayout/TopSection/MainTextPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Adventure Log"
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout/TopSection/MainTextPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextZone" type="RichTextLabel" parent="MainLayout/TopSection/MainTextPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.945098, 0.945098, 0.945098, 1)
+bbcode_enabled = true
+scroll_following = true
+
+[node name="RightPanel" type="VBoxContainer" parent="MainLayout/TopSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemiesPanel" type="Panel" parent="MainLayout/TopSection/RightPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/TopSection/RightPanel/EnemiesPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Enemies"
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnemyBars" type="VBoxContainer" parent="MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="BottomSection" type="HBoxContainer" parent="MainLayout"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.9  # Adjusted ratio for better fit
+theme_override_constants/separation = 10
+mouse_filter = 2
+
+[node name="PlayerStatsSection" type="VBoxContainer" parent="MainLayout/BottomSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.2  # Give more space to player stats
+theme_override_constants/separation = 10
+mouse_filter = 2
+
+[node name="PlayerStatusPanel" type="Panel" parent="MainLayout/BottomSection/PlayerStatsSection"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PlayerStats" type="VBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Player" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Player Name"
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+layout_mode = 2
+
+[node name="HP" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "HP: 100/100"
+
+[node name="HPBar" type="ProgressBar" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
+theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+value = 75.0
+show_percentage = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+layout_mode = 2
+
+[node name="Mana" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Mana: 50/100"
+
+[node name="ManaBar" type="ProgressBar" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
+theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+value = 50.0
+show_percentage = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+layout_mode = 2
+
+[node name="Exp" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "EXP: 250/500"
+
+[node name="XPBar" type="ProgressBar" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer3"]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
+theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
+value = 25.0
+show_percentage = false
+
+[node name="InputPanel" type="Panel" parent="MainLayout/BottomSection/PlayerStatsSection"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="GameTextInput" type="TextEdit" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Enter Text..."
 
-[node name="EnemyBars" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 900.0
-offset_right = 1150.0
-offset_bottom = 161.0
+[node name="SubmitButton" type="Button" parent="MainLayout/BottomSection/PlayerStatsSection/InputPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Submit"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EnemyBars"]
+[node name="InventorySection" type="Panel" parent="MainLayout/BottomSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/InventorySection"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/BottomSection/InventorySection/MarginContainer"]
 layout_mode = 2
 
-[node name="Enemy 1" type="Label" parent="EnemyBars/HBoxContainer"]
+[node name="Label" type="Label" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Inventory"
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer"]
+[node name="InventoryList" type="ItemList" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_selected_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/font_hovered_color = Color(0.776471, 0.729412, 0.407843, 0.784314)
+theme_override_styles/panel = SubResource("StyleBoxFlat_r5j7a")
+allow_search = false
+auto_height = true
+item_count = 3
+item_0/text = "Health Potion"
+item_1/text = "Rusty Sword"
+item_2/text = "Leather Armor"
+
+[node name="RightSection" type="VBoxContainer" parent="MainLayout/BottomSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.0  # Equal width with inventory
+theme_override_constants/separation = 10
+mouse_filter = 2
+
+[node name="StatsPanel" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="MainLayout/BottomSection/RightSection/StatsPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="EnemyBars"]
+[node name="Stats" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Character Stats"
+
+[node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Enemy 2" type="Label" parent="EnemyBars/HBoxContainer3"]
-layout_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer3"]
-layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EnemyBars"]
-layout_mode = 2
-
-[node name="Enemy 3" type="Label" parent="EnemyBars/HBoxContainer2"]
-layout_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="EnemyBars/HBoxContainer2"]
-layout_mode = 2
-
-[node name="PlayerStats" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 489.0
-offset_right = 356.0
-offset_bottom = 649.0
-
-[node name="Player" type="Label" parent="PlayerStats"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PlayerStats"]
-layout_mode = 2
-
-[node name="HP" type="Label" parent="PlayerStats/HBoxContainer"]
-layout_mode = 2
-text = "Health"
-
-[node name="HPBar" type="ProgressBar" parent="PlayerStats/HBoxContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="PlayerStats"]
-layout_mode = 2
-
-[node name="Mana" type="Label" parent="PlayerStats/HBoxContainer2"]
-layout_mode = 2
-text = "Mana"
-
-[node name="ManaBar" type="ProgressBar" parent="PlayerStats/HBoxContainer2"]
-layout_mode = 2
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="PlayerStats"]
-layout_mode = 2
-
-[node name="Exp" type="Label" parent="PlayerStats/HBoxContainer3"]
-layout_mode = 2
-text = "EXP"
-
-[node name="XPBar" type="ProgressBar" parent="PlayerStats/HBoxContainer3"]
-layout_mode = 2
-
-[node name="InventoryList" type="ItemList" parent="."]
-layout_mode = 0
-offset_left = 361.0
-offset_top = 489.0
-offset_right = 662.0
-offset_bottom = 645.0
-
-[node name="StatsPanel" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 665.0
-offset_top = 487.0
-offset_right = 883.0
-offset_bottom = 647.0
-
-[node name="Stats" type="Label" parent="StatsPanel"]
-layout_mode = 2
-text = "Player Stats"
-
-[node name="GridContainer" type="GridContainer" parent="StatsPanel"]
+[node name="GridContainer" type="GridContainer" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="STR" type="Label" parent="StatsPanel/GridContainer"]
+[node name="STR" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "STR"
 
-[node name="STRValue" type="Label" parent="StatsPanel/GridContainer"]
+[node name="STRValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "10"
 
-[node name="STAM" type="Label" parent="StatsPanel/GridContainer"]
+[node name="STAM" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "STAM"
 
-[node name="STAMValue" type="Label" parent="StatsPanel/GridContainer"]
+[node name="STAMValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "8"
 
-[node name="INT" type="Label" parent="StatsPanel/GridContainer"]
+[node name="INT" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "INT"
 
-[node name="INTValue" type="Label" parent="StatsPanel/GridContainer"]
+[node name="INTValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "12"
 
-[node name="AGI" type="Label" parent="StatsPanel/GridContainer"]
+[node name="AGI" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "AGI"
 
-[node name="AGIValue" type="Label" parent="StatsPanel/GridContainer"]
+[node name="AGIValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+text = "9"
 
-[node name="ARMOR" type="Label" parent="StatsPanel/GridContainer"]
+[node name="ARMOR" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "ARMOR"
 
-[node name="ARMORValue" type="Label" parent="StatsPanel/GridContainer"]
+[node name="ARMORValue" type="Label" parent="MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "5"
+
+[node name="EquippedPanel" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="MainLayout/BottomSection/RightSection/EquippedPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer"]
 layout_mode = 2
 
-[node name="EquippedPanel" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 888.0
-offset_top = 484.0
-offset_right = 1154.0
-offset_bottom = 646.0
-
-[node name="Equipped" type="Label" parent="EquippedPanel"]
+[node name="Equipped" type="Label" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Equipped"
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
+text = "Equipped Items"
 
-[node name="ItemDialog" parent="." instance=ExtResource("2_xxxx")]
+[node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Equipped" type="VBoxContainer" parent="MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemDialog" type="Window" parent="."]
+title = "Item Details"
+position = Vector2i(100, 100)
+size = Vector2i(380, 300)
+visible = false
+theme_override_colors/title_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_constants/title_height = 32
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_25ben")
+transient = true
+exclusive = true
+unresizable = true
+
+[node name="Panel" type="Panel" parent="ItemDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="ItemDialog/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ItemDialog/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ItemName" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 18
+text = "Item Name"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ItemDetails" type="VBoxContainer" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="ItemDescription" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.945098, 0.945098, 0.945098, 1)
+text = "Item description will appear here."
+autowrap_mode = 2
+
+[node name="StatsContainer" type="GridContainer" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+layout_mode = 2
+columns = 2
+
+[node name="TypeLabel" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type:"
+
+[node name="TypeValue" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Weapon"
+horizontal_alignment = 2
+
+[node name="ValueLabel" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Value:"
+
+[node name="ValueAmount" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "25 gold"
+horizontal_alignment = 2
+
+[node name="EffectLabel" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Effects:"
+
+[node name="EffectsContainer" type="VBoxContainer" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Effect1" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/EffectsContainer"]
+layout_mode = 2
+text = "• +5 Strength"
+
+[node name="Effect2" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/EffectsContainer"]
+layout_mode = 2
+text = "• 10% Critical Hit Chance"
+
+[node name="HSeparator2" type="HSeparator" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="EquipButton" type="Button" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+visible = false
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Unequip"
+
+[node name="UseButton" type="Button" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Use"
+
+[node name="DestroyButton" type="Button" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.945098, 0.419608, 0.419608, 1)
+text = "Destroy"
+
+[node name="CancelButton" type="Button" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"

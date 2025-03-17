@@ -1,15 +1,16 @@
 extends Control
 
 # Use get_node_or_null to prevent crashes if nodes are missing
-@onready var text_zone = get_node_or_null("TextZone")
-@onready var enemy_bars = get_node_or_null("EnemyBars")
-@onready var player_hp = get_node_or_null("PlayerStats/HBoxContainer/HPBar")
-@onready var player_mana = get_node_or_null("PlayerStats/HBoxContainer2/ManaBar")
-@onready var player_xp = get_node_or_null("PlayerStats/HBoxContainer3/XPBar")
-@onready var player_name_label = get_node_or_null("PlayerStats/Player")
-@onready var inventory_list = get_node_or_null("InventoryList")
-@onready var stats_values = get_node_or_null("StatsPanel")
+@onready var text_zone = get_node_or_null("MainLayout/TopSection/MainTextPanel/MarginContainer/VBoxContainer/TextZone")
+@onready var enemy_bars = get_node_or_null("MainLayout/TopSection/RightPanel/EnemiesPanel/MarginContainer/VBoxContainer/EnemyBars")
+@onready var player_hp = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer/HPBar")
+@onready var player_mana = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer2/ManaBar")
+@onready var player_xp = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer3/XPBar")
+@onready var player_name_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/Player")
+@onready var inventory_list = get_node_or_null("MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer/InventoryList")
+@onready var stats_values = get_node_or_null("MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer")
 @onready var item_dialog = get_node_or_null("ItemDialog")
+@onready var equipped_container = get_node_or_null("MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer/ScrollContainer/Equipped")
 
 # Signals for when items are clicked
 signal inventory_item_selected(index)
@@ -58,19 +59,25 @@ func update_player_stats(hp, max_hp, mana, max_mana, xp, max_xp):
 		var hp_percent = (hp / float(max_hp)) * 100
 		print("HP bar value set to: ", hp_percent)
 		player_hp.value = hp_percent
-		player_hp.get_parent().get_node("HP").text = "HP: " + str(hp) + "/" + str(max_hp)
+		var hp_label = player_hp.get_parent().get_node_or_null("HP")
+		if hp_label:
+			hp_label.text = "HP: " + str(hp) + "/" + str(max_hp)
 		
 	if player_mana:
 		var mana_percent = (mana / float(max_mana)) * 100
 		print("Mana bar value set to: ", mana_percent)
 		player_mana.value = mana_percent
-		player_mana.get_parent().get_node("Mana").text = "Mana: " + str(mana) + "/" + str(max_mana)
+		var mana_label = player_mana.get_parent().get_node_or_null("Mana")
+		if mana_label:
+			mana_label.text = "Mana: " + str(mana) + "/" + str(max_mana)
 		
 	if player_xp:
 		var xp_percent = (xp / float(max_xp)) * 100
 		print("XP bar value set to: ", xp_percent)
 		player_xp.value = xp_percent
-		player_xp.get_parent().get_node("Exp").text = "EXP: " + str(xp) + "/" + str(max_xp)
+		var xp_label = player_xp.get_parent().get_node_or_null("Exp") 
+		if xp_label:
+			xp_label.text = "EXP: " + str(xp) + "/" + str(max_xp)
 		
 	# Force UI refresh
 	if player_hp or player_mana or player_xp:
@@ -104,6 +111,13 @@ func update_enemy_hp(enemies: Array):
 		hp_bar.max_value = 100
 		hp_bar.value = (enemy.health / float(enemy.max_health)) * 100
 		hp_bar.name = "HPBar"
+		
+		# Apply the same style as player bars
+		var fill_style = get_theme_stylebox("fill", "ProgressBar")
+		var bg_style = get_theme_stylebox("background", "ProgressBar")
+		if fill_style and bg_style:
+			hp_bar.add_theme_stylebox_override("fill", fill_style)
+			hp_bar.add_theme_stylebox_override("background", bg_style)
 		
 		container.add_child(hp_bar)
 		enemy_bars.add_child(container)
@@ -139,17 +153,15 @@ func update_stats(stats: Dictionary):
 
 # Update equipped items
 func update_equipped(equipped_items: Dictionary):
-	var equipped_panel = get_node_or_null("EquippedPanel")
-	if not equipped_panel:
+	if not equipped_container:
 		return
 
-	# Remove old labels before adding new ones
-	for child in equipped_panel.get_children():
-		if child.name != "Equipped":  # Don't remove the title
-			if child is Button:  # Disconnect any existing signals
-				if child.pressed.is_connected(_on_equipped_item_button_pressed):
-					child.pressed.disconnect(_on_equipped_item_button_pressed)
-			child.queue_free()
+	# Remove old buttons before adding new ones
+	for child in equipped_container.get_children():
+		if child is Button:  # Disconnect any existing signals
+			if child.pressed.is_connected(_on_equipped_item_button_pressed):
+				child.pressed.disconnect(_on_equipped_item_button_pressed)
+		child.queue_free()
 
 	# Wait for one frame to ensure clean update
 	await get_tree().process_frame
@@ -160,7 +172,9 @@ func update_equipped(equipped_items: Dictionary):
 		button.name = "slot_" + slot
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.pressed.connect(_on_equipped_item_button_pressed.bind(slot))
-		equipped_panel.add_child(button)
+		# Fix: use the correct method to override theme color
+		button.add_theme_color_override("font_hover_color", Color(0.776471, 0.729412, 0.407843))
+		equipped_container.add_child(button)
 
 # Update equipped items from player object
 func update_equipped_from_player(player):
@@ -193,26 +207,117 @@ func _on_equipped_item_button_pressed(slot):
 	equipped_item_selected.emit(slot)
 
 # Show item dialog with options
-func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = true):
-	if item_dialog:
-		var title = "Item: " + item_name
-		item_dialog.window_title = title
+func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = true, item_data = null):
+	if not item_dialog:
+		print("ERROR: ItemDialog not found!")
+		return
 		
-		# Get dialog buttons
-		var equip_btn = item_dialog.get_node_or_null("VBoxContainer/EquipButton")
-		var unequip_btn = item_dialog.get_node_or_null("VBoxContainer/UnequipButton")
-		var destroy_btn = item_dialog.get_node_or_null("VBoxContainer/DestroyButton")
+	# Update title
+	var title_text = "Item Details"
+	item_dialog.title = title_text
+	
+	# Make sure the dialog is in the foreground
+	item_dialog.move_to_foreground()
+	
+	# Get all necessary dialog components with null checks
+	var main_container = item_dialog.get_node_or_null("Panel/MarginContainer/VBoxContainer")
+	if not main_container:
+		print("ERROR: Dialog container not found!")
+		return
 		
-		# Show appropriate buttons
-		if is_equipped:
-			if equip_btn: equip_btn.hide()
-			if unequip_btn: unequip_btn.show()
-		else:
-			if equip_btn: 
-				equip_btn.show()
-				equip_btn.disabled = not can_equip
-			if unequip_btn: unequip_btn.hide()
+	# Update item name
+	var item_name_label = main_container.get_node_or_null("ItemName")
+	if item_name_label:
+		item_name_label.text = item_name
+	
+	# Get item details section
+	var item_details = main_container.get_node_or_null("ScrollContainer/ItemDetails")
+	if not item_details:
+		print("ERROR: Item details container not found!")
+		return
+		
+	# Update description
+	var item_desc = item_details.get_node_or_null("ItemDescription")
+	if item_desc:
+		var description = "A common item."
+		if item_data and "description" in item_data:
+			description = item_data.description
+		item_desc.text = description
+		
+	# Update stats if available
+	var stats_container = item_details.get_node_or_null("StatsContainer")
+	if stats_container and item_data:
+		var type_value = stats_container.get_node_or_null("TypeValue")
+		if type_value and "type" in item_data:
+			type_value.text = item_data.type
 			
-		if destroy_btn: destroy_btn.show()
+		var value_amount = stats_container.get_node_or_null("ValueAmount")
+		if value_amount and "value" in item_data:
+			value_amount.text = str(item_data.value) + " gold"
+	
+	# Update effects if available
+	var effects_label = item_details.get_node_or_null("EffectLabel")
+	var effects_container = item_details.get_node_or_null("EffectsContainer")
+	
+	if effects_label and effects_container and item_data and "effects" in item_data and item_data.effects.size() > 0:
+		effects_label.show()
+		effects_container.show()
 		
-		item_dialog.popup_centered()
+		# Clear existing effects
+		for child in effects_container.get_children():
+			child.queue_free()
+			
+		# Add new effects
+		for effect in item_data.effects:
+			var effect_label = Label.new()
+			effect_label.text = "• " + effect
+			effects_container.add_child(effect_label)
+	else:
+		if effects_label:
+			effects_label.hide()
+		if effects_container:
+			effects_container.hide()
+	
+	# Get buttons container
+	var buttons_container = main_container.get_node_or_null("ButtonsContainer")
+	if not buttons_container:
+		print("ERROR: Buttons container not found!")
+		return
+		
+	# Setup buttons
+	var equip_btn = buttons_container.get_node_or_null("EquipButton")
+	var unequip_btn = buttons_container.get_node_or_null("UnequipButton")
+	var use_btn = buttons_container.get_node_or_null("UseButton")
+	var destroy_btn = buttons_container.get_node_or_null("DestroyButton")
+	var cancel_btn = main_container.get_node_or_null("CancelButton")
+	
+	# Connect cancel button
+	if cancel_btn:
+		if cancel_btn.pressed.is_connected(_on_item_dialog_cancel):
+			cancel_btn.pressed.disconnect(_on_item_dialog_cancel)
+		cancel_btn.pressed.connect(_on_item_dialog_cancel)
+	
+	# Show appropriate buttons based on item type and state
+	if is_equipped:
+		if equip_btn: equip_btn.hide()
+		if unequip_btn: unequip_btn.show()
+	else:
+		if equip_btn: 
+			equip_btn.show()
+			equip_btn.disabled = not can_equip
+		if unequip_btn: unequip_btn.hide()
+		
+	# Show/hide use button based on item type
+	if use_btn:
+		var is_usable = item_data and "type" in item_data and item_data.type == "Consumable"
+		use_btn.visible = is_usable
+		
+	if destroy_btn: destroy_btn.show()
+	
+	# Show the dialog
+	item_dialog.show()
+	item_dialog.popup_centered()
+
+func _on_item_dialog_cancel():
+	if item_dialog:
+		item_dialog.hide()
