@@ -10,12 +10,48 @@ var _items_by_rarity = {}  # Dictionary to store items organized by rarity
 func _init():
 	load_database()
 
-# Load the database from JSON file
+# Load the database from JSON files
 func load_database():
-	var file = FileAccess.open("res://data/items.json", FileAccess.READ)
+	# Initialize the category dictionaries
+	_items_by_type = {}
+	_items_by_level = {}
+	_items_by_slot = {}
+	_items_by_rarity = {}  # Initialize rarity dictionary
+	
+	var items_loaded = 0
+	var dir_path = "res://data/items/"
+	
+	# Check if the items directory exists
+	var dir = DirAccess.open("res://data/")
+	if dir and dir.dir_exists("items"):
+		# Open the items directory
+		var items_dir = DirAccess.open(dir_path)
+		if items_dir:
+			# Process each JSON file in the directory
+			items_dir.list_dir_begin()
+			var file_name = items_dir.get_next()
+			
+			while file_name != "":
+				if not items_dir.current_is_dir() and file_name.ends_with(".json"):
+					var json_path = dir_path + file_name
+					print("Loading items from: " + json_path)
+					items_loaded += process_json_file(json_path)
+				file_name = items_dir.get_next()
+			
+			items_dir.list_dir_end()
+	
+	# Try loading the combined items file for backward compatibility
+	if items_loaded == 0:
+		items_loaded = process_json_file("res://data/items.json")
+	
+	print("Loaded " + str(items_loaded) + " items into database from " + str(_items.size()) + " unique items")
+
+# Process a single JSON file and add its items to the database
+func process_json_file(file_path: String) -> int:
+	var file = FileAccess.open(file_path, FileAccess.READ)
 	if not file:
-		print("Failed to open items database file")
-		return
+		print("Failed to open items file: " + file_path)
+		return 0
 	
 	var json_text = file.get_as_text()
 	file.close()
@@ -23,25 +59,21 @@ func load_database():
 	var json = JSON.new()
 	var error = json.parse(json_text)
 	if error != OK:
-		print("JSON Parse Error: ", json.get_error_message(), " at line ", json.get_error_line())
-		return
+		print("JSON Parse Error in " + file_path + ": " + json.get_error_message() + " at line " + str(json.get_error_line()))
+		return 0
 	
 	var item_data = json.data
 	if typeof(item_data) != TYPE_ARRAY:
-		print("Unexpected data format in items.json")
-		return
+		print("Unexpected data format in " + file_path + ": not an array")
+		return 0
 	
-	# Initialize the category dictionaries
-	_items_by_type = {}
-	_items_by_level = {}
-	_items_by_slot = {}
-	_items_by_rarity = {}  # Initialize rarity dictionary
+	var items_processed = 0
 	
 	# Process each item in the array
 	for item_entry in item_data:
 		if typeof(item_entry) != TYPE_DICTIONARY:
 			continue
-			
+		
 		var id = item_entry.get("id", "")
 		var name = item_entry.get("name", "Unknown Item")
 		var type = item_entry.get("type", "misc")
@@ -53,8 +85,14 @@ func load_database():
 		
 		var item = Item.new(name, type, slot, stats, desc, level_req, rarity)  # Add rarity parameter
 		
+		 # Skip if we already have this item (in case of duplicates across files)
+		if _items.has(id):
+			print("Warning: Duplicate item ID found: " + id)
+			continue
+		
 		# Store by ID
 		_items[id] = item
+		items_processed += 1
 		
 		# Store by type
 		if not _items_by_type.has(type):
@@ -77,7 +115,7 @@ func load_database():
 			_items_by_rarity[rarity] = []
 		_items_by_rarity[rarity].append(item)
 	
-	print("Loaded ", _items.size(), " items into database")
+	return items_processed
 
 # Get item by ID
 func get_item(id: String) -> Item:

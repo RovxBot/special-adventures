@@ -507,14 +507,20 @@ text = "Inventory"
 [node name="HSeparator" type="HSeparator" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="InventoryList" type="ItemList" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
+[node name="InventoryScrollContainer" type="ScrollContainer" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="InventoryList" type="ItemList" parent="MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer/InventoryScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_selected_color = Color(0.776471, 0.729412, 0.407843, 1)
 theme_override_colors/font_hovered_color = Color(0.776471, 0.729412, 0.407843, 0.784314)
 theme_override_styles/panel = SubResource("StyleBoxFlat_r5j7a")
 allow_search = false
-auto_height = true
+auto_height = false
 item_count = 3
 item_0/text = "Health Potion"
 item_1/text = "Rusty Sword"

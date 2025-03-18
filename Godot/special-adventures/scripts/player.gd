@@ -364,9 +364,9 @@ func level_up():
 	xp -= max_xp
 	max_xp = int(max_xp * 1.5)  # Increase XP required for next level
 	
-	# Increase base stats
-	strength += 1
-	stamina += 1
+	# Remove automatic stat increases
+	# strength += 1  <- Remove this line
+	# stamina += 1   <- Remove this line
 	
 	# Grant talent and stat points
 	talent_points += 1

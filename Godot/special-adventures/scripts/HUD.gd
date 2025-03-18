@@ -7,7 +7,7 @@ extends Control
 @onready var player_mana = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer2/ManaBar")
 @onready var player_xp = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/HBoxContainer3/XPBar")
 @onready var player_name_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/Player")
-@onready var inventory_list = get_node_or_null("MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer/InventoryList")
+@onready var inventory_list = get_node_or_null("MainLayout/BottomSection/InventorySection/MarginContainer/VBoxContainer/InventoryScrollContainer/InventoryList")
 @onready var stats_values = get_node_or_null("MainLayout/BottomSection/RightSection/StatsPanel/Panel/MarginContainer/VBoxContainer")
 @onready var item_dialog = get_node_or_null("ItemDialog")
 @onready var equipped_container = get_node_or_null("MainLayout/BottomSection/RightSection/EquippedPanel/Panel/MarginContainer/VBoxContainer/ScrollContainer/Equipped")

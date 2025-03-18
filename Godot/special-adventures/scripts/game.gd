@@ -678,7 +678,7 @@ func _on_stats_button_pressed():
 	if player:
 		hud.open_stats_window(player)
 
-// Use rich text tags for colored text in game label
+# Use rich text tags for colored text in game label
 func update_game_text(text, text_type = "normal"):
 	var colored_text = ""
 	
