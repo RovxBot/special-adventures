@@ -1,7 +1,7 @@
 class_name StoryManager
 extends RefCounted
 
-signal story_updated(text)
+signal story_updated(text, clear_text)
 signal choices_available(choices)
 signal story_event_triggered(event_id)
 
@@ -68,8 +68,8 @@ func process_node(node_id: String):
 	# Process any conditions in the text
 	text = process_text_conditions(text)
 	
-	# Emit signal with the processed text
-	story_updated.emit(text)
+	# Emit signal with the processed text - TRUE means clear the text area
+	story_updated.emit(text, true)
 	
 	# Process any actions for this node
 	if node.has("actions"):
@@ -140,9 +140,35 @@ func modify_player_stat(stat: String, amount: int):
 			game_node.update_player_stats_display()
 
 func add_item_to_player(item_id: String, quantity: int = 1):
-	# Logic to add an item to player inventory
-	# This would depend on your game's inventory system
-	pass
+	# Check if we can access the game node and player
+	if game_node == null or player == null:
+		print("Cannot add item: game_node or player is null")
+		return
+	
+	# Use the game's give_player_item function if available
+	if game_node.has_method("give_player_item"):
+		var success = game_node.give_player_item(item_id)
+		if success:
+			# Notify the player about the item acquisition
+			var item_name = game_node.item_db.get_item(item_id).name if game_node.item_db else item_id
+			story_updated.emit("You received: [color=#ff55ff]" + item_name + "[/color]", false)
+	else:
+		# Fallback implementation if game_node doesn't have the method
+		print("Warning: game_node doesn't have give_player_item method. Trying direct inventory modification.")
+		if game_node.item_db:
+			var item = game_node.item_db.get_item(item_id)
+			if item != null and player.has("inventory"):
+				player.inventory.append(item)
+				# Update the HUD if possible
+				if game_node.hud and game_node.hud.has_method("update_inventory"):
+					game_node.hud.update_inventory(player.inventory)
+				
+				# Notify the player about the item acquisition
+				story_updated.emit("You received: [color=#ff55ff]" + item.name + "[/color]", false)
+			else:
+				print("Failed to add item: item not found in database or player has no inventory")
+		else:
+			print("Failed to add item: no item database found")
 
 func remove_item_from_player(item_id: String, quantity: int = 1):
 	# Logic to remove an item from player inventory

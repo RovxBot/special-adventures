@@ -705,24 +705,18 @@ func update_game_text(text, text_type = "normal"):
 	
 	game_label.text = colored_text
 
-# Process keyboard shortcuts for abilities
-func _input(event):
-	if not player or not player.is_alive():
-		return
-		
-	if event is InputEventKey and event.pressed:
-		var key_pressed = OS.get_keycode_string(event.keycode)
-		
-		# Number keys 1-9 for ability shortcuts
-		if key_pressed in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-			var action_bar = hud.get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
-			if action_bar:
-				# Find button with this shortcut and trigger it
-				for button in action_bar.get_children():
-					var shortcut_label = button.get_node_or_null("Label")
-					if shortcut_label and shortcut_label.text == key_pressed:
-						button.emit_signal("pressed")
-						return
+func add_to_game_log(text: String, color: Color = Color.WHITE, clear_first: bool = false):
+	if hud:
+		hud.add_text_to_log(text, clear_first)
+
+func _on_story_updated(text, clear_text = false):
+	# Add the text to the game log, clearing first if requested
+	add_to_game_log(text, Color.WHITE, clear_text)
+	
+	# Clear any existing story choice buttons when main text changes
+	# (but not for item acquisition notifications)
+	if clear_text:
+		clear_action_buttons()
 
 func initialize_story_manager():
 	story_manager = StoryManager.new(self)
@@ -742,12 +736,6 @@ func start_story():
 		story_manager.start_story()
 	else:
 		start_battle() # Fallback to combat if no story
-
-func _on_story_updated(text):
-	add_to_game_log(text)
-	
-	# Clear any existing story choice buttons
-	clear_action_buttons()
 
 func _on_story_choices_available(choices):
 	story_choices = choices
@@ -784,10 +772,9 @@ func _on_story_event_triggered(event_id: String):
 	match event_id:
 		"chapter_complete":
 			add_to_game_log("[color=yellow]Chapter completed! You've earned experience.[/color]")
-			player.add_xp(50)
+			player.gain_xp(50)
 		"treasure_found":
 			add_to_game_log("[color=yellow]You've found a treasure![/color]")
-			# Add treasure based on event
 		"ambush":
 			add_to_game_log("[color=red]You've been ambushed![/color]")
 			start_battle()
@@ -796,10 +783,6 @@ func _on_story_event_triggered(event_id: String):
 
 func clear_action_buttons():
 	hud.clear_action_buttons()
-
-func add_to_game_log(text: String, color: Color = Color.WHITE):
-	if hud:
-		hud.add_text_to_log(text)
 
 func start_combat_with_enemy(enemy_id: String):
 	# Create specific enemy type based on ID
@@ -833,8 +816,10 @@ func start_combat_with_enemy(enemy_id: String):
 		enemy.max_health = data.max_health
 		enemy.attack = data.attack
 		enemy.defense = data.defense
-		enemy.xp_reward = data.xp_reward
-		enemy.gold_reward = data.gold_reward
+		if "xp_reward" in data:
+			enemy.xp_reward = data.xp_reward
+		if "gold_reward" in data:
+			enemy.gold_reward = data.gold_reward
 		
 		start_battle()
 	else:
@@ -842,3 +827,22 @@ func start_combat_with_enemy(enemy_id: String):
 		# Create default enemy as fallback
 		enemy = Enemy.new()
 		start_battle()
+
+# Process keyboard shortcuts for abilities
+func _input(event):
+	if not player or not player.is_alive():
+		return
+		
+	if event is InputEventKey and event.pressed:
+		var key_pressed = OS.get_keycode_string(event.keycode)
+		
+		# Number keys 1-9 for ability shortcuts
+		if key_pressed in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+			var action_bar = hud.get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+			if action_bar:
+				# Find button with this shortcut and trigger it
+				for button in action_bar.get_children():
+					var shortcut_label = button.get_node_or_null("Label")
+					if shortcut_label and shortcut_label.text == key_pressed:
+						button.emit_signal("pressed")
+						return

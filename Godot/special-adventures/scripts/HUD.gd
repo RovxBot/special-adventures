@@ -484,6 +484,21 @@ func _on_item_dialog_cancel():
 	if item_dialog:
 		item_dialog.hide()
 
+func add_text_to_log(text: String, clear_first: bool = false):
+	if text_zone:
+		# Clear existing text if requested
+		if clear_first:
+			text_zone.clear()
+		# Otherwise add a separator if this isn't the first text
+		elif text_zone.text.length() > 0:
+			text_zone.append_text("\n\n")
+		
+		# Add the new text
+		text_zone.append_text(text)
+		
+		# Scroll to the bottom
+		text_zone.scroll_to_line(text_zone.get_line_count())
+
 # Clears and rebuilds the action bar with appropriate buttons
 func update_action_bar(available_actions: Array):
 	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
@@ -588,17 +603,6 @@ func show_action_cooldown(action_name: String, cooldown_time: float):
 func _on_action_button_pressed(action_name: String, action_type: String):
 	# Emit signal to game script
 	action_button_pressed.emit({"name": action_name, "type": action_type})
-
-func add_text_to_log(text: String):
-	if text_zone:
-		# Add the new text with a separator if not the first entry
-		if text_zone.text.length() > 0:
-			text_zone.append_text("\n\n")
-		
-		text_zone.append_text(text)
-		
-		# Scroll to the bottom
-		text_zone.scroll_to_line(text_zone.get_line_count())
 
 func add_action_button(button: Button):
 	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
