@@ -162,12 +162,32 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="ActionButtonsContainer" type="HBoxContainer" parent="MainLayout"]
+[node name="ActionButtonsContainer" type="VBoxContainer" parent="MainLayout"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 5
 alignment = 1
 
+[node name="ActionBarScroll" type="ScrollContainer" parent="MainLayout/ActionButtonsContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="ActionBar" type="HBoxContainer" parent="MainLayout/ActionButtonsContainer/ActionBarScroll"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CategoryTabs" type="TabBar" parent="MainLayout/ActionButtonsContainer"]
+visible = false
+layout_mode = 2
+tab_alignment = 1
+tab_count = 3
+tab_0/title = "Combat"
+tab_1/title = "Magic"
+tab_2/title = "Utility"
+
 [node name="SubmitButton" type="Button" parent="MainLayout/ActionButtonsContainer"]
+visible = false
 custom_minimum_size = Vector2(120, 35)
 layout_mode = 2
 theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
@@ -262,6 +282,27 @@ theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
 text = "0"
 horizontal_alignment = 2
 
+[node name="StatsButton" type="Button" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Stats"
+alignment = 0
+
+[node name="StatPoints" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -30.0
+offset_right = -5.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "0"
+horizontal_alignment = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
 layout_mode = 2
 
@@ -339,18 +380,18 @@ horizontal_alignment = 1
 [node name="DEFLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
 tooltip_text = "Defense reduces physical damage from melee and ranged attacks."
 mouse_filter = 0
+theme_override_font_sizes/font_size = 12
 text = "DEF"
 horizontal_alignment = 1
 
 [node name="RESLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
 tooltip_text = "Resistance reduces magical damage from spells."
 mouse_filter = 0
+theme_override_font_sizes/font_size = 12
 text = "RES"
 horizontal_alignment = 1
 

@@ -1,0 +1,190 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/stats_window.gd" id="1_ej72d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
+bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.776471, 0.729412, 0.407843, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="StatsWindow" type="Window"]
+title = "Character Stats"
+position = Vector2i(100, 100)
+size = Vector2i(400, 400)
+transient = true
+exclusive = true
+unresizable = true
+theme_override_colors/title_color = Color(0.776471, 0.729412, 0.407843, 1)
+script = ExtResource("1_ej72d")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PointsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Available Stat Points: 0"
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StatsContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="StrengthSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Strength:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Increases melee damage"
+vertical_alignment = 1
+
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "+"
+
+[node name="StaminaSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Stamina:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Increases health (10 HP per point)"
+vertical_alignment = 1
+
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "+"
+
+[node name="AgilitySection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Agility:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Increases dodge chance and ranged attacks"
+vertical_alignment = 1
+
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "+"
+
+[node name="IntelligenceSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Intelligence:"
+vertical_alignment = 1
+
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "Increases mana (10 MP per point) and magic damage"
+vertical_alignment = 1
+
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+text = "+"
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Close"

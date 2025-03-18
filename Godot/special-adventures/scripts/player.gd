@@ -14,6 +14,7 @@ var max_xp: int = 100
 var inventory: Array = [] 
 var level: int = 1
 var talent_points: int = 0  # Available talent points
+var stat_points: int = 0    # Available stat points for STR, STAM, etc.
 var talents = {}  # Dictionary to track unlocked talents
 
 # Base Stats - all starting at 0 now (will be set during character creation)
@@ -43,6 +44,47 @@ var equipped_items = {
 # Attack types
 enum AttackType {MELEE, RANGED, MAGIC}
 var current_attack_type = AttackType.MELEE
+
+# Player's learned abilities
+var abilities = {}
+
+# Add a new ability to the player
+func learn_ability(ability_id: String, ability_data: Dictionary):
+    abilities[ability_id] = ability_data
+    print("Learned new ability: " + ability_data.name)
+
+# Example abilities
+var example_abilities = {
+    "cleave": {
+        "name": "Cleave",
+        "type": "MELEE",
+        "category": 0, # COMBAT
+        "description": "A sweeping attack that hits all nearby enemies",
+        "shortcut": "2",
+        "level_requirement": 3,
+        "cooldown": 8.0
+    },
+    "fireball": {
+        "name": "Fireball",
+        "type": "MAGIC", 
+        "category": 1, # MAGIC
+        "description": "Launches a ball of fire at the enemy",
+        "shortcut": "3",
+        "level_requirement": 5,
+        "mana_cost": 20,
+        "cooldown": 6.0
+    },
+    "heal": {
+        "name": "Heal",
+        "type": "MAGIC",
+        "category": 2, # UTILITY
+        "description": "Restores some health",
+        "shortcut": "4", 
+        "level_requirement": 7,
+        "mana_cost": 30,
+        "cooldown": 15.0
+    }
+}
 
 func _init(p_name):
 	name = p_name
@@ -75,14 +117,39 @@ func calculate_damage(attack_type: AttackType) -> int:
 	# Get weapon damage if equipped
 	if equipped_items["Weapon"] != null:
 		weapon_damage = equipped_items["Weapon"].stats.get("attack", 0)
+		
+		# Check if the attack type matches the weapon type
+		var weapon_type = equipped_items["Weapon"].type
+		var is_matching_type = false
+		
+		match attack_type:
+			AttackType.MELEE:
+				is_matching_type = weapon_type in ["Sword", "Dagger", "Axe", "Hammer", "Mace"]
+			AttackType.RANGED:
+				is_matching_type = weapon_type in ["Bow", "Crossbow", "Gun"]
+			AttackType.MAGIC:
+				is_matching_type = weapon_type in ["Staff", "Wand"]
+		
+		# If using non-matching attack type with weapon, reduce effectiveness
+		if not is_matching_type:
+			weapon_damage = weapon_damage / 2
 	
 	match attack_type:
 		AttackType.MELEE:
 			base_damage = strength  # 1 STR = 1 Melee Damage
+			# Punching does less damage than with a weapon
+			if equipped_items["Weapon"] == null:
+				base_damage = max(1, strength / 2)
 		AttackType.RANGED:
 			base_damage = agility  # 1 AGI = 1 Ranged Damage
+			# Can't effectively use ranged attacks without a ranged weapon
+			if equipped_items["Weapon"] == null or not equipped_items["Weapon"].type in ["Bow", "Crossbow", "Gun"]:
+				base_damage = max(1, agility / 3)
 		AttackType.MAGIC:
 			base_damage = intelligence  # 1 INT = 1 Magic Damage
+			# Magic is more effective with proper implements
+			if equipped_items["Weapon"] == null or not equipped_items["Weapon"].type in ["Staff", "Wand"]:
+				base_damage = max(1, intelligence / 2)
 	
 	return base_damage + weapon_damage
 
@@ -285,11 +352,23 @@ func level_up():
 	strength += 1
 	stamina += 1
 	
+	# Grant talent and stat points
+	talent_points += 1
+	stat_points += 3  # Players get 3 stat points per level
+	
+	# Check for new abilities
+	check_ability_unlocks()
+	
 	# Recalculate derived stats
 	recalculate_stats()
-	
-	# Grant a talent point
-	talent_points += 1
+
+# Check if abilities should be learned on level up
+func check_ability_unlocks():
+    # Check each potential ability against player level
+    for ability_id in example_abilities:
+        var ability = example_abilities[ability_id]
+        if level >= ability.level_requirement and not ability_id in abilities:
+            learn_ability(ability_id, ability.duplicate())
 
 # Apply talent effects
 func apply_talent_effect(talent_id: String, rank: int):

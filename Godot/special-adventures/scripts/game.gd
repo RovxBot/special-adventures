@@ -13,6 +13,9 @@ var character_creation_scene
 @onready var input_panel = $Hud/MainLayout/InputPanel
 @onready var item_dialog = $Hud/ItemDialog
 
+# Store ability cooldowns
+var ability_cooldowns = {}
+
 func _ready():
 	# Initialize the item database
 	item_db = ItemDatabase.new()
@@ -47,6 +50,14 @@ func _ready():
 				destroy_btn.pressed.connect(_on_destroy_button_pressed)
 			if cancel_btn:
 				cancel_btn.pressed.connect(_on_cancel_button_pressed)
+	
+	# Connect stats button
+	var stats_button = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton")
+	if stats_button:
+		stats_button.pressed.connect(func(): _on_stats_button_pressed())
+	
+	# Connect action button signal
+	hud.action_button_pressed.connect(_on_action_button_pressed)
 	
 	# Start with character creation
 	start_character_creation()
@@ -101,7 +112,7 @@ func _on_character_created(character_data):
 		"INT": player.intelligence,
 		"AGI": player.agility,
 		 "armor": player.armor,
-        "resistance": player.resistance
+		"resistance": player.resistance
 	}
 	hud.update_stats(stats)
 	
@@ -109,6 +120,8 @@ func _on_character_created(character_data):
 	hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
 	hud.update_inventory(player.inventory)
 	hud.update_equipped_from_player(player)
+	hud.update_talent_points(player.talent_points)
+	hud.update_stat_points(player.stat_points)
 	
 	# Show HUD
 	hud.visible = true
@@ -171,34 +184,127 @@ func start_battle():
 	var enemies = [enemy]  # Replace this with actual enemy array if multiple
 	hud.update_enemy_hp(enemies)
 	
-	# Ensure previous connection is removed
-	if submit_button.pressed.is_connected(_on_SubmitButton_pressed):
-		submit_button.pressed.disconnect(_on_SubmitButton_pressed)
-	if submit_button.pressed.is_connected(_on_continue_pressed):
-		submit_button.pressed.disconnect(_on_continue_pressed)
-	
-	# Show attack button
-	submit_button.text = "Attack"
-	submit_button.show()
-	submit_button.pressed.connect(_on_attack_pressed)  # Connect attack function
+	# Update the action bar with available actions
+	update_available_actions()
 	
 	if input_panel:
 		input_panel.visible = false
 		input_panel.custom_minimum_size = Vector2(0, 0)
 
-func _on_attack_pressed():
-	# Use the new attack system
-	var attack_result = player.attack_enemy(enemy, Player.AttackType.MELEE)
-	var damage = attack_result["damage"]
+# Determine available actions based on player equipment and learned abilities
+func update_available_actions():
+	var actions = []
+	
+	# Basic weapon actions
+	if player.equipped_items["Weapon"] != null:
+		var weapon = player.equipped_items["Weapon"]
+		
+		# Determine weapon type and add appropriate action
+		if weapon.type in ["Sword", "Dagger", "Axe", "Hammer", "Mace"]:
+			actions.append({
+				"name": "Strike",
+				"type": "MELEE",
+				 "category": hud.ActionCategory.COMBAT,
+				"shortcut": "1",
+				"tooltip": "Attack with your melee weapon"
+			})
+		elif weapon.type in ["Bow", "Crossbow", "Gun"]:
+			actions.append({
+				"name": "Shoot", 
+				"type": "RANGED",
+				 "category": hud.ActionCategory.COMBAT,
+				"shortcut": "1",
+				"tooltip": "Attack with your ranged weapon"
+			})
+		elif weapon.type in ["Staff", "Wand"]:
+			actions.append({
+				"name": "Cast", 
+				"type": "MAGIC",
+				 "category": hud.ActionCategory.MAGIC,
+				"shortcut": "1",
+				"tooltip": "Cast a spell with your magical implement"
+			})
+	else:
+		# No weapon equipped
+		actions.append({
+			"name": "Punch", 
+			"type": "MELEE",
+			 "category": hud.ActionCategory.COMBAT,
+			"shortcut": "1",
+			"tooltip": "Attack with your bare hands"
+		})
+	
+	# Add learned abilities from player's ability list
+	if "abilities" in player and player.abilities:
+		for ability_id in player.abilities:
+			var ability = player.abilities[ability_id]
+			# Only add abilities that aren't on cooldown
+			if not ability_id in ability_cooldowns:
+				actions.append({
+					"name": ability.name,
+					"type": ability.type,
+					"category": ability.category,
+					"shortcut": ability.shortcut if "shortcut" in ability else "",
+					"tooltip": ability.description,
+					"ability_id": ability_id
+				})
+	
+	# Update the action bar
+	hud.update_action_bar(actions)
 
+# Handle ability with cooldown
+func use_ability_with_cooldown(ability_id, cooldown_time):
+	# Put ability on cooldown
+	ability_cooldowns[ability_id] = cooldown_time
+	
+	# Start a timer to remove the cooldown
+	var timer = get_tree().create_timer(cooldown_time)
+	timer.timeout.connect(func(): ability_cooldowns.erase(ability_id))
+	
+	# Update action bar to show cooldown
+	if "abilities" in player and ability_id in player.abilities:
+		var ability = player.abilities[ability_id]
+		hud.show_action_cooldown(ability.name, cooldown_time)
+	
+	# Update available actions to exclude this ability
+	update_available_actions()
+
+# Handle action button press
+func _on_action_button_pressed(action_data):
+	var action_name = action_data.name
+	var action_type_str = action_data.type
+	var attack_type = Player.AttackType.MELEE  # Default
+	
+	# Convert string to enum
+	match action_type_str:
+		"MELEE":
+			attack_type = Player.AttackType.MELEE
+		"RANGED":
+			attack_type = Player.AttackType.RANGED
+		"MAGIC":
+			attack_type = Player.AttackType.MAGIC
+	
+	# Display action text
+	game_label.text = "You use " + action_name + "!"
+	
+	# Execute the attack
+	var attack_result = player.attack_enemy(enemy, attack_type)
+	var damage = attack_result["damage"]
+	
 	if enemy.is_alive():
 		var enemy_damage = enemy.attack_enemy(player)
+		
+		# Clear previous text and append combat results
 		game_label.text = ""
+		
+		# Add player attack text
 		if attack_result["critical"]:
-			game_label.text += "Critical hit! "
-		game_label.text += "You hit " + enemy.name + " for " + str(damage) + " damage!\n"
-		game_label.text += enemy.name + " hits you for " + str(enemy_damage) + " damage!"
-
+			game_label.append_text("[color=#ffff00]Critical hit! [/color]")  # Yellow for crits
+		game_label.append_text("Your " + action_name.to_lower() + " hits " + enemy.name + " for [color=#ff5555]" + str(damage) + "[/color] damage!\n")
+		
+		# Add enemy attack text
+		game_label.append_text(enemy.name + " hits you for [color=#ff5555]" + str(enemy_damage) + "[/color] damage!")
+		
 		hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
 		hud.update_enemy_hp([enemy])
 	else:
@@ -222,12 +328,14 @@ func handle_enemy_defeat():
 	# Give XP and possibly loot
 	var xp_gained = 10
 	var leveled_up = player.gain_xp(xp_gained)
-	game_label.text += "\nYou gained " + str(xp_gained) + " XP!"
+	game_label.append_text("\nYou gained [color=#ffff55]" + str(xp_gained) + " XP[/color]!")
 	
 	if leveled_up:
-		game_label.text += "\nLevel up! You are now level " + str(player.level) + "!"
-		game_label.text += "\nYou gained a talent point!"
+		game_label.append_text("\n[color=#ffff00]Level up! You are now level " + str(player.level) + "![/color]")
+		game_label.append_text("\n[color=#00ffff]You gained a talent point![/color]")
+		game_label.append_text("\n[color=#00ffff]You gained 3 stat points![/color]")
 		hud.update_talent_points(player.talent_points)
+		hud.update_stat_points(player.stat_points)
 	
 	# Generate loot
 	var enemy_level = 1  # This would come from the enemy's actual level
@@ -352,7 +460,7 @@ func _on_equip_button_pressed():
 					"INT": player.intelligence,
 					"AGI": player.agility,
 					 "armor": player.armor,
-        			"resistance": player.resistance
+					"resistance": player.resistance
 				}
 				hud.update_stats(stats)
 				
@@ -384,7 +492,7 @@ func _on_unequip_button_pressed():
 				"INT": player.intelligence,
 				"AGI": player.agility,
 				 "armor": player.armor,
-        		"resistance": player.resistance
+				"resistance": player.resistance
 			}
 			hud.update_stats(stats)
 			
@@ -428,7 +536,7 @@ func _on_destroy_button_pressed():
 				"INT": player.intelligence,
 				"AGI": player.agility,
 				 "armor": player.armor,
-        		"resistance": player.resistance
+				"resistance": player.resistance
 			}
 			hud.update_stats(stats)
 			
@@ -451,19 +559,19 @@ func _on_use_button_pressed():
 			if "heal" in item.stats:
 				var heal_amount = item.stats["heal"]
 				player.health = min(player.health + heal_amount, player.max_health)
-				game_label.text = "Used " + item.name + " and restored " + str(heal_amount) + " health!"
+				game_label.text = "Used " + item.name + " and restored [color=#55ff55]" + str(heal_amount) + " health[/color]!"
 				used = true
 			elif "health_restore" in item.stats:
 				var heal_amount = item.stats["health_restore"]
 				player.health = min(player.health + heal_amount, player.max_health)
-				game_label.text = "Used " + item.name + " and restored " + str(heal_amount) + " health!"
+				game_label.text = "Used " + item.name + " and restored [color=#55ff55]" + str(heal_amount) + " health[/color]!"
 				used = true
 			
 			# Handle mana potions - check for mana property
 			if "mana" in item.stats:
 				var mana_amount = item.stats["mana"]
 				player.mana = min(player.mana + mana_amount, player.max_mana)
-				game_label.text = "Used " + item.name + " and restored " + str(mana_amount) + " mana!"
+				game_label.text = "Used " + item.name + " and restored [color=#5555ff]" + str(mana_amount) + " mana[/color]!"
 				used = true
 			
 			if used:
@@ -502,3 +610,46 @@ func update_player_stats_display():
 func _on_talent_button_pressed():
 	if player:
 		hud.open_talent_window(player)
+
+func _on_stats_button_pressed():
+	if player:
+		hud.open_stats_window(player)
+
+# Use rich text tags for colored text in game label
+func update_game_text(text, text_type = "normal"):
+	var colored_text = ""
+	
+	match text_type:
+		"damage":
+			colored_text = "[color=#ff5555]" + text + "[/color]"  # Red for damage
+		"healing":
+			colored_text = "[color=#55ff55]" + text + "[/color]"  # Green for healing
+		"mana":
+			colored_text = "[color=#5555ff]" + text + "[/color]"  # Blue for mana
+		"xp":
+			colored_text = "[color=#ffff55]" + text + "[/color]"  # Yellow for XP
+		"item":
+			colored_text = "[color=#ff55ff]" + text + "[/color]"  # Purple for items
+		_:
+			colored_text = text
+	
+	game_label.text = colored_text
+
+# Process keyboard shortcuts for abilities
+func _input(event):
+	if not player or not player.is_alive():
+		return
+		
+	if event is InputEventKey and event.pressed:
+		var key_pressed = OS.get_keycode_string(event.keycode)
+		
+		# Number keys 1-9 for ability shortcuts
+		if key_pressed in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+			var action_bar = hud.get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+			if action_bar:
+				# Find button with this shortcut and trigger it
+				for button in action_bar.get_children():
+					var shortcut_label = button.get_node_or_null("Label")
+					if shortcut_label and shortcut_label.text == key_pressed:
+						button.emit_signal("pressed")
+						return
