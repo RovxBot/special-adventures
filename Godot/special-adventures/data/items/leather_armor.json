@@ -17,7 +17,7 @@
     "slot": "Feet",
     "stats": {"armor": 2},
     "description": "Comfortable leather boots.",
-    "level_requirement": 2
+    "level_requirement": 1
   },
   {
     "id": "leather_gloves",

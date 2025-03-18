@@ -2,6 +2,7 @@ class_name Player
 extends RefCounted
 
 var name = ""
+var race = "Human"  # Default race
 var health: int
 var mana: int
 var attack: int = 15
@@ -12,13 +13,15 @@ var max_mana: int
 var max_xp: int = 100
 var inventory: Array = [] 
 var level: int = 1
+var talent_points: int = 0  # Available talent points
+var talents = {}  # Dictionary to track unlocked talents
 
-# Base Stats
-var strength: int = 10
-var stamina: int = 10
-var intelligence: int = 7
-var agility: int = 12
-var armor: int = 5
+# Base Stats - all starting at 0 now (will be set during character creation)
+var strength: int = 0
+var stamina: int = 0
+var intelligence: int = 0
+var agility: int = 0
+var armor: int = 0
 var resistance: int = 0  # Added resistance stat for magic defense
 
 # Equipment slots - Adding all the new slots
@@ -52,9 +55,13 @@ func _init(p_name):
 
 # Calculate all derived stats based on base stats
 func recalculate_stats():
-	max_health = stamina * 10  # 1 STAM = 10 HP
+	# Ensure minimum stats values for calculations
+	var calc_stamina = max(1, stamina)  # Prevent zero/negative HP
+	var calc_intelligence = max(1, intelligence)  # Prevent zero/negative mana
+	
+	max_health = calc_stamina * 10  # 1 STAM = 10 HP
 	health = max_health
-	max_mana = intelligence * 10  # 1 INT = 10 MP
+	max_mana = calc_intelligence * 10  # 1 INT = 10 MP
 	mana = max_mana
 
 func is_alive():
@@ -243,3 +250,51 @@ func give_starter_equipment():
 	equip_item(simple_cape)  # Equip the cape
 	
 	print("Starter equipment provided: Basic clothing equipped, weapons in inventory")
+
+# Handle leveling up and gaining talent points
+func gain_xp(amount: int):
+	xp += amount
+	
+	# Check for level up
+	if xp >= max_xp:
+		level_up()
+	
+	return xp >= max_xp  # Return true if leveled up
+
+func level_up():
+	level += 1
+	xp -= max_xp
+	max_xp = int(max_xp * 1.5)  # Increase XP required for next level
+	
+	# Increase base stats
+	strength += 1
+	stamina += 1
+	
+	# Recalculate derived stats
+	recalculate_stats()
+	
+	# Grant a talent point
+	talent_points += 1
+
+# Apply talent effects
+func apply_talent_effect(talent_id: String, rank: int):
+	if talent_id == "warrior_base":
+		strength += 1
+		stamina += 1
+	elif talent_id == "physical_conditioning":
+		stamina += rank
+	elif talent_id == "strength_of_giants":
+		strength += 2 * rank
+	elif talent_id == "iron_skin":
+		armor += 2 * rank
+	elif talent_id == "fortress":
+		stamina += 5
+	elif talent_id == "avatar_of_war":
+		strength += 10
+		stamina += 10
+		armor += 10
+	elif talent_id == "agile_footwork":
+		agility += rank
+		
+	# Recalculate derived stats after applying talents
+	recalculate_stats()

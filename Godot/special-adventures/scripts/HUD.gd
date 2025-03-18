@@ -46,6 +46,27 @@ func update_text(new_text: String):
 	if text_zone:
 		text_zone.text = new_text
 
+# Show/hide talent points indicator
+func update_talent_points(points: int):
+	var talent_points_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/TalentButton/TalentPoints")
+	if talent_points_label:
+		talent_points_label.text = str(points)
+		talent_points_label.visible = points > 0
+
+# Open talent window
+func open_talent_window(player):
+	var talent_window = preload("res://scenes/TalentWindow.tscn").instantiate()
+	add_child(talent_window)
+	talent_window.setup(player)
+	talent_window.popup_centered()
+	
+	# Connect signals for talent interactions
+	talent_window.talent_points_spent.connect(func(talent_id): 
+		if player and "talent_points" in player:
+			player.talent_points -= 1
+			update_talent_points(player.talent_points)
+	)
+
 # Update player health, mana, XP
 func update_player_stats(hp, max_hp, mana, max_mana, xp, max_xp):
 	print("Updating stats: HP:", hp, "/", max_hp, " Mana:", mana, "/", max_mana, " XP:", xp, "/", max_xp)
@@ -339,10 +360,12 @@ func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = tr
 		
 	# Show/hide use button based on item type
 	if use_btn:
-		var is_usable = item_data and "type" in item_data and item_data.type == "Consumable"
+		# Updated to check for both "Potion" and "Consumable" types
+		var is_usable = item_data and "type" in item_data and (item_data.type == "Consumable" or item_data.type == "Potion")
 		use_btn.visible = is_usable
 		
-	if destroy_btn: destroy_btn.show()
+	if destroy_btn: 
+		destroy_btn.show()
 	
 	# Show the dialog
 	item_dialog.show()

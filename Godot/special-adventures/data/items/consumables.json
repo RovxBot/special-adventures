@@ -1,12 +1,42 @@
 [
   {
+    "id": "minor_health_potion",
+    "name": "Minor Health Potion",
+    "rarity": "Common",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"heal": 20},
+    "description": "A small red potion that restores 20 health.",
+    "level_requirement": 1
+  },
+  {
     "id": "health_potion",
     "name": "Health Potion",
     "rarity": "Common",
     "type": "Potion",
     "slot": "",
-    "stats": {"heal": 20},
-    "description": "Restores 20 health when consumed.",
+    "stats": {"heal": 50},
+    "description": "A red potion that restores 50 health.",
+    "level_requirement": 5
+  },
+  {
+    "id": "major_health_potion",
+    "name": "Major Health Potion",
+    "rarity": "Uncommon",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"heal": 100},
+    "description": "A potent red potion that restores 100 health.",
+    "level_requirement": 10
+  },
+  {
+    "id": "minor_mana_potion",
+    "name": "Minor Mana Potion",
+    "rarity": "Common",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"mana": 20},
+    "description": "A small blue potion that restores 20 mana.",
     "level_requirement": 1
   },
   {
@@ -15,18 +45,28 @@
     "rarity": "Common",
     "type": "Potion",
     "slot": "",
-    "stats": {"mana": 20},
-    "description": "Restores 20 mana when consumed.",
-    "level_requirement": 1
+    "stats": {"mana": 50},
+    "description": "A blue potion that restores 50 mana.",
+    "level_requirement": 5
   },
   {
-    "id": "scroll_of_rage",
-    "name": "Scroll of Rage",
-    "rarity": "Magic",
-    "type": "Scroll",
+    "id": "major_mana_potion",
+    "name": "Major Mana Potion",
+    "rarity": "Uncommon",
+    "type": "Potion",
     "slot": "",
-    "stats": {"STR": 5},
-    "description": "Temporarily increases your strength by 5 for 3 turns.",
-    "level_requirement": 5
+    "stats": {"mana": 100},
+    "description": "A potent blue potion that restores 100 mana.",
+    "level_requirement": 10
+  },
+  {
+    "id": "rejuvenation_potion",
+    "name": "Rejuvenation Potion",
+    "rarity": "Rare",
+    "type": "Potion",
+    "slot": "",
+    "stats": {"heal": 75, "mana": 75},
+    "description": "A purple potion that restores both health and mana.",
+    "level_requirement": 15
   }
 ]

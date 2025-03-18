@@ -3,6 +3,7 @@ extends Control
 var player
 var enemy
 var item_db  # Reference to the item database
+var character_creation_scene
 
 @onready var hud = $Hud  # Get the HUD instance
 # Update paths to match new HUD structure
@@ -19,6 +20,11 @@ func _ready():
 	# Connect signals for item interaction
 	hud.inventory_item_selected.connect(_on_inventory_item_selected)
 	hud.equipped_item_selected.connect(_on_equipped_item_selected)
+	
+	# Connect talent button
+	var talent_button = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/TalentButton")
+	if talent_button:
+		talent_button.pressed.connect(func(): _on_talent_button_pressed())
 	
 	# Connect item dialog button signals - update paths
 	var dialog_container = item_dialog.get_node_or_null("Panel/MarginContainer/VBoxContainer")
@@ -42,31 +48,85 @@ func _ready():
 			if cancel_btn:
 				cancel_btn.pressed.connect(_on_cancel_button_pressed)
 	
-	# Show input panel at the beginning for name entry
-	if input_panel:
-		input_panel.visible = true
-		input_panel.custom_minimum_size = Vector2(0, 60)  # Set proper height for input panel
+	# Start with character creation
+	start_character_creation()
 	
-	game_label.text = "Enter your name:"
-	submit_button.text = "Submit"
-	submit_button.pressed.connect(_on_SubmitButton_pressed)  # Ensure signal is connected
+	# Hide HUD initially
+	hud.visible = false
 
-	# Update the equipped items to include all available slots
-	var equipped_items = {
-		"Head": "Empty",
-		"Chest": "Empty",
-		"Hands": "Empty",
-		"Legs": "Empty",
-		"Feet": "Empty",
-		"Weapon": "Empty",
-		"Shield": "Empty",
-		"Ring": "Empty",
-		"Neck": "Empty",
-		"Back": "Empty",
-		"Belt": "Empty",
-		"Pants": "Empty"
+func start_character_creation():
+	# Load and instantiate the character creation scene
+	character_creation_scene = load("res://scenes/CharacterCreation.tscn").instantiate()
+	add_child(character_creation_scene)
+	
+	# Connect signals
+	character_creation_scene.character_created.connect(_on_character_created)
+	character_creation_scene.creation_cancelled.connect(_on_creation_cancelled)
+
+func _on_character_created(character_data):
+	# Clean up character creation scene
+	if character_creation_scene:
+		character_creation_scene.queue_free()
+		character_creation_scene = null
+	
+	# Create player with the provided data
+	player = Player.new(character_data.name)
+	
+	# Set custom stats from character creation
+	player.strength = character_data.strength
+	player.agility = character_data.agility
+	player.stamina = character_data.stamina
+	player.intelligence = character_data.intelligence
+	player.race = character_data.race  # Store race information
+	
+	# Add armor based on equipped gear (starting with initial bonus)
+	player.armor = 0
+	
+	# Recalculate stats after customization
+	player.recalculate_stats()
+	
+	# Create enemy
+	enemy = Enemy.new()
+	
+	# Set player name in the UI
+	var player_name_label = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/Player")
+	if player_name_label:
+		player_name_label.text = player.name
+		
+		# Add race in parentheses
+		if player.race:
+			player_name_label.text += " (" + player.race + ")"
+	
+	# Update stats display
+	var stats = {
+		"STR": player.strength,
+		"STAM": player.stamina,
+		"INT": player.intelligence,
+		"AGI": player.agility,
+		"ARMOR": player.armor
 	}
-	hud.update_equipped(equipped_items)
+	hud.update_stats(stats)
+	
+	# Update HUD with initial player stats and equipment
+	hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
+	hud.update_inventory(player.inventory)
+	hud.update_equipped_from_player(player)
+	
+	# Show HUD
+	hud.visible = true
+	
+	# Start the game with a battle
+	start_battle()
+
+func _on_creation_cancelled():
+	# Handle creation cancelled (return to main menu or exit)
+	# For now, we'll just restart character creation
+	if character_creation_scene:
+		character_creation_scene.queue_free()
+		character_creation_scene = null
+	
+	# Restart character creation
+	call_deferred("start_character_creation")
 
 func _on_SubmitButton_pressed():
 	var player_name = game_text_input.text.strip_edges()  # Get input text
@@ -162,7 +222,14 @@ func handle_enemy_defeat():
 	game_label.text = "You defeated the " + enemy.name + "!"
 	
 	# Give XP and possibly loot
-	player.xp += 10
+	var xp_gained = 10
+	var leveled_up = player.gain_xp(xp_gained)
+	game_label.text += "\nYou gained " + str(xp_gained) + " XP!"
+	
+	if leveled_up:
+		game_label.text += "\nLevel up! You are now level " + str(player.level) + "!"
+		game_label.text += "\nYou gained a talent point!"
+		hud.update_talent_points(player.talent_points)
 	
 	# Generate loot
 	var enemy_level = 1  # This would come from the enemy's actual level
@@ -375,21 +442,39 @@ func _on_use_button_pressed():
 	if player and index >= 0 and index < player.inventory.size():
 		var item = player.inventory[index]
 		
-		if item.type == "Consumable":
-			# Example healing potion effect
-			if "health_restore" in item:
-				player.health = min(player.health + item.health_restore, player.max_health)
-				game_label.text = "Used " + item.name + " and restored " + str(item.health_restore) + " health!"
+		# Check for both Consumable and Potion types
+		if item.type == "Consumable" or item.type == "Potion":
+			var used = false
 			
-			# Remove the item after use
-			player.inventory.remove_at(index)
+			# Handle healing potions - check for both "heal" and "health_restore" properties
+			if "heal" in item.stats:
+				var heal_amount = item.stats["heal"]
+				player.health = min(player.health + heal_amount, player.max_health)
+				game_label.text = "Used " + item.name + " and restored " + str(heal_amount) + " health!"
+				used = true
+			elif "health_restore" in item.stats:
+				var heal_amount = item.stats["health_restore"]
+				player.health = min(player.health + heal_amount, player.max_health)
+				game_label.text = "Used " + item.name + " and restored " + str(heal_amount) + " health!"
+				used = true
 			
-			# Update the HUD
-			hud.update_inventory(player.inventory, player)
-			hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
+			# Handle mana potions - check for mana property
+			if "mana" in item.stats:
+				var mana_amount = item.stats["mana"]
+				player.mana = min(player.mana + mana_amount, player.max_mana)
+				game_label.text = "Used " + item.name + " and restored " + str(mana_amount) + " mana!"
+				used = true
 			
-			# Reset selection
-			hud.selected_inventory_index = -1
+			if used:
+				# Remove the item after use
+				player.inventory.remove_at(index)
+				
+				# Update the HUD
+				hud.update_inventory(player.inventory)
+				hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
+				
+				# Reset selection
+				hud.selected_inventory_index = -1
 	
 	item_dialog.hide()
 
@@ -411,3 +496,7 @@ func update_player_stats_display():
 			stats_grid.get_node_or_null("INTValue").text = str(player.intelligence)
 			stats_grid.get_node_or_null("AGIValue").text = str(player.agility)
 			stats_grid.get_node_or_null("ARMORValue").text = str(player.armor)
+
+func _on_talent_button_pressed():
+	if player:
+		hud.open_talent_window(player)
