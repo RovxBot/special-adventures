@@ -318,69 +318,103 @@ show_percentage = false
 
 [node name="StatsGridContainer" type="GridContainer" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats"]
 layout_mode = 2
-theme_override_constants/h_separation = 10
+theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 5
-columns = 5
+columns = 6
 
 [node name="STRLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "STR:"
-
-[node name="STRValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "10"
+text = "STR"
+horizontal_alignment = 1
 
 [node name="STAMLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "STAM:"
+text = "STAM"
+horizontal_alignment = 1
 
-[node name="STAMValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+[node name="DEFLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "8"
+tooltip_text = "Defense reduces physical damage from melee and ranged attacks."
+mouse_filter = 0
+text = "DEF"
+horizontal_alignment = 1
 
-[node name="ARMORLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+[node name="RESLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "ARMOR:"
-
-[node name="ARMORValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "5"
+tooltip_text = "Resistance reduces magical damage from spells."
+mouse_filter = 0
+text = "RES"
+horizontal_alignment = 1
 
 [node name="INTLabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "INT:"
-
-[node name="INTValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "12"
+text = "INT"
+horizontal_alignment = 1
 
 [node name="AGILabel" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 12
-text = "AGI:"
+text = "AGI"
+horizontal_alignment = 1
+
+[node name="STRValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
+text = "10"
+horizontal_alignment = 1
+
+[node name="STAMValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
+text = "8"
+horizontal_alignment = 1
+
+[node name="DEFValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
+text = "5"
+horizontal_alignment = 1
+
+[node name="RESValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
+text = "0"
+horizontal_alignment = 1
+
+[node name="INTValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
+text = "12"
+horizontal_alignment = 1
 
 [node name="AGIValue" type="Label" parent="MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 14
 text = "9"
+horizontal_alignment = 1
 
 [node name="InventorySection" type="Panel" parent="MainLayout/BottomSection"]
 layout_mode = 2

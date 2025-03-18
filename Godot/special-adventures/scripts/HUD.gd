@@ -167,7 +167,15 @@ func update_stats(stats: Dictionary):
 	if stats_grid:
 		# Update existing labels in grid
 		for key in stats.keys():
-			var label = stats_grid.get_node_or_null(key + "Value")
+			var value_key = key
+			
+			# Handle the renamed labels
+			if key == "armor":
+				value_key = "DEF"  # DEF reduces physical damage (melee/ranged)
+			elif key == "resistance":
+				value_key = "RES"  # RES reduces magical damage only
+			
+			var label = stats_grid.get_node_or_null(value_key + "Value")
 			if label:
 				label.text = str(stats[key])
 				

@@ -21,8 +21,8 @@ var strength: int = 0
 var stamina: int = 0
 var intelligence: int = 0
 var agility: int = 0
-var armor: int = 0
-var resistance: int = 0  # Added resistance stat for magic defense
+var armor: int = 0  # This is "DEF" in UI - reduces physical damage
+var resistance: int = 0  # Reduces magical damage only
 
 # Equipment slots - Adding all the new slots
 var equipped_items = {
@@ -115,8 +115,23 @@ func take_damage(damage):
 		print(name + " blocked the attack!")
 		damage = max(0, damage - defense * 2)  # Blocking reduces damage significantly
 	
+	# DEF (armor) reduces physical damage
 	var final_damage = max(0, damage - armor)
 	health = max(0, health - final_damage)
+	return final_damage
+
+# Add a separate method for magical damage
+func take_magical_damage(damage):
+	# Check for dodge (lower chance against magic)
+	var magic_dodge_chance = get_dodge_chance() * 0.5  # Half as effective against magic
+	if randf() * 100 <= magic_dodge_chance:
+		print(name + " narrowly avoided the spell!")
+		return 0
+	
+	# RES (resistance) reduces magical damage
+	var final_damage = max(0, damage - resistance)
+	health = max(0, health - final_damage)
+	print(name + " took " + str(final_damage) + " magical damage!")
 	return final_damage
 
 func attack_enemy(enemy, attack_type: AttackType = AttackType.MELEE) -> Dictionary:

@@ -5,9 +5,9 @@ var name = "Goblin"
 var health = 30
 var max_health = 30
 var attack = 10
-var defense = 3
-var armor = 2
-var resistance = 1  # Add resistance stat for magic defense
+var defense = 3  # This is similar to player's "armor" - for physical defense
+var armor = 2    # Rename this to "defense" for clarity
+var resistance = 1  # For magic defense only
 var strength = 8
 var agility = 4
 var dodge_chance = 4  # Equal to agility
@@ -21,6 +21,7 @@ func take_damage(damage):
 		print(name + " dodged the attack!")
 		return 0
 		
+	# DEF (armor) reduces physical damage
 	var final_damage = max(0, damage - armor)
 	health = max(0, health - final_damage)
 	print(name + " took " + str(final_damage) + " physical damage!")

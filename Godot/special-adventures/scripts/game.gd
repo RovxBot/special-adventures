@@ -79,9 +79,6 @@ func _on_character_created(character_data):
 	player.intelligence = character_data.intelligence
 	player.race = character_data.race  # Store race information
 	
-	# Add armor based on equipped gear (starting with initial bonus)
-	player.armor = 0
-	
 	# Recalculate stats after customization
 	player.recalculate_stats()
 	
@@ -103,7 +100,8 @@ func _on_character_created(character_data):
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-		"ARMOR": player.armor
+		 "armor": player.armor,
+        "resistance": player.resistance
 	}
 	hud.update_stats(stats)
 	
@@ -353,7 +351,8 @@ func _on_equip_button_pressed():
 					"STAM": player.stamina,
 					"INT": player.intelligence,
 					"AGI": player.agility,
-					"ARMOR": player.armor
+					 "armor": player.armor,
+        			"resistance": player.resistance
 				}
 				hud.update_stats(stats)
 				
@@ -384,7 +383,8 @@ func _on_unequip_button_pressed():
 				"STAM": player.stamina,
 				"INT": player.intelligence,
 				"AGI": player.agility,
-				"ARMOR": player.armor
+				 "armor": player.armor,
+        		"resistance": player.resistance
 			}
 			hud.update_stats(stats)
 			
@@ -427,7 +427,8 @@ func _on_destroy_button_pressed():
 				"STAM": player.stamina,
 				"INT": player.intelligence,
 				"AGI": player.agility,
-				"ARMOR": player.armor
+				 "armor": player.armor,
+        		"resistance": player.resistance
 			}
 			hud.update_stats(stats)
 			
@@ -495,7 +496,8 @@ func update_player_stats_display():
 			stats_grid.get_node_or_null("STAMValue").text = str(player.stamina)
 			stats_grid.get_node_or_null("INTValue").text = str(player.intelligence)
 			stats_grid.get_node_or_null("AGIValue").text = str(player.agility)
-			stats_grid.get_node_or_null("ARMORValue").text = str(player.armor)
+			stats_grid.get_node_or_null("DEFValue").text = str(player.armor)
+			stats_grid.get_node_or_null("RESValue").text = str(player.resistance)
 
 func _on_talent_button_pressed():
 	if player:
