@@ -29,9 +29,9 @@ enum ActionCategory {COMBAT, MAGIC, UTILITY}
 
 # Store action buttons by category
 var action_buttons = {
-    ActionCategory.COMBAT: [],
-    ActionCategory.MAGIC: [],
-    ActionCategory.UTILITY: []
+	ActionCategory.COMBAT: [],
+	ActionCategory.MAGIC: [],
+	ActionCategory.UTILITY: []
 }
 
 # Current active category
@@ -442,103 +442,103 @@ func _on_item_dialog_cancel():
 
 # Clears and rebuilds the action bar with appropriate buttons
 func update_action_bar(available_actions: Array):
-    var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
-    if not action_bar:
-        return
-        
-    # Clear existing buttons
-    for child in action_bar.get_children():
-        child.queue_free()
-    
-    # Reset button arrays
-    action_buttons = {
-        ActionCategory.COMBAT: [],
-        ActionCategory.MAGIC: [],
-        ActionCategory.UTILITY: []
-    }
-    
-    # Add buttons for each available action
-    for action in available_actions:
-        var button = Button.new()
-        button.text = action.name
-        button.custom_minimum_size = Vector2(120, 35)
-        button.add_theme_color_override("font_hover_color", Color(0.776471, 0.729412, 0.407843, 1))
-        
-        # Store action data in button metadata
-        button.set_meta("action_type", action.type)
-        button.set_meta("action_name", action.name)
-        button.set_meta("action_category", action.get("category", ActionCategory.COMBAT))
-        
-        # Add keyboard shortcut if available
-        if "shortcut" in action:
-            var shortcut_label = Label.new()
-            shortcut_label.text = action.shortcut
-            shortcut_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-            shortcut_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-            shortcut_label.size_flags_vertical = SIZE_SHRINK_CENTER
-            button.add_child(shortcut_label)
-        
-        # Connect pressed signal
-        button.pressed.connect(_on_action_button_pressed.bind(action.name, action.type))
-        
-        # Add tooltip if available
-        if "tooltip" in action:
-            button.tooltip_text = action.tooltip
-        
-        # Add button to the appropriate category
-        var category = action.get("category", ActionCategory.COMBAT)
-        action_buttons[category].append(button)
-        
-        # Add to the current action bar if it matches active category
-        if category == active_category:
-            action_bar.add_child(button)
+	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+	if not action_bar:
+		return
+		
+	# Clear existing buttons
+	for child in action_bar.get_children():
+		child.queue_free()
+	
+	# Reset button arrays
+	action_buttons = {
+		ActionCategory.COMBAT: [],
+		ActionCategory.MAGIC: [],
+		ActionCategory.UTILITY: []
+	}
+	
+	# Add buttons for each available action
+	for action in available_actions:
+		var button = Button.new()
+		button.text = action.name
+		button.custom_minimum_size = Vector2(120, 35)
+		button.add_theme_color_override("font_hover_color", Color(0.776471, 0.729412, 0.407843, 1))
+		
+		# Store action data in button metadata
+		button.set_meta("action_type", action.type)
+		button.set_meta("action_name", action.name)
+		button.set_meta("action_category", action.get("category", ActionCategory.COMBAT))
+		
+		# Add keyboard shortcut if available
+		if "shortcut" in action:
+			var shortcut_label = Label.new()
+			shortcut_label.text = action.shortcut
+			shortcut_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			shortcut_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			shortcut_label.size_flags_vertical = SIZE_SHRINK_CENTER
+			button.add_child(shortcut_label)
+		
+		# Connect pressed signal
+		button.pressed.connect(_on_action_button_pressed.bind(action.name, action.type))
+		
+		# Add tooltip if available
+		if "tooltip" in action:
+			button.tooltip_text = action.tooltip
+		
+		# Add button to the appropriate category
+		var category = action.get("category", ActionCategory.COMBAT)
+		action_buttons[category].append(button)
+		
+		# Add to the current action bar if it matches active category
+		if category == active_category:
+			action_bar.add_child(button)
 
 # Switch between action categories
 func switch_action_category(category: int):
-    if category < 0 or category >= ActionCategory.size():
-        return
-        
-    active_category = category
-    
-    # Update the action bar with buttons from this category
-    var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
-    if not action_bar:
-        return
-    
-    # Clear existing buttons
-    for child in action_bar.get_children():
-        child.queue_free()
-    
-    # Add buttons for the selected category
-    for button in action_buttons[active_category]:
-        action_bar.add_child(button)
+	if category < 0 or category >= ActionCategory.size():
+		return
+		
+	active_category = category
+	
+	# Update the action bar with buttons from this category
+	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+	if not action_bar:
+		return
+	
+	# Clear existing buttons
+	for child in action_bar.get_children():
+		child.queue_free()
+	
+	# Add buttons for the selected category
+	for button in action_buttons[active_category]:
+		action_bar.add_child(button)
 
 # Show cooldown on a button
 func show_action_cooldown(action_name: String, cooldown_time: float):
-    # Find the button with this action name
-    var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
-    if not action_bar:
-        return
-        
-    for button in action_bar.get_children():
-        if button.get_meta("action_name") == action_name:
-            # Create or update cooldown overlay
-            var cooldown = button.get_node_or_null("CooldownOverlay")
-            if not cooldown:
-                cooldown = ColorRect.new()
-                cooldown.name = "CooldownOverlay"
-                cooldown.color = Color(0, 0, 0, 0.5)
-                cooldown.mouse_filter = Control.MOUSE_FILTER_IGNORE
-                button.add_child(cooldown)
-                cooldown.anchors_preset = Control.PRESET_FULL_RECT
-            
-            # Animate the cooldown
-            var tween = create_tween()
-            cooldown.size_flags_vertical = SIZE_FILL
-            cooldown.size_flags_horizontal = SIZE_FILL
-            tween.tween_property(cooldown, "size_flags_vertical", 0, cooldown_time)
-            tween.tween_callback(cooldown.queue_free)
-            break
+	# Find the button with this action name
+	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+	if not action_bar:
+		return
+		
+	for button in action_bar.get_children():
+		if button.get_meta("action_name") == action_name:
+			# Create or update cooldown overlay
+			var cooldown = button.get_node_or_null("CooldownOverlay")
+			if not cooldown:
+				cooldown = ColorRect.new()
+				cooldown.name = "CooldownOverlay"
+				cooldown.color = Color(0, 0, 0, 0.5)
+				cooldown.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				button.add_child(cooldown)
+				cooldown.anchors_preset = Control.PRESET_FULL_RECT
+			
+			# Animate the cooldown
+			var tween = create_tween()
+			cooldown.size_flags_vertical = SIZE_FILL
+			cooldown.size_flags_horizontal = SIZE_FILL
+			tween.tween_property(cooldown, "size_flags_vertical", 0, cooldown_time)
+			tween.tween_callback(cooldown.queue_free)
+			break
 
 # Handle action button press
 func _on_action_button_pressed(action_name: String, action_type: String):

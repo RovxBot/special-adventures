@@ -14,5 +14,3 @@ script = ExtResource("1_ibkli")
 
 [node name="Hud" parent="." instance=ExtResource("2_qbsmt")]
 layout_mode = 1
-offset_left = 1.0
-offset_right = 1.0

@@ -3,52 +3,54 @@
 [ext_resource type="Script" uid="uid://51mc2ensci2w" path="res://scripts/HUD.gd" id="1_qpvh6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
-bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.952941)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.776471, 0.729412, 0.407843, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_color = Color(0.6, 0.0, 0.0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.0, 0.0, 0.0, 0.6)
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5j7a"]
-bg_color = Color(0.0509804, 0.0509804, 0.0980392, 0.8)
+bg_color = Color(0.2, 0.1, 0.1, 0.8)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.454902, 0.427451, 0.25098, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+border_color = Color(0.4, 0.0, 0.0, 0.8)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilc2j"]
-bg_color = Color(0.776471, 0.729412, 0.407843, 1)
+bg_color = Color(0.6, 0.0, 0.0, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.8, 0.8, 0.8, 0)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+border_color = Color(0.8, 0.2, 0.2, 0.5)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25ben"]
-bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.776471, 0.729412, 0.407843, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mana"]
+bg_color = Color(0.0, 0.0, 0.6, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.2, 0.8, 0.5)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
 
 [node name="Hud" type="Control"]
 layout_mode = 3
@@ -66,7 +68,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0784314, 0.0588235, 0.113725, 1)
+color = Color(0.070588, 0.027451, 0.027451, 1)
 
 [node name="MainLayout" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -76,13 +78,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 
 [node name="TopSection" type="HBoxContainer" parent="MainLayout"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.2
+size_flags_stretch_ratio = 1.4
 mouse_filter = 2
+theme_override_constants/separation = 15
 
 [node name="MainTextPanel" type="Panel" parent="MainLayout/TopSection"]
 layout_mode = 2
@@ -164,10 +167,11 @@ theme_override_constants/separation = 10
 
 [node name="ActionButtonsContainer" type="VBoxContainer" parent="MainLayout"]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="ActionBarScroll" type="ScrollContainer" parent="MainLayout/ActionButtonsContainer"]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 horizontal_scroll_mode = 2
 vertical_scroll_mode = 0
@@ -180,6 +184,7 @@ alignment = 1
 [node name="CategoryTabs" type="TabBar" parent="MainLayout/ActionButtonsContainer"]
 visible = false
 layout_mode = 2
+current_tab = 0
 tab_alignment = 1
 tab_count = 3
 tab_0/title = "Combat"
@@ -223,7 +228,9 @@ placeholder_text = "Enter Text..."
 [node name="BottomSection" type="HBoxContainer" parent="MainLayout"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.2
 mouse_filter = 2
+theme_override_constants/separation = 15
 
 [node name="PlayerStatsSection" type="VBoxContainer" parent="MainLayout/BottomSection"]
 layout_mode = 2
@@ -335,7 +342,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_r5j7a")
-theme_override_styles/fill = SubResource("StyleBoxFlat_ilc2j")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mana")
 value = 50.0
 show_percentage = false
 

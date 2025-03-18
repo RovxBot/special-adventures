@@ -3,37 +3,41 @@
 [ext_resource type="Script" uid="uid://bdwrufc1hrroc" path="res://scripts/talent_window.gd" id="1_8a3st"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
-bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.776471, 0.729412, 0.407843, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_color = Color(0.6, 0.0, 0.0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.0, 0.0, 0.0, 0.8)
+shadow_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_talent"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.101961, 0.101961, 0.207843, 0.901961)
-border_color = Color(0.776471, 0.729412, 0.407843, 0.5)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.101961, 0.05, 0.05, 0.95)
+border_color = Color(0.6, 0.0, 0.0, 0.5)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.0, 0.0, 0.0, 0.4)
+shadow_size = 4
 
 [node name="TalentWindow" type="Window"]
-title = "Talents"
+title = "Dark Powers"
 position = Vector2i(100, 100)
-size = Vector2i(600, 600)
+size = Vector2i(900, 800)
 transient = true
 exclusive = true
 unresizable = true
-theme_override_colors/title_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/title_color = Color(0.8, 0.2, 0.2, 1)
 script = ExtResource("1_8a3st")
 
 [node name="Panel" type="Panel" parent="."]

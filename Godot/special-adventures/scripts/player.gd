@@ -50,40 +50,40 @@ var abilities = {}
 
 # Add a new ability to the player
 func learn_ability(ability_id: String, ability_data: Dictionary):
-    abilities[ability_id] = ability_data
-    print("Learned new ability: " + ability_data.name)
+	abilities[ability_id] = ability_data
+	print("Learned new ability: " + ability_data.name)
 
 # Example abilities
 var example_abilities = {
-    "cleave": {
-        "name": "Cleave",
-        "type": "MELEE",
-        "category": 0, # COMBAT
-        "description": "A sweeping attack that hits all nearby enemies",
-        "shortcut": "2",
-        "level_requirement": 3,
-        "cooldown": 8.0
-    },
-    "fireball": {
-        "name": "Fireball",
-        "type": "MAGIC", 
-        "category": 1, # MAGIC
-        "description": "Launches a ball of fire at the enemy",
-        "shortcut": "3",
-        "level_requirement": 5,
-        "mana_cost": 20,
-        "cooldown": 6.0
-    },
-    "heal": {
-        "name": "Heal",
-        "type": "MAGIC",
-        "category": 2, # UTILITY
-        "description": "Restores some health",
-        "shortcut": "4", 
-        "level_requirement": 7,
-        "mana_cost": 30,
-        "cooldown": 15.0
-    }
+	"cleave": {
+		"name": "Cleave",
+		"type": "MELEE",
+		"category": 0, # COMBAT
+		"description": "A sweeping attack that hits all nearby enemies",
+		"shortcut": "2",
+		"level_requirement": 3,
+		"cooldown": 8.0
+	},
+	"fireball": {
+		"name": "Fireball",
+		"type": "MAGIC", 
+		"category": 1, # MAGIC
+		"description": "Launches a ball of fire at the enemy",
+		"shortcut": "3",
+		"level_requirement": 5,
+		"mana_cost": 20,
+		"cooldown": 6.0
+	},
+	"heal": {
+		"name": "Heal",
+		"type": "MAGIC",
+		"category": 2, # UTILITY
+		"description": "Restores some health",
+		"shortcut": "4", 
+		"level_requirement": 7,
+		"mana_cost": 30,
+		"cooldown": 15.0
+	}
 }
 
 func _init(p_name):
@@ -364,11 +364,11 @@ func level_up():
 
 # Check if abilities should be learned on level up
 func check_ability_unlocks():
-    # Check each potential ability against player level
-    for ability_id in example_abilities:
-        var ability = example_abilities[ability_id]
-        if level >= ability.level_requirement and not ability_id in abilities:
-            learn_ability(ability_id, ability.duplicate())
+	# Check each potential ability against player level
+	for ability_id in example_abilities:
+		var ability = example_abilities[ability_id]
+		if level >= ability.level_requirement and not ability_id in abilities:
+			learn_ability(ability_id, ability.duplicate())
 
 # Apply talent effects
 func apply_talent_effect(talent_id: String, rank: int):

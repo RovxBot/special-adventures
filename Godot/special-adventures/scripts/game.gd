@@ -16,9 +16,20 @@ var character_creation_scene
 # Store ability cooldowns
 var ability_cooldowns = {}
 
+# Add reference to combat effects
+var combat_effects
+
 func _ready():
 	# Initialize the item database
 	item_db = ItemDatabase.new()
+	
+	# Initialize combat effects
+	combat_effects = load("res://scripts/effects/combat_effects_manager.gd").new()
+	add_child(combat_effects)
+	
+	# Add ambient UI effects
+	var ambient_effects = load("res://scenes/effects/AmbientUIEffects.tscn").instantiate()
+	add_child(ambient_effects)
 	
 	# Connect signals for item interaction
 	hud.inventory_item_selected.connect(_on_inventory_item_selected)
@@ -300,10 +311,22 @@ func _on_action_button_pressed(action_data):
 		# Add player attack text
 		if attack_result["critical"]:
 			game_label.append_text("[color=#ffff00]Critical hit! [/color]")  # Yellow for crits
+			# Add critical hit effects
+			combat_effects.screen_shake(1.5)
+			combat_effects.flash_screen(Color(1, 1, 0, 0.2))
 		game_label.append_text("Your " + action_name.to_lower() + " hits " + enemy.name + " for [color=#ff5555]" + str(damage) + "[/color] damage!\n")
+		
+		 # Show blood particles for enemy hit
+		var enemy_position = Vector2(1280, 400)  # Use approximate position
+		combat_effects.show_blood(enemy_position, damage / 10.0)
 		
 		# Add enemy attack text
 		game_label.append_text(enemy.name + " hits you for [color=#ff5555]" + str(enemy_damage) + "[/color] damage!")
+		
+		# Show player damage effects if significant damage
+		if enemy_damage > player.max_health / 10:
+			combat_effects.screen_shake(0.8)
+			combat_effects.flash_screen(Color(1, 0, 0, 0.15))
 		
 		hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
 		hud.update_enemy_hp([enemy])
@@ -355,10 +378,16 @@ func handle_enemy_defeat():
 	submit_button.text = "Continue"
 	submit_button.show()
 	
-	# Remove attack connection and connect to start_next_battle
-	if submit_button.pressed.is_connected(_on_attack_pressed):
-		submit_button.pressed.disconnect(_on_attack_pressed)
+	# Disconnect any existing signals first (safer approach)
+	if submit_button.pressed.is_connected(_on_continue_pressed):
+		submit_button.pressed.disconnect(_on_continue_pressed)
+	# Connect to continue function
 	submit_button.pressed.connect(_on_continue_pressed)
+
+# Add a stub for the old function to avoid errors during disconnection attempts
+func _on_attack_pressed():
+	# This is just a stub to prevent errors when disconnecting
+	pass
 
 # Add new function to handle continuing to next battle
 func _on_continue_pressed():
@@ -459,13 +488,16 @@ func _on_equip_button_pressed():
 					"STAM": player.stamina,
 					"INT": player.intelligence,
 					"AGI": player.agility,
-					 "armor": player.armor,
+					"armor": player.armor,
 					"resistance": player.resistance
 				}
 				hud.update_stats(stats)
 				
 				# Reset selection
 				hud.selected_inventory_index = -1
+				
+				# Update action bar to reflect the new weapon
+				update_available_actions()
 			else:
 				game_label.text = "Cannot equip: " + item.name + " (Level requirement: " + str(item.level_requirement) + ")"
 		else:
@@ -491,13 +523,16 @@ func _on_unequip_button_pressed():
 				"STAM": player.stamina,
 				"INT": player.intelligence,
 				"AGI": player.agility,
-				 "armor": player.armor,
+				"armor": player.armor,
 				"resistance": player.resistance
 			}
 			hud.update_stats(stats)
 			
 			# Reset selection
 			hud.selected_equipped_slot = ""
+			
+			# Update action bar to reflect the unequipped weapon
+			update_available_actions()
 	
 	item_dialog.hide()
 
