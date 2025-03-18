@@ -588,3 +588,25 @@ func show_action_cooldown(action_name: String, cooldown_time: float):
 func _on_action_button_pressed(action_name: String, action_type: String):
 	# Emit signal to game script
 	action_button_pressed.emit({"name": action_name, "type": action_type})
+
+func add_text_to_log(text: String):
+	if text_zone:
+		# Add the new text with a separator if not the first entry
+		if text_zone.text.length() > 0:
+			text_zone.append_text("\n\n")
+		
+		text_zone.append_text(text)
+		
+		# Scroll to the bottom
+		text_zone.scroll_to_line(text_zone.get_line_count())
+
+func add_action_button(button: Button):
+	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+	if action_bar:
+		action_bar.add_child(button)
+
+func clear_action_buttons():
+	var action_bar = get_node_or_null("MainLayout/ActionButtonsContainer/ActionBarScroll/ActionBar")
+	if action_bar:
+		for child in action_bar.get_children():
+			child.queue_free()

@@ -20,6 +20,10 @@ var ability_cooldowns = {}
 # Add reference to combat effects
 var combat_effects
 
+var story_manager = null
+var story_choices = []
+var current_story_file = "res://data/stories/intro_story.json"
+
 func _ready():
 	# Initialize the item database
 	item_db = ItemDatabase.new()
@@ -141,8 +145,11 @@ func _on_character_created(character_data):
 	# Show HUD
 	hud.visible = true
 	
-	# Start the game with a battle
-	start_battle()
+	# Initialize story manager
+	initialize_story_manager()
+	
+	# Start the game with a battle or story based on preference
+	start_story() # Start with story instead of battle
 
 func _on_creation_cancelled():
 	# Handle creation cancelled (return to main menu or exit)
@@ -716,3 +723,122 @@ func _input(event):
 					if shortcut_label and shortcut_label.text == key_pressed:
 						button.emit_signal("pressed")
 						return
+
+func initialize_story_manager():
+	story_manager = StoryManager.new(self)
+	story_manager.story_updated.connect(_on_story_updated)
+	story_manager.choices_available.connect(_on_story_choices_available)
+	story_manager.story_event_triggered.connect(_on_story_event_triggered)
+	
+	# Load the initial story file
+	if story_manager.load_story_file(current_story_file):
+		print("Story loaded successfully")
+	else:
+		print("Failed to load story")
+
+func start_story():
+	if story_manager:
+		add_to_game_log("Beginning your adventure...", Color(0.8, 0.8, 0.2))
+		story_manager.start_story()
+	else:
+		start_battle() # Fallback to combat if no story
+
+func _on_story_updated(text):
+	add_to_game_log(text)
+	
+	# Clear any existing story choice buttons
+	clear_action_buttons()
+
+func _on_story_choices_available(choices):
+	story_choices = choices
+	
+	# Create buttons for each choice
+	for i in range(choices.size()):
+		var choice = choices[i]
+		create_choice_button(choice.text, i)
+
+func create_choice_button(text: String, choice_index: int):
+	var button = Button.new()
+	button.text = text
+	button.custom_minimum_size = Vector2(150, 40)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	# Connect button press to choice selection
+	button.pressed.connect(func(): _on_story_choice_selected(choice_index))
+	
+	# Add button to UI
+	hud.add_action_button(button)
+
+func _on_story_choice_selected(choice_index: int):
+	# Process the selected choice
+	var choice_text = story_choices[choice_index].text
+	add_to_game_log("[color=#A9A9A9]You chose: " + choice_text + "[/color]")
+	
+	# Clear action buttons
+	clear_action_buttons()
+	
+	# Tell the story manager about our choice
+	story_manager.select_choice(choice_index)
+
+func _on_story_event_triggered(event_id: String):
+	match event_id:
+		"chapter_complete":
+			add_to_game_log("[color=yellow]Chapter completed! You've earned experience.[/color]")
+			player.add_xp(50)
+		"treasure_found":
+			add_to_game_log("[color=yellow]You've found a treasure![/color]")
+			# Add treasure based on event
+		"ambush":
+			add_to_game_log("[color=red]You've been ambushed![/color]")
+			start_battle()
+		_:
+			print("Unhandled story event: ", event_id)
+
+func clear_action_buttons():
+	hud.clear_action_buttons()
+
+func add_to_game_log(text: String, color: Color = Color.WHITE):
+	if hud:
+		hud.add_text_to_log(text)
+
+func start_combat_with_enemy(enemy_id: String):
+	# Create specific enemy type based on ID
+	var enemy_data = {
+		"dark_acolyte": {
+			"name": "Dark Acolyte",
+			"health": 50,
+			"max_health": 50,
+			"attack": 8,
+			"defense": 3,
+			"xp_reward": 30,
+			"gold_reward": 15
+		},
+		"forest_wolf": {
+			"name": "Forest Wolf",
+			"health": 40,
+			"max_health": 40,
+			"attack": 6,
+			"defense": 2,
+			"xp_reward": 20,
+			"gold_reward": 5
+		}
+		# Add more enemies as needed
+	}
+	
+	if enemy_id in enemy_data:
+		enemy = Enemy.new()
+		var data = enemy_data[enemy_id]
+		enemy.name = data.name
+		enemy.health = data.health
+		enemy.max_health = data.max_health
+		enemy.attack = data.attack
+		enemy.defense = data.defense
+		enemy.xp_reward = data.xp_reward
+		enemy.gold_reward = data.gold_reward
+		
+		start_battle()
+	else:
+		print("Unknown enemy ID: ", enemy_id)
+		# Create default enemy as fallback
+		enemy = Enemy.new()
+		start_battle()
