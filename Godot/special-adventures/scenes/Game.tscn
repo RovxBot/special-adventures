@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://d27vg1ejwsf8n" path="res://scripts/game.gd" id="1_ibkli"]
 [ext_resource type="PackedScene" uid="uid://bwdkgcxifg7n2" path="res://scenes/HUD.tscn" id="2_qbsmt"]
 
-[node name="Game" type="Control"]
+[node name="Game" type="Control" groups=["game"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

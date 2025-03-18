@@ -17,9 +17,9 @@ shadow_color = Color(0.0, 0.0, 0.0, 0.8)
 shadow_size = 8
 
 [node name="StatsWindow" type="Window"]
-title = "Dark Powers"
+title = "Character Stats"
 position = Vector2i(100, 100)
-size = Vector2i(550, 550)
+size = Vector2i(600, 650)
 transient = true
 exclusive = true
 unresizable = true
@@ -41,144 +41,284 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
-[node name="PointsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="HeaderSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PointsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HeaderSection"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 text = "Available Stat Points: 0"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Spend points to increase your character's abilities"
+horizontal_alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="StatsContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+horizontal_scroll_mode = 0
 
-[node name="StrengthSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+[node name="StatsContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+[node name="StrengthSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StrengthSection"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StrengthSection/Header"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
 text = "Strength:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StrengthSection/Header"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StrengthSection/Header"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Increases melee damage"
-vertical_alignment = 1
-
-[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StrengthSection"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 20
 text = "+"
 
-[node name="StaminaSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+[node name="Description" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StrengthSection"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "• Increases melee damage
+• Improves your armor by [color=#d4c769]1 point per 2 STR[/color]
+• Allows you to use heavier weapons and armor"
+fit_content = true
+scroll_active = false
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+[node name="StaminaSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StaminaSection"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StaminaSection/Header"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
 text = "Stamina:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StaminaSection/Header"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StaminaSection/Header"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Increases health (10 HP per point)"
-vertical_alignment = 1
-
-[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/StaminaSection"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 20
 text = "+"
 
-[node name="AgilitySection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+[node name="Description" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/StaminaSection"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "• Increases maximum health ([color=#d4c769]10 HP per point[/color])
+• Improves physical endurance
+• Reduces damage from bleeding and poison effects"
+fit_content = true
+scroll_active = false
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+[node name="AgilitySection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/AgilitySection"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/AgilitySection/Header"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
 text = "Agility:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/AgilitySection/Header"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/AgilitySection/Header"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Increases dodge chance and ranged attacks"
-vertical_alignment = 1
-
-[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/AgilitySection"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 20
 text = "+"
 
-[node name="IntelligenceSection" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/StatsContainer"]
+[node name="Description" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/AgilitySection"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "• Increases dodge chance ([color=#d4c769]1% per point[/color])
+• Improves ranged attack damage
+• Slightly increases critical hit chance ([color=#d4c769]+0.1% per point[/color])
+• Determines action order in combat"
+fit_content = true
+scroll_active = false
 
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+[node name="IntelligenceSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer"]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/IntelligenceSection"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/IntelligenceSection/Header"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
 text = "Intelligence:"
 vertical_alignment = 1
 
-[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+[node name="Value" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/IntelligenceSection/Header"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
+[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/IntelligenceSection/Header"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Increases mana (10 MP per point) and magic damage"
-vertical_alignment = 1
-
-[node name="PlusButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/StatsContainer/IntelligenceSection"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 20
 text = "+"
+
+[node name="Description" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/IntelligenceSection"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "• Increases maximum mana ([color=#d4c769]10 MP per point[/color])
+• Increases magic damage and effectiveness
+• Increases magic resistance ([color=#d4c769]1 point per 3 INT[/color])
+• Improves skill and spell learning"
+fit_content = true
+scroll_active = false
+
+[node name="CurrentStatsSection" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer"]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "Derived Stats:"
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="HPLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Maximum Health:"
+
+[node name="HPValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "100"
+
+[node name="MPLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Maximum Mana:"
+
+[node name="MPValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "100"
+
+[node name="AttackLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Attack Power:"
+
+[node name="AttackValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "10"
+
+[node name="ArmorLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Physical Defense (DEF):"
+
+[node name="ArmorValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "5"
+
+[node name="ResistanceLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Magic Resistance (RES):"
+
+[node name="ResistanceValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "3"
+
+[node name="DodgeLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Dodge Chance:"
+
+[node name="DodgeValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "10%"
+
+[node name="CritLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+text = "Critical Hit Chance:"
+
+[node name="CritValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/StatsContainer/CurrentStatsSection/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "6%"
 
 [node name="HSeparator2" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -188,6 +328,8 @@ layout_mode = 2
 alignment = 1
 
 [node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_font_sizes/font_size = 16
 text = "Close"

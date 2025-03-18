@@ -101,10 +101,26 @@ func recalculate_stats():
 	var calc_stamina = max(1, stamina)  # Prevent zero/negative HP
 	var calc_intelligence = max(1, intelligence)  # Prevent zero/negative mana
 	
+	# Store current health/mana percentages
+	var health_percent = health / float(max_health) if max_health > 0 else 1.0
+	var mana_percent = mana / float(max_mana) if max_mana > 0 else 1.0
+	
+	# Update max values based on stats
 	max_health = calc_stamina * 10  # 1 STAM = 10 HP
-	health = max_health
 	max_mana = calc_intelligence * 10  # 1 INT = 10 MP
-	mana = max_mana
+	
+	# Calculate other derived stats
+	attack = 5 + strength  # Base attack + strength bonus
+	armor = 0 + strength / 2  # Base armor + strength/2 bonus
+	resistance = 0 + intelligence / 3  # Base resistance + int/3 bonus
+	
+	# Update current health/mana proportionally instead of maxing out
+	health = round(max_health * health_percent)
+	mana = round(max_mana * mana_percent)
+	
+	# Ensure minimum values
+	health = max(1, health)
+	mana = max(1, mana)
 
 func is_alive():
 	return health > 0

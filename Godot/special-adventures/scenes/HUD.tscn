@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwdkgcxifg7n2"]
+[gd_scene load_steps=7 format=3 uid="uid://bwdkgcxifg7n2"]
 
 [ext_resource type="Script" uid="uid://51mc2ensci2w" path="res://scripts/HUD.gd" id="1_qpvh6"]
 
@@ -8,12 +8,11 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.0, 0.0, 1)
+border_color = Color(0.6, 0, 0, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-shadow_color = Color(0.0, 0.0, 0.0, 0.6)
 shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r5j7a"]
@@ -22,14 +21,14 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.4, 0.0, 0.0, 0.8)
+border_color = Color(0.4, 0, 0, 0.8)
 corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilc2j"]
-bg_color = Color(0.6, 0.0, 0.0, 1)
+bg_color = Color(0.6, 0, 0, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -41,7 +40,7 @@ corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mana"]
-bg_color = Color(0.0, 0.0, 0.6, 1)
+bg_color = Color(0, 0, 0.6, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -51,6 +50,20 @@ corner_radius_top_left = 1
 corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25ben"]
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_size = 8
 
 [node name="Hud" type="Control"]
 layout_mode = 3
@@ -654,14 +667,6 @@ text = "Effects:"
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 4
-
-[node name="Effect1" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/EffectsContainer"]
-layout_mode = 2
-text = "• +5 Strength"
-
-[node name="Effect2" type="Label" parent="ItemDialog/Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/EffectsContainer"]
-layout_mode = 2
-text = "• 10% Critical Hit Chance"
 
 [node name="HSeparator2" type="HSeparator" parent="ItemDialog/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2

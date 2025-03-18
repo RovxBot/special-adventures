@@ -36,9 +36,10 @@ func setup_vignette():
 	}
 	"""
 	
-	var shader = RDShaderSource.new()
-	shader.source_code = shader_code
-	shader_material.shader = shader.get_shader()
+	# Create shader properly using Shader class
+	var shader = Shader.new()
+	shader.code = shader_code
+	shader_material.shader = shader
 	
 	# Apply shader to vignette
 	vignette.material = shader_material

@@ -16,7 +16,7 @@ shadow_size = 8
 
 [node name="ItemDialog" type="Window"]
 title = "Ancient Artifact"
-position = Vector2i(200, 200)
+position = Vector2i(200, 36)
 size = Vector2i(500, 400)
 transient = true
 exclusive = true

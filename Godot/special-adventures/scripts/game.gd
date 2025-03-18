@@ -640,14 +640,35 @@ func _on_cancel_button_pressed():
 # Update stats display in the new location
 func update_player_stats_display():
 	if player:
+		# Update derived stats first
+		var stats = {
+			"STR": player.strength,
+			"STAM": player.stamina,
+			"INT": player.intelligence,
+			"AGI": player.agility,
+			"armor": player.armor,
+			"resistance": player.resistance
+		}
+		
+		# Update the HUD
+		hud.update_stats(stats)
+		hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
+		
+		# Update individual stats in the grid if it exists
 		var stats_grid = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer")
 		if stats_grid:
-			stats_grid.get_node_or_null("STRValue").text = str(player.strength)
-			stats_grid.get_node_or_null("STAMValue").text = str(player.stamina)
-			stats_grid.get_node_or_null("INTValue").text = str(player.intelligence)
-			stats_grid.get_node_or_null("AGIValue").text = str(player.agility)
-			stats_grid.get_node_or_null("DEFValue").text = str(player.armor)
-			stats_grid.get_node_or_null("RESValue").text = str(player.resistance)
+			if stats_grid.get_node_or_null("STRValue"): 
+				stats_grid.get_node("STRValue").text = str(player.strength)
+			if stats_grid.get_node_or_null("STAMValue"): 
+				stats_grid.get_node("STAMValue").text = str(player.stamina)
+			if stats_grid.get_node_or_null("INTValue"): 
+				stats_grid.get_node("INTValue").text = str(player.intelligence)
+			if stats_grid.get_node_or_null("AGIValue"): 
+				stats_grid.get_node("AGIValue").text = str(player.agility)
+			if stats_grid.get_node_or_null("DEFValue"): 
+				stats_grid.get_node("DEFValue").text = str(player.armor)
+			if stats_grid.get_node_or_null("RESValue"): 
+				stats_grid.get_node("RESValue").text = str(player.resistance)
 
 func _on_talent_button_pressed():
 	if player:
@@ -657,7 +678,7 @@ func _on_stats_button_pressed():
 	if player:
 		hud.open_stats_window(player)
 
-# Use rich text tags for colored text in game label
+// Use rich text tags for colored text in game label
 func update_game_text(text, text_type = "normal"):
 	var colored_text = ""
 	
