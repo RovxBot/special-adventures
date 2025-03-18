@@ -11,7 +11,8 @@ var character_creation_scene
 @onready var submit_button = $Hud/MainLayout/ActionButtonsContainer/SubmitButton
 @onready var game_text_input = $Hud/MainLayout/InputPanel/MarginContainer/HBoxContainer/GameTextInput
 @onready var input_panel = $Hud/MainLayout/InputPanel
-@onready var item_dialog = $Hud/ItemDialog
+# Fix ItemDialog path - use get_node_or_null for safety
+@onready var item_dialog = hud.get_node_or_null("ItemDialog")
 
 # Store ability cooldowns
 var ability_cooldowns = {}
@@ -40,27 +41,30 @@ func _ready():
 	if talent_button:
 		talent_button.pressed.connect(func(): _on_talent_button_pressed())
 	
-	# Connect item dialog button signals - update paths
-	var dialog_container = item_dialog.get_node_or_null("Panel/MarginContainer/VBoxContainer")
-	if dialog_container:
-		var buttons_container = dialog_container.get_node_or_null("ButtonsContainer")
-		if buttons_container:
-			var equip_btn = buttons_container.get_node_or_null("EquipButton")
-			var unequip_btn = buttons_container.get_node_or_null("UnequipButton")
-			var use_btn = buttons_container.get_node_or_null("UseButton")
-			var destroy_btn = buttons_container.get_node_or_null("DestroyButton")
-			var cancel_btn = dialog_container.get_node_or_null("CancelButton")
-			
-			if equip_btn:
-				equip_btn.pressed.connect(_on_equip_button_pressed)
-			if unequip_btn:
-				unequip_btn.pressed.connect(_on_unequip_button_pressed)
-			if use_btn:
-				use_btn.pressed.connect(_on_use_button_pressed)
-			if destroy_btn:
-				destroy_btn.pressed.connect(_on_destroy_button_pressed)
-			if cancel_btn:
-				cancel_btn.pressed.connect(_on_cancel_button_pressed)
+	# Connect item dialog button signals - update for safer access
+	if item_dialog:
+		var dialog_container = item_dialog.get_node_or_null("Panel/MarginContainer/VBoxContainer")
+		if dialog_container:
+			var buttons_container = dialog_container.get_node_or_null("ButtonsContainer")
+			if buttons_container:
+				var equip_btn = buttons_container.get_node_or_null("EquipButton")
+				var unequip_btn = buttons_container.get_node_or_null("UnequipButton")
+				var use_btn = buttons_container.get_node_or_null("UseButton")
+				var destroy_btn = buttons_container.get_node_or_null("DestroyButton")
+				var cancel_btn = dialog_container.get_node_or_null("CancelButton")
+				
+				if equip_btn:
+					equip_btn.pressed.connect(_on_equip_button_pressed)
+				if unequip_btn:
+					unequip_btn.pressed.connect(_on_unequip_button_pressed)
+				if use_btn:
+					use_btn.pressed.connect(_on_use_button_pressed)
+				if destroy_btn:
+					destroy_btn.pressed.connect(_on_destroy_button_pressed)
+				if cancel_btn:
+					cancel_btn.pressed.connect(_on_cancel_button_pressed)
+	else:
+		print("WARNING: ItemDialog not found in HUD!")
 	
 	# Connect stats button
 	var stats_button = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton")
@@ -578,7 +582,8 @@ func _on_destroy_button_pressed():
 			# Reset selection
 			hud.selected_equipped_slot = ""
 	
-	item_dialog.hide()
+	if item_dialog:
+		item_dialog.hide()
 
 # Add this function to handle using items (like potions)
 func _on_use_button_pressed():
@@ -620,11 +625,13 @@ func _on_use_button_pressed():
 				# Reset selection
 				hud.selected_inventory_index = -1
 	
-	item_dialog.hide()
+	if item_dialog:
+		item_dialog.hide()
 
 # Handle cancel button
 func _on_cancel_button_pressed():
-	item_dialog.hide()
+	if item_dialog:
+		item_dialog.hide()
 	
 	# Reset selections
 	hud.selected_inventory_index = -1

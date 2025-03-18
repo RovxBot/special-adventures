@@ -38,6 +38,11 @@ var action_buttons = {
 var active_category = ActionCategory.COMBAT
 
 func _ready():
+	# Load the dark theme for consistent styling
+	var dark_theme = load("res://resources/dark_theme.tres")
+	if dark_theme:
+		theme = dark_theme
+	
 	# Make sure progress bars have proper styling and size
 	_configure_progress_bar(player_hp)
 	_configure_progress_bar(player_mana)
@@ -311,12 +316,19 @@ func _on_equipped_item_button_pressed(slot):
 	selected_equipped_slot = slot
 	equipped_item_selected.emit(slot)
 
+# Helper function to get the item dialog
+func get_item_dialog():
+	return get_node_or_null("ItemDialog")
+
 # Show item dialog with options and apply rarity color to the item name
 func show_item_dialog(is_equipped: bool, item_name: String, can_equip: bool = true, item_data = null):
 	if not item_dialog:
-		print("ERROR: ItemDialog not found!")
-		return
-		
+		# Try to get the dialog if it wasn't found initially
+		item_dialog = get_item_dialog()
+		if not item_dialog:
+			print("ERROR: ItemDialog not found!")
+			return
+	
 	# Update title
 	var title_text = "Item Details"
 	item_dialog.title = title_text
