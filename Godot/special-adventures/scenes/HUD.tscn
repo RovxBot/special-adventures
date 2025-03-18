@@ -520,7 +520,6 @@ theme_override_colors/font_selected_color = Color(0.776471, 0.729412, 0.407843, 
 theme_override_colors/font_hovered_color = Color(0.776471, 0.729412, 0.407843, 0.784314)
 theme_override_styles/panel = SubResource("StyleBoxFlat_r5j7a")
 allow_search = false
-auto_height = false
 item_count = 3
 item_0/text = "Health Potion"
 item_1/text = "Rusty Sword"

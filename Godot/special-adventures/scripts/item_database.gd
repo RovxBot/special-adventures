@@ -151,35 +151,67 @@ func get_items_by_rarity(rarity: String) -> Array:
 
 # Get random item of specified type with level <= player_level
 func get_random_item(type: String = "", max_level: int = 100) -> Item:
-	var filtered_items = []
+	var eligible_items = []
 	
-	# Filter by type and level
-	for item in _items.values():
-		if (type == "" or item.type == type) and item.level_requirement <= max_level:
-			filtered_items.append(item)
+	# If type is specified, only get items of that type
+	if type != "":
+		if not _items_by_type.has(type):
+			return null
+		
+		for item in _items_by_type[type]:
+			if item.level_requirement <= max_level:
+				eligible_items.append(item)
+	else:
+		# If no type specified, get all items with level <= max_level
+		for item_id in _items:
+			var item = _items[item_id]
+			if item.level_requirement <= max_level:
+				eligible_items.append(item)
 	
-	if filtered_items.size() > 0:
-		return filtered_items[randi() % filtered_items.size()]
+	if eligible_items.size() == 0:
+		return null
 	
-	return null
+	# Return random item from eligible items
+	return eligible_items[randi() % eligible_items.size()]
 
-# Generate loot for an enemy based on level
-func generate_enemy_loot(enemy_level: int, min_items: int = 1, max_items: int = 3) -> Array:
+# Generate loot for an enemy based on its level
+# For testing purposes, this will generate random items from all categories
+func generate_enemy_loot(enemy_level: int) -> Array:
 	var loot = []
-	var num_items = min_items + randi() % (max_items - min_items + 1)
 	
+	# Determine number of items to drop (1-3)
+	var num_items = 1 + randi() % 3
+	
+	# Categories of items
+	var item_types = ["Weapon", "Shield", "Cloth Armor", "Leather Armor", "Plate Armor", "Potion", "Ring", "Necklace"]
+	
+	# Drop logic for testing - completely random selection
 	for i in range(num_items):
-		# Higher chance for common items, lower for rare/epic
-		var item_type = ""
-		var rand = randf()
+		# 1. Random approach - get any item from the database
+		var item = null
 		
-		if rand < 0.6:  # 60% chance for weapon/armor
-			item_type = ["Weapon", "Armor"][randi() % 2]
-		else:  # 40% chance for other item types
-			item_type = ["Potion", "Ring", "Trinket"][randi() % 3]
+		# Decide whether to filter by type or not (50% chance)
+		if randf() > 0.5:
+			# Select random item type
+			var type = item_types[randi() % item_types.size()]
+			item = get_random_item(type, 100)  # Get any level item
+		else:
+			# Get any random item
+			item = get_random_item("", 100)  # Get any level item
 		
-		var item = get_random_item(item_type, enemy_level + 5)
-		if item != null:
+		if item:
 			loot.append(item)
+	
+	# Always ensure at least one potion drops (for healing during testing)
+	var potion_dropped = false
+	for item in loot:
+		if item.type == "Potion":
+			potion_dropped = true
+			break
+	
+	if not potion_dropped:
+		var potion = get_random_item("Potion", 100)
+		if potion:
+			loot.append(potion)
 	
 	return loot

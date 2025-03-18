@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://dgq601by5sqtc" path="res://scripts/main_menu.gd" id="1_yqorp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_84jwn"]
-bg_color = Color(0.0705882, 0.0705882, 0.14902, 0.901961)
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.776471, 0.729412, 0.407843, 1)
+border_color = Color(0.6, 0.0, 0.0, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -32,7 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0784314, 0.0588235, 0.113725, 1)
+color = Color(0.070588, 0.027451, 0.027451, 1)
 
 [node name="GameTitle" type="RichTextLabel" parent="."]
 layout_mode = 1
@@ -45,7 +45,7 @@ offset_right = 306.0
 offset_bottom = 176.0
 grow_horizontal = 2
 bbcode_enabled = true
-text = "[center][wave amp=50.0 freq=5.0][color=#d4c769][font_size=48]EPIC QUEST[/font_size][/color][/wave]
+text = "[center][wave amp=50.0 freq=5.0][color=#d4c769][font_size=48]SPECIAL-ADVENTURES[/font_size][/color][/wave]
 [color=#a9a9a9][font_size=24]A Text-Based Adventure[/font_size][/color][/center]"
 
 [node name="MenuPanel" type="Panel" parent="."]
@@ -81,7 +81,7 @@ alignment = 1
 layout_mode = 2
 focus_neighbor_top = NodePath("../QuitButton")
 focus_neighbor_bottom = NodePath("../LoadButton")
-theme_override_colors/font_hover_color = Color(0.945098, 0.858824, 0.47451, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
 text = "New Game"
@@ -91,7 +91,7 @@ flat = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../StartButton")
 focus_neighbor_bottom = NodePath("../OptionButton")
-theme_override_colors/font_hover_color = Color(0.945098, 0.858824, 0.47451, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
 text = "Load Game"
@@ -101,7 +101,7 @@ flat = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../LoadButton")
 focus_neighbor_bottom = NodePath("../QuitButton")
-theme_override_colors/font_hover_color = Color(0.945098, 0.858824, 0.47451, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
 text = "Options"
@@ -111,7 +111,7 @@ flat = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../OptionButton")
 focus_neighbor_bottom = NodePath("../StartButton")
-theme_override_colors/font_hover_color = Color(0.945098, 0.858824, 0.47451, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
 text = "Quit"
@@ -132,7 +132,7 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 60.0
-theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -146,7 +146,7 @@ offset_top = 20.0
 offset_right = -20.0
 offset_bottom = 60.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -160,7 +160,7 @@ offset_top = -60.0
 offset_right = 60.0
 offset_bottom = -20.0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -177,7 +177,7 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 

@@ -52,6 +52,10 @@ func _ready():
 	if inventory_list:
 		inventory_list.item_selected.connect(_on_inventory_item_selected)
 		inventory_list.item_activated.connect(_on_inventory_item_activated)
+	
+	# Initialize talent and stat points display
+	update_talent_points(0)
+	update_stat_points(0)
 
 # Helper function to configure progress bar appearance
 func _configure_progress_bar(bar):
@@ -71,8 +75,43 @@ func update_text(new_text: String):
 func update_talent_points(points: int):
 	var talent_points_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/TalentButton/TalentPoints")
 	if talent_points_label:
+		print("Updating talent points display: ", points)
 		talent_points_label.text = str(points)
-		talent_points_label.visible = points > 0
+		# Always show the label, regardless of points value
+		talent_points_label.visible = true
+		
+		# Make sure the label is styled properly
+		talent_points_label.add_theme_color_override("font_color", Color(0.8, 0.2, 0.2, 1))
+		talent_points_label.custom_minimum_size = Vector2(30, 0) # Ensure it has enough width
+		talent_points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		
+		# Force the talent points to update visually
+		if points > 0:
+			# Highlight with a pulse effect if there are unspent points
+			var tween = create_tween().set_loops(0) # Continuous looping
+			tween.tween_property(talent_points_label, "modulate", Color(1, 1, 1, 1), 0.5)
+			tween.tween_property(talent_points_label, "modulate", Color(1, 0.7, 0.7, 1), 0.5)
+
+# Show/hide stat points indicator
+func update_stat_points(points: int):
+	var stat_points_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton/StatPoints")
+	if stat_points_label:
+		print("Updating stat points display: ", points)
+		stat_points_label.text = str(points)
+		# Always show the label, regardless of points value
+		stat_points_label.visible = true
+		
+		# Make sure the label is styled properly
+		stat_points_label.add_theme_color_override("font_color", Color(0.8, 0.2, 0.2, 1))
+		stat_points_label.custom_minimum_size = Vector2(30, 0) # Ensure it has enough width
+		stat_points_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		
+		# Force the stat points to update visually
+		if points > 0:
+			# Highlight with a pulse effect if there are unspent points
+			var tween = create_tween().set_loops(0) # Continuous looping
+			tween.tween_property(stat_points_label, "modulate", Color(1, 1, 1, 1), 0.5)
+			tween.tween_property(stat_points_label, "modulate", Color(1, 0.7, 0.7, 1), 0.5)
 
 # Open talent window
 func open_talent_window(player):
@@ -87,13 +126,6 @@ func open_talent_window(player):
 			player.talent_points -= 1
 			update_talent_points(player.talent_points)
 	)
-
-# Show/hide stat points indicator
-func update_stat_points(points: int):
-	var stat_points_label = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton/StatPoints")
-	if stat_points_label:
-		stat_points_label.text = str(points)
-		stat_points_label.visible = points > 0
 
 # Open stats window
 func open_stats_window(player):

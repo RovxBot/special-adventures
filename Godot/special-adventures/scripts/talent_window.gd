@@ -314,10 +314,10 @@ func create_talent_button(talent, talent_id):
 
 func update_button_state(button, talent):
 	if talent.current_rank >= talent.max_rank:
-		# Maxed out - gold border and background
+		# Maxed out - red border and background
 		var style = StyleBoxFlat.new()
-		style.bg_color = Color(0.776471, 0.729412, 0.407843, 0.3)  # Gold with transparency
-		style.border_color = Color(0.776471, 0.729412, 0.407843, 1)  # Solid gold border
+		style.bg_color = Color(0.6, 0.0, 0.0, 0.3)  # Red with transparency
+		style.border_color = Color(0.8, 0.2, 0.2, 1)  # Solid red border
 		style.border_width_left = 2
 		style.border_width_right = 2
 		style.border_width_top = 2
@@ -332,7 +332,7 @@ func update_button_state(button, talent):
 	elif can_learn_talent(talent):
 		# Can learn - green pulsing border
 		var style = StyleBoxFlat.new()
-		style.bg_color = Color(0.1, 0.1, 0.2, 0.6)  # Dark blue background
+		style.bg_color = Color(0.1, 0.1, 0.05, 0.6)  # Dark background
 		style.border_color = Color(0.2, 0.8, 0.2, 1)  # Green border
 		style.border_width_left = 2
 		style.border_width_right = 2
@@ -365,7 +365,7 @@ func update_button_state(button, talent):
 	var rank_label = button.get_node_or_null("CenterContainer/VBoxContainer/RankLabel")
 	if rank_label:
 		if talent.current_rank >= talent.max_rank:
-			rank_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.5, 1))
+			rank_label.add_theme_color_override("font_color", Color(0.8, 0.2, 0.2, 1))
 		elif can_learn_talent(talent):
 			rank_label.add_theme_color_override("font_color", Color(0.2, 0.9, 0.2, 1))
 		else:
@@ -431,9 +431,9 @@ func update_talent_lines():
 		for prereq_id in talent_lines[talent_id]:
 			var line = talent_lines[talent_id][prereq_id]
 			
-			# If prereq is learned, make line gold
+			# If prereq is learned, make line red instead of gold
 			if warrior_talents[prereq_id].current_rank > 0 and warrior_talents[talent_id].current_rank > 0:
-				line.default_color = Color(0.776471, 0.729412, 0.407843, 1)  # Gold
+				line.default_color = Color(0.8, 0.2, 0.2, 1)  # Red
 			elif warrior_talents[prereq_id].current_rank > 0:
 				line.default_color = Color(0.6, 0.6, 0.6, 0.8)  # Lighter gray
 			else:
