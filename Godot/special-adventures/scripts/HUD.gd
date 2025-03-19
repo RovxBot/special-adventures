@@ -56,6 +56,11 @@ func _ready():
 	# Initialize talent and stat points display
 	update_talent_points(0)
 	update_stat_points(0)
+	
+	# Hide combat UI elements initially
+	var action_container = get_node_or_null("MainLayout/ActionButtonsContainer")
+	if action_container:
+		action_container.visible = false
 
 # Helper function to configure progress bar appearance
 func _configure_progress_bar(bar):
@@ -254,33 +259,42 @@ func update_inventory(items: Array, player = null):
 			else:
 				inventory_list.add_item(str(item))
 
-# Update stats dynamically
-func update_stats(stats: Dictionary):
-	# Update stats in the grid under player bars
-	var stats_grid = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer")
-	if stats_grid:
-		# Update existing labels in grid
-		for key in stats.keys():
-			var value_key = key
-			
-			# Handle the renamed labels
-			if key == "armor":
-				value_key = "DEF"  # DEF reduces physical damage (melee/ranged)
-			elif key == "resistance":
-				value_key = "RES"  # RES reduces magical damage only
-			
-			var label = stats_grid.get_node_or_null(value_key + "Value")
-			if label:
-				label.text = str(stats[key])
-				
-	# Also update the old stats grid if still present
-	if stats_values:
-		var grid = stats_values.get_node_or_null("GridContainer")
-		if grid:
-			for key in stats.keys():
-				var label = grid.get_node_or_null(key + "Value")
-				if label:
-					label.text = str(stats[key])
+# Enhanced update_stats function to ensure DEF is properly displayed
+func update_stats(stats_dict):
+	# Get references to the stats grid labels
+	var str_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/STRValue")
+	var stam_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/STAMValue")
+	var def_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/DEFValue")
+	var res_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/RESValue")
+	var int_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/INTValue")
+	var agi_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/AGIValue")
+	
+	# Print debug info 
+	print("Updating HUD stats: " + str(stats_dict))
+	
+	# Update the displayed values if the nodes exist
+	if str_value and "STR" in stats_dict:
+		str_value.text = str(stats_dict["STR"])
+	
+	if stam_value and "STAM" in stats_dict:
+		stam_value.text = str(stats_dict["STAM"])
+	
+	if def_value and "DEF" in stats_dict:
+		def_value.text = str(stats_dict["DEF"])
+		print("DEF display updated to: " + str(stats_dict["DEF"]))
+	
+	if res_value:
+		# Check for both possible key names for resistance
+		if "RES" in stats_dict:
+			res_value.text = str(stats_dict["RES"])
+		elif "resistance" in stats_dict:
+			res_value.text = str(stats_dict["resistance"])
+	
+	if int_value and "INT" in stats_dict:
+		int_value.text = str(stats_dict["INT"])
+	
+	if agi_value and "AGI" in stats_dict:
+		agi_value.text = str(stats_dict["AGI"])
 
 # Update equipped items with colors
 func update_equipped(equipped_items: Dictionary, equipped_colors: Dictionary = {}):
@@ -323,6 +337,8 @@ func update_equipped_from_player(player):
 	var equipped_data = {}
 	var equipped_colors = {}  # Store color for each equipped item
 	
+	# Build data dictionaries but don't clear the container yet
+	# (that will be done in update_equipped)
 	for slot in player.equipped_items:
 		if player.equipped_items[slot] != null:
 			var item = player.equipped_items[slot]
@@ -332,6 +348,8 @@ func update_equipped_from_player(player):
 			equipped_data[slot] = "Empty"
 			equipped_colors[slot] = Color.WHITE
 	
+	# Call the lower-level function to update the UI
+	# This will clear the container and create new buttons
 	update_equipped(equipped_data, equipped_colors)
 
 # Handle inventory item selection

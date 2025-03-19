@@ -94,7 +94,8 @@ func select_choice(choice_index: int):
 	
 	var choice = node.choices[choice_index]
 	
-	# Process any actions associated with this choice
+	## ...existing code...
+	
 	if choice.has("actions"):
 		process_actions(choice.actions)
 	
@@ -171,8 +172,50 @@ func add_item_to_player(item_id: String, quantity: int = 1):
 			print("Failed to add item: no item database found")
 
 func remove_item_from_player(item_id: String, quantity: int = 1):
-	# Logic to remove an item from player inventory
-	pass
+	# Check if we can access the game node and player
+	if game_node == null or player == null:
+		print("Cannot remove item: game_node or player is null")
+		return false
+	
+	# Use the game's item system if available
+	if game_node.has_method("remove_player_item"):
+		var success = game_node.remove_player_item(item_id, quantity)
+		if success:
+			# Notify the player about the item removal
+			var item_name = game_node.item_db.get_item(item_id).name if game_node.item_db else item_id
+			story_updated.emit("You lost: [color=#ff55ff]" + item_name + "[/color]", false)
+			return true
+	else:
+		# Fallback implementation
+		print("Warning: game_node doesn't have remove_player_item method. Trying direct inventory modification.")
+		if player.has("inventory"):
+			var found_items = 0
+			var removed_items = 0
+			
+			# Find and remove the specified quantity of the item
+			for i in range(player.inventory.size() - 1, -1, -1):  # Loop backwards
+				var item = player.inventory[i]
+				if item.id == item_id:
+					found_items += 1
+					player.inventory.remove_at(i)
+					removed_items += 1
+					
+					if removed_items >= quantity:
+						break
+			
+			# Update the HUD if possible
+			if removed_items > 0 and game_node.hud and game_node.hud.has_method("update_inventory"):
+				game_node.hud.update_inventory(player.inventory)
+				
+				# Notify the player about the item removal
+				if game_node.item_db:
+					var item = game_node.item_db.get_item(item_id)
+					if item:
+						story_updated.emit("You lost: [color=#ff55ff]" + item.name + "[/color]", false)
+				
+				return true
+		
+	return false
 
 func trigger_combat_event(enemy_id: String):
 	# Logic to start a combat with a specified enemy
@@ -189,7 +232,8 @@ func process_text_conditions(text: String) -> String:
 func filter_choices_by_conditions(choices: Array) -> Array:
 	var available_choices = []
 	
-	for choice in choices:
+	for i in range(choices.size()):
+		var choice = choices[i]
 		var condition_met = true
 		
 		# Check conditions if present
@@ -206,13 +250,13 @@ func filter_choices_by_conditions(choices: Array) -> Array:
 							condition_met = false
 							break
 					"item":
-						# Would need to check player inventory
+						# TODO: Add proper inventory check
 						pass
 		
 		if condition_met:
 			available_choices.append({
 				"text": choice.text,
-				"index": available_choices.size()
+				"index": i  # Use the original index in the choices array
 			})
 	
 	return available_choices

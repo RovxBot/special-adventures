@@ -5,8 +5,7 @@ var name = "Goblin"
 var health = 30
 var max_health = 30
 var attack = 10
-var defense = 3  # This is similar to player's "armor" - for physical defense
-var armor = 2    # Rename this to "defense" for clarity
+var def = 3        # Renamed from defense - physical damage reduction
 var resistance = 1  # For magic defense only
 var strength = 8
 var agility = 4
@@ -21,19 +20,20 @@ func take_damage(damage):
 		print(name + " dodged the attack!")
 		return 0
 		
-	# DEF (armor) reduces physical damage
-	var final_damage = max(0, damage - armor)
+	# DEF reduces physical damage
+	var final_damage = max(0, damage - def)
 	health = max(0, health - final_damage)
 	print(name + " took " + str(final_damage) + " physical damage!")
 	return final_damage
 	
 func take_magical_damage(damage):
-	# Magical damage is reduced by resistance, not armor
+	# Magical damage is reduced by resistance, not DEF
 	var final_damage = max(0, damage - resistance)
 	health = max(0, health - final_damage)
 	print(name + " took " + str(final_damage) + " magical damage!")
 	return final_damage
 
-func attack_enemy(player: Player):
+func attack_enemy(player):
+	# Removed the explicit Player type hint to avoid circular dependency
 	var damage = attack + strength
 	return player.take_damage(damage)

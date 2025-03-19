@@ -1,6 +1,9 @@
 class_name CombatManager
 extends RefCounted
 
+# Reference to GameEnums class
+const GameEnumsRef = preload("res://scripts/game_enums.gd")
+
 var game
 var player
 var current_enemy
@@ -27,6 +30,9 @@ func start_battle(enemy = null):
 	
 	var enemies = [current_enemy]
 	hud.update_enemy_hp(enemies)
+	
+	# Show the combat UI
+	game.show_combat_ui(true)
 	
 	# Update the action bar with available actions
 	update_available_actions()
@@ -94,16 +100,16 @@ func update_available_actions():
 func process_combat_action(action_data):
 	var action_name = action_data.name
 	var action_type_str = action_data.type
-	var attack_type = Player.AttackType.MELEE  # Default
+	var attack_type = GameEnums.AttackType.MELEE  # Using the autoload singleton
 	
 	# Convert string to enum
 	match action_type_str:
 		"MELEE":
-			attack_type = Player.AttackType.MELEE
+			attack_type = GameEnums.AttackType.MELEE  # Using the autoload singleton
 		"RANGED":
-			attack_type = Player.AttackType.RANGED
+			attack_type = GameEnums.AttackType.RANGED  # Using the autoload singleton
 		"MAGIC":
-			attack_type = Player.AttackType.MAGIC
+			attack_type = GameEnums.AttackType.MAGIC  # Using the autoload singleton
 	
 	# Display action text
 	game.add_to_game_log("You use " + action_name + "!")
@@ -147,16 +153,20 @@ func handle_enemy_defeat():
 	game.add_to_game_log("You defeated the " + current_enemy.name + "!")
 	
 	# Give XP and possibly loot
-	var xp_gained = 10  # Could be based on enemy difficulty/level
-	var leveled_up = player.gain_xp(xp_gained)
-	game.add_to_game_log("\nYou gained [color=#ffff55]" + str(xp_gained) + " XP[/color]!")
+	var earned_xp = 10  # Changed variable name to avoid shadowing the signal
+	var leveled_up = player.gain_xp(earned_xp)
+	game.add_to_game_log("\nYou gained [color=#ffff55]" + str(earned_xp) + " XP[/color]!")
+	
+	# Emit the xp_gained signal
+	xp_gained.emit(earned_xp, leveled_up)
 	
 	if leveled_up:
 		game.add_to_game_log("\n[color=#ffff00]Level up! You are now level " + str(player.level) + "![/color]")
 		game.add_to_game_log("\n[color=#00ffff]You gained a talent point![/color]")
 		game.add_to_game_log("\n[color=#00ffff]You gained 3 stat points![/color]")
-		hud.update_talent_points(player.talent_points)
-		hud.update_stat_points(player.stat_points)
+		
+		# Call the game's level up handler
+		game.handle_player_level_up()
 	
 	# Generate loot
 	var enemy_level = 1  # This would come from the enemy's actual level
@@ -174,3 +184,15 @@ func handle_enemy_defeat():
 	hud.update_inventory(player.inventory)
 	
 	emit_signal("combat_ended", true)
+
+func end_battle(victory: bool):
+	# Hide the combat UI
+	game.show_combat_ui(false)
+	
+	# Clear enemy display
+	hud.update_enemy_hp([])
+	
+	# Emit combat ended signal
+	combat_ended.emit(victory)
+	
+	current_enemy = null

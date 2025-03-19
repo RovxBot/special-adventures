@@ -25,18 +25,24 @@ func get_stats_text() -> String:
 		text += stat + ": +" + str(stats[stat]) + "\n"
 	return text
 
+# Returns a Color object based on the item's rarity
 func get_rarity_color() -> Color:
-	match rarity:
-		"Common":
-			return Color.WHITE
-		"Magic":
-			return Color(0.0, 0.8, 0.0)  # Green
-		"Rare":
-			return Color(0.0, 0.5, 1.0)  # Blue
-		"Epic":
-			return Color(0.6, 0.0, 0.8)  # Purple
-		_:  # Default case
-			return Color.WHITE
-
-func get_rarity_name() -> String:
-	return rarity
+	match rarity.to_lower():
+		"common":
+			return Color(0.8, 0.8, 0.8)  # White/Light gray
+		"uncommon":
+			return Color(0.2, 0.8, 0.2)  # Green
+		"rare":
+			return Color(0.2, 0.4, 0.8)  # Blue
+		"epic":
+			return Color(0.6, 0.2, 0.8)  # Purple
+		"magic":
+			return Color(0.2, 0.6, 0.8)  # Light Blue
+		"legendary":
+			return Color(1.0, 0.6, 0.1)  # Orange
+		"artifact":
+			return Color(0.9, 0.1, 0.1)  # Red
+		"unique":
+			return Color(0.8, 0.6, 0.1)  # Gold
+		_:  # Default case for unknown rarities
+			return Color(0.8, 0.8, 0.8)  # Default to white/light gray

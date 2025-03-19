@@ -1,5 +1,10 @@
 extends Control
 
+# Add class imports for managers
+const CombatManagerClass = preload("res://scripts/combat_manager.gd")
+const ItemManagerClass = preload("res://scripts/item_manager.gd")
+const AbilityManagerClass = preload("res://scripts/ability_manager_game.gd")
+
 var player
 var current_enemy # Rename from 'enemy' for clarity 
 var item_db  # Reference to the item database
@@ -28,6 +33,9 @@ var combat_effects
 var story_manager = null
 var story_choices = []
 var current_story_file = "res://data/stories/intro_story.json"
+
+# Track combat state
+var is_in_combat = false
 
 func _ready():
 	# Initialize the item database
@@ -114,13 +122,19 @@ func _on_character_created(character_data):
 	player.intelligence = character_data.intelligence
 	player.race = character_data.race  # Store race information
 	
-	# Recalculate stats after customization
+	# Initialize managers once player exists - use the preloaded classes
+	combat_manager = CombatManagerClass.new(self)
+	item_manager = ItemManagerClass.new(self)
+	ability_manager = AbilityManagerClass.new(self)
+	
+	# Recalculate stats after customization and before equipping items
 	player.recalculate_stats()
 	
-	# Initialize managers once player exists
-	combat_manager = CombatManager.new(self)
-	item_manager = ItemManager.new(self)
-	ability_manager = AbilityManager.new(self)
+	# Equip starter gear using item_manager
+	equip_starter_gear()
+	
+	# Check for initial abilities based on level
+	ability_manager.check_ability_unlocks()
 	
 	# Create enemy
 	current_enemy = Enemy.new()
@@ -140,8 +154,8 @@ func _on_character_created(character_data):
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-		"armor": player.armor,
-		"resistance": player.resistance
+		"DEF": player.def,  # Changed from armor to def
+		"RES": player.resistance  # Changed from "resistance" to "RES" for consistency
 	}
 	hud.update_stats(stats)
 	
@@ -160,6 +174,31 @@ func _on_character_created(character_data):
 	
 	# Start the game with a battle or story based on preference
 	start_story() # Start with story instead of combat
+
+# New function to equip starter gear
+func equip_starter_gear():
+	if not player or not item_manager:
+		print("Cannot equip starter gear: player or item_manager is null")
+		return
+	
+	print("Starting to equip starter gear. Initial DEF: " + str(player.def))
+	
+	# First, let's ensure the player's base stats are properly set
+	player.recalculate_stats()
+	
+	# Debug output to check DEF before equipping
+	print("After recalculation - Base DEF: " + str(player.def) + ", Base RES: " + str(player.resistance))
+	
+	# Player now handles getting starter equipment during initialization
+	# We just need to equip whatever is in the inventory
+	for item in player.inventory.duplicate():  # Use duplicate to avoid modifying during iteration
+		if item.slot != "":  # Make sure it's an equippable item
+			print("Equipping " + item.name + " with stats: " + str(item.stats))
+			item_manager.equip_item(item, item.slot)
+	
+	# Recalculate stats after equipping to ensure everything is properly updated
+	player.recalculate_stats()
+	print("After final recalculation, DEF: " + str(player.def) + ", RES: " + str(player.resistance))
 
 func _on_creation_cancelled():
 	# Handle creation cancelled (return to main menu or exit)
@@ -180,10 +219,10 @@ func _on_SubmitButton_pressed():
 	player = Player.new(player_name)
 	current_enemy = Enemy.new()
 	
-	# Create managers
-	combat_manager = CombatManager.new(self)
-	item_manager = ItemManager.new(self)
-	ability_manager = AbilityManager.new(self)
+	# Create managers - use the preloaded classes
+	combat_manager = CombatManagerClass.new(self)
+	item_manager = ItemManagerClass.new(self)
+	ability_manager = AbilityManagerClass.new(self)
 	
 	# Set player name and hide input panel
 	if player_name != "":
@@ -197,7 +236,8 @@ func _on_SubmitButton_pressed():
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-		"armor": player.armor
+		"DEF": player.def,  # Changed from armor to def
+		"RES": player.resistance  # Changed from "resistance" to "RES" for consistency
 	}
 	hud.update_stats(stats)
 	
@@ -329,7 +369,7 @@ func _on_destroy_button_pressed():
 	
 	var item_name = item_manager.handle_destroy_item(index, slot)
 	if item_name != "":
-		game_label.text = "Destroyed: " + item_name
+		add_to_game_log("Destroyed: " + item_name)
 	
 	item_dialog.hide()
 
@@ -411,7 +451,7 @@ func initialize_story_manager():
 
 func start_story():
 	if story_manager:
-		add_to_game_log("Beginning your adventure...", Color(0.8, 0.8, 0.2))
+		add_to_game_log("Beginning your adventure...", true)
 		story_manager.start_story()
 	else:
 		start_battle() # Fallback to combat if no story
@@ -419,10 +459,16 @@ func start_story():
 func _on_story_choices_available(choices):
 	story_choices = choices
 	
+	# Clear any existing buttons first
+	clear_action_buttons()
+	
+	# Debug output to verify choices are being received
+	print("Received " + str(choices.size()) + " story choices")
+	
 	# Create buttons for each choice
 	for i in range(choices.size()):
 		var choice = choices[i]
-		create_choice_button(choice.text, i)
+		create_choice_button(choice.text, choice.index)
 
 func create_choice_button(text: String, choice_index: int):
 	var button = Button.new()
@@ -433,10 +479,16 @@ func create_choice_button(text: String, choice_index: int):
 	# Connect button press to choice selection
 	button.pressed.connect(func(): _on_story_choice_selected(choice_index))
 	
-	# Add button to UI
+	# Add button to UI - ensure this actually adds to the visible action bar
+	print("Creating story button: " + text)
 	hud.add_action_button(button)
 
 func _on_story_choice_selected(choice_index: int):
+	# Verify that choice_index is within range
+	if choice_index < 0 or choice_index >= story_choices.size():
+		print("ERROR: Invalid choice index: " + str(choice_index))
+		return
+		
 	# Process the selected choice
 	var choice_text = story_choices[choice_index].text
 	add_to_game_log("[color=#A9A9A9]You chose: " + choice_text + "[/color]")
@@ -444,8 +496,9 @@ func _on_story_choice_selected(choice_index: int):
 	# Clear action buttons
 	clear_action_buttons()
 	
-	# Tell the story manager about our choice
-	story_manager.select_choice(choice_index)
+	# Tell the story manager about our choice, using the correct index
+	var actual_index = story_choices[choice_index].index
+	story_manager.select_choice(actual_index)
 
 func _on_story_event_triggered(event_id: String):
 	match event_id:
@@ -471,7 +524,7 @@ func start_combat_with_enemy(enemy_id: String):
 			"health": 50,
 			"max_health": 50,
 			"attack": 8,
-			"defense": 3,
+			"def": 3,  # Changed from defense to def
 			"xp_reward": 30,
 			"gold_reward": 15
 		},
@@ -480,7 +533,7 @@ func start_combat_with_enemy(enemy_id: String):
 			"health": 40,
 			"max_health": 40,
 			"attack": 6,
-			"defense": 2,
+			"def": 2,  # Changed from defense to def
 			"xp_reward": 20,
 			"gold_reward": 5
 		}
@@ -494,7 +547,7 @@ func start_combat_with_enemy(enemy_id: String):
 		current_enemy.health = data.health
 		current_enemy.max_health = data.max_health
 		current_enemy.attack = data.attack
-		current_enemy.defense = data.defense
+		current_enemy.def = data.def  # Changed from defense to def
 		if "xp_reward" in data:
 			current_enemy.xp_reward = data.xp_reward
 		if "gold_reward" in data:
@@ -525,3 +578,33 @@ func _input(event):
 					if shortcut_label and shortcut_label.text == key_pressed:
 						button.emit_signal("pressed")
 						return
+
+# Add new function to handle player leveling up
+func handle_player_level_up():
+	# No longer check for new abilities here
+	# ability_manager.check_ability_unlocks() - removed
+	
+	# Update UI elements
+	hud.update_talent_points(player.talent_points)
+	hud.update_stat_points(player.stat_points)
+	
+	# Other level-up related updates
+	update_player_stats_display()
+
+# Show action bar only during combat
+func show_combat_ui(visible: bool):
+	is_in_combat = visible
+	var action_container = hud.get_node_or_null("MainLayout/ActionButtonsContainer")
+	if action_container:
+		action_container.visible = visible
+	
+	# If exiting combat, also hide the submit button if it's visible
+	if !visible:
+		if submit_button:
+			submit_button.visible = false
+
+# When equipping items, don't automatically update the action bar unless in combat
+func update_equipment_ui():
+	# This function should no longer be needed as the item_manager handles UI updates
+	# We'll keep it for backward compatibility but make it do nothing to avoid double updates
+	pass
