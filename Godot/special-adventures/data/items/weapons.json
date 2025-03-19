@@ -5,7 +5,7 @@
     "rarity": "Rare",
     "type": "Staff",
     "slot": "Weapon",
-    "stats": {"attack": 4, "INT": 3, "resistance": 2},
+    "stats": {"attack": 4, "INT": 3, "RES": 2},
     "description": "A magical staff that enhances spellcasting.",
     "level_requirement": 10
   },

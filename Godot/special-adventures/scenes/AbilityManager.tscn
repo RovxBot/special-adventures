@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://bcse2oy62wuko"]
 
-[ext_resource type="Script" path="res://scripts/ability_manager.gd" id="1_ability"]
+[ext_resource type="Script" uid="uid://cumjspebfcaka" path="res://scripts/ability_manager.gd" id="1_ability"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
 bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
@@ -8,12 +8,12 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.0, 0.0, 1)
+border_color = Color(0.6, 0, 0, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-shadow_color = Color(0.0, 0.0, 0.0, 0.8)
+shadow_color = Color(0, 0, 0, 0.8)
 shadow_size = 8
 
 [node name="AbilityManager" type="Window"]

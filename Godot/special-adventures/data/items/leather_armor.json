@@ -5,7 +5,7 @@
     "rarity": "Common",
     "type": "Leather Armor",
     "slot": "Chest",
-    "stats": {"armor": 3},
+    "stats": {"DEF": 3},
     "description": "Basic leather armor offering minimal protection.",
     "level_requirement": 2
   },
@@ -15,7 +15,7 @@
     "rarity": "Common",
     "type": "Leather Armor",
     "slot": "Feet",
-    "stats": {"armor": 2},
+    "stats": {"DEF": 2},
     "description": "Comfortable leather boots.",
     "level_requirement": 1
   },
@@ -25,7 +25,7 @@
     "rarity": "Common",
     "type": "Leather Armor",
     "slot": "Hands",
-    "stats": {"armor": 2},
+    "stats": {"DEF": 2},
     "description": "Leather gloves that provide some protection.",
     "level_requirement": 2
   },
@@ -34,8 +34,8 @@
     "name": "Leather Pants",
     "rarity": "Common",
     "type": "Leather Armor",
-    "slot": "Pants",
-    "stats": {"armor": 2},
+    "slot": "Legs",
+    "stats": {"DEF": 2},
     "description": "Leather pants that provide some protection.",
     "level_requirement": 2
   },
@@ -45,7 +45,7 @@
     "rarity": "Common",
     "type": "Leather Armor",
     "slot": "Belt",
-    "stats": {"armor": 1},
+    "stats": {"DEF": 1},
     "description": "Farmers tool belt.",
     "level_requirement": 2
   },
@@ -55,7 +55,7 @@
     "rarity": "Magic",
     "type": "Leather Armor",
     "slot": "Feet",
-    "stats": {"armor": 2, "AGI": 1},
+    "stats": {"DEF": 2, "AGI": 1},
     "description": "Comfortable leather boots.",
     "level_requirement": 1
   }

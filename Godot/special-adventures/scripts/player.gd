@@ -25,7 +25,7 @@ var agility: int = 0
 var armor: int = 0  # This is "DEF" in UI - reduces physical damage
 var resistance: int = 0  # Reduces magical damage only
 
-# Equipment slots - Adding all the new slots
+# Equipment slots - Removing redundant "Pants" slot
 var equipped_items = {
 	"Head": null,
 	"Chest": null,
@@ -37,8 +37,7 @@ var equipped_items = {
 	"Ring": null,
 	"Neck": null,
 	"Back": null,    # New slot for capes
-	"Belt": null,    # New slot for belts
-	"Pants": null    # New slot for pants separate from legs
+	"Belt": null     # New slot for belts
 }
 
 # Attack types

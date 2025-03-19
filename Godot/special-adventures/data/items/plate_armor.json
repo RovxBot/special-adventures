@@ -5,7 +5,7 @@
     "rarity": "Magic",
     "type": "Plate Armor",
     "slot": "Head",
-    "stats": {"armor": 4, "STR": 1},
+    "stats": {"DEF": 4, "STR": 1},
     "description": "A sturdy steel helmet.",
     "level_requirement": 8
   },
@@ -15,7 +15,7 @@
     "rarity": "Magic",
     "type": "Plate Armor",
     "slot": "Hands",
-    "stats": {"armor": 2, "STR": 1},
+    "stats": {"DEF": 2, "STR": 1},
     "description": "Iron gauntlets that protect your hands.",
     "level_requirement": 5
   },
@@ -25,7 +25,7 @@
     "rarity": "Magic",
     "type": "Plate Armor",
     "slot": "Chest",
-    "stats": {"armor": 8, "STAM": 2},
+    "stats": {"DEF": 8, "STAM": 2},
     "description": "Heavy armor worn by knights.",
     "level_requirement": 15
   }

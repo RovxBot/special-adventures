@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://dgh2j1p3ooyal"]
 
-[ext_resource type="Script" path="res://scripts/effects/ambient_ui_effects.gd" id="1_ambient"]
+[ext_resource type="Script" uid="uid://blj2dd6eipqyu" path="res://scripts/effects/ambient_ui_effects.gd" id="1_ambient"]
 
 [node name="AmbientUIEffects" type="Control"]
 layout_mode = 3
@@ -30,7 +30,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.0, 0.0, 0.0, 0.0)
+color = Color(0, 0, 0, 0)
 
 [node name="FlickerTimer" type="Timer" parent="."]
 wait_time = 0.1

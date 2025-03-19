@@ -5,7 +5,7 @@
     "rarity": "Common",
     "type": "Cloth Armor",
     "slot": "Chest",
-    "stats": {"armor": 1},
+    "stats": {"DEF": 1},
     "description": "A simple shirt worn by farmers.",
     "level_requirement": 1
   },
@@ -15,7 +15,7 @@
     "rarity": "Common",
     "type": "Cloth Armor",
     "slot": "Legs",
-    "stats": {"armor": 1},
+    "stats": {"DEF": 1},
     "description": "Simple pants worn by farmers.",
     "level_requirement": 1
   },
@@ -25,7 +25,7 @@
     "rarity": "Common",
     "type": "Cloth Armor",
     "slot": "Feet",
-    "stats": {"armor": 1},
+    "stats": {"DEF": 1},
     "description": "Simple boots worn by farmers.",
     "level_requirement": 1
   },
@@ -35,7 +35,7 @@
     "rarity": "Common",
     "type": "Cloth Armor",
     "slot": "Back",
-    "stats": {"armor": 1},
+    "stats": {"DEF": 1},
     "description": "A flowing travelers cape.",
     "level_requirement": 1
   }

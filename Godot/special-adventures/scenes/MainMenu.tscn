@@ -8,7 +8,7 @@ border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.6, 0.0, 0.0, 1)
+border_color = Color(0.6, 0, 0, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -132,7 +132,7 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 60.0
-theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -146,7 +146,7 @@ offset_top = 20.0
 offset_right = -20.0
 offset_bottom = 60.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -160,7 +160,7 @@ offset_top = -60.0
 offset_right = 60.0
 offset_bottom = -20.0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 
@@ -177,7 +177,7 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.6, 0.0, 0.0, 1)
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
 theme_override_font_sizes/font_size = 24
 text = "✦"
 

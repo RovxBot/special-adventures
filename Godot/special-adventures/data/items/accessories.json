@@ -5,7 +5,7 @@
     "rarity": "Common",
     "type": "Shield",
     "slot": "Shield",
-    "stats": {"defense": 2},
+    "stats": {"DEF": 2},
     "description": "A simple wooden shield.",
     "level_requirement": 1
   },
@@ -35,7 +35,7 @@
     "rarity": "Common",
     "type": "Shield",
     "slot": "Shield",
-    "stats": {"defense": 4},
+    "stats": {"DEF": 4},
     "description": "A simple Iron ",
     "level_requirement": 5
   },
@@ -45,7 +45,7 @@
     "rarity": "Common",
     "type": "Shield",
     "slot": "Shield",
-    "stats": {"defense": 6},
+    "stats": {"DEF": 6},
     "description": "A large Iron tower shield.",
     "level_requirement": 10
   },
@@ -55,7 +55,7 @@
     "rarity": "Magic",
     "type": "Shield",
     "slot": "Shield",
-    "stats": {"defense": 6, "STR": 2},
+    "stats": {"DEF": 6, "STR": 2},
     "description": "A Tower shield backed with mithril.",
     "level_requirement": 12
   },
