@@ -1,9 +1,14 @@
 extends Control
 
 var player
-var enemy
+var current_enemy # Rename from 'enemy' for clarity 
 var item_db  # Reference to the item database
 var character_creation_scene
+
+# Manager instances
+var combat_manager
+var item_manager
+var ability_manager
 
 @onready var hud = $Hud  # Get the HUD instance
 # Update paths to match new HUD structure
@@ -43,7 +48,7 @@ func _ready():
 	# Connect talent button
 	var talent_button = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/TalentButton")
 	if talent_button:
-		talent_button.pressed.connect(func(): _on_talent_button_pressed())
+		talent_button.pressed.connect(_on_talent_button_pressed)
 	
 	# Connect item dialog button signals - update for safer access
 	if item_dialog:
@@ -73,7 +78,7 @@ func _ready():
 	# Connect stats button
 	var stats_button = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsButton")
 	if stats_button:
-		stats_button.pressed.connect(func(): _on_stats_button_pressed())
+		stats_button.pressed.connect(_on_stats_button_pressed)
 	
 	# Connect action button signal
 	hud.action_button_pressed.connect(_on_action_button_pressed)
@@ -112,8 +117,13 @@ func _on_character_created(character_data):
 	# Recalculate stats after customization
 	player.recalculate_stats()
 	
+	# Initialize managers once player exists
+	combat_manager = CombatManager.new(self)
+	item_manager = ItemManager.new(self)
+	ability_manager = AbilityManager.new(self)
+	
 	# Create enemy
-	enemy = Enemy.new()
+	current_enemy = Enemy.new()
 	
 	# Set player name in the UI
 	var player_name_label = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/Player")
@@ -130,7 +140,7 @@ func _on_character_created(character_data):
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-		 "armor": player.armor,
+		"armor": player.armor,
 		"resistance": player.resistance
 	}
 	hud.update_stats(stats)
@@ -149,7 +159,7 @@ func _on_character_created(character_data):
 	initialize_story_manager()
 	
 	# Start the game with a battle or story based on preference
-	start_story() # Start with story instead of battle
+	start_story() # Start with story instead of combat
 
 func _on_creation_cancelled():
 	# Handle creation cancelled (return to main menu or exit)
@@ -168,7 +178,12 @@ func _on_SubmitButton_pressed():
 		return
 	
 	player = Player.new(player_name)
-	enemy = Enemy.new()
+	current_enemy = Enemy.new()
+	
+	# Create managers
+	combat_manager = CombatManager.new(self)
+	item_manager = ItemManager.new(self)
+	ability_manager = AbilityManager.new(self)
 	
 	# Set player name and hide input panel
 	if player_name != "":
@@ -182,7 +197,7 @@ func _on_SubmitButton_pressed():
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-		"ARMOR": player.armor
+		"armor": player.armor
 	}
 	hud.update_stats(stats)
 	
@@ -201,199 +216,24 @@ func _on_SubmitButton_pressed():
 	start_battle()
 
 func start_battle():
-	game_label.text = "A wild " + enemy.name + " appears!"
-	
-	var enemies = [enemy]  # Replace this with actual enemy array if multiple
-	hud.update_enemy_hp(enemies)
-	
-	# Update the action bar with available actions
-	update_available_actions()
+	combat_manager.start_battle(current_enemy)
 	
 	if input_panel:
 		input_panel.visible = false
 		input_panel.custom_minimum_size = Vector2(0, 0)
 
-# Determine available actions based on player equipment and learned abilities
-func update_available_actions():
-	var actions = []
-	
-	# Basic weapon actions
-	if player.equipped_items["Weapon"] != null:
-		var weapon = player.equipped_items["Weapon"]
-		
-		# Determine weapon type and add appropriate action
-		if weapon.type in ["Sword", "Dagger", "Axe", "Hammer", "Mace"]:
-			actions.append({
-				"name": "Strike",
-				"type": "MELEE",
-				 "category": hud.ActionCategory.COMBAT,
-				"shortcut": "1",
-				"tooltip": "Attack with your melee weapon"
-			})
-		elif weapon.type in ["Bow", "Crossbow", "Gun"]:
-			actions.append({
-				"name": "Shoot", 
-				"type": "RANGED",
-				 "category": hud.ActionCategory.COMBAT,
-				"shortcut": "1",
-				"tooltip": "Attack with your ranged weapon"
-			})
-		elif weapon.type in ["Staff", "Wand"]:
-			actions.append({
-				"name": "Cast", 
-				"type": "MAGIC",
-				 "category": hud.ActionCategory.MAGIC,
-				"shortcut": "1",
-				"tooltip": "Cast a spell with your magical implement"
-			})
-	else:
-		# No weapon equipped
-		actions.append({
-			"name": "Punch", 
-			"type": "MELEE",
-			 "category": hud.ActionCategory.COMBAT,
-			"shortcut": "1",
-			"tooltip": "Attack with your bare hands"
-		})
-	
-	# Add learned abilities from player's ability list
-	if "abilities" in player and player.abilities:
-		for ability_id in player.abilities:
-			var ability = player.abilities[ability_id]
-			# Only add abilities that aren't on cooldown
-			if not ability_id in ability_cooldowns:
-				actions.append({
-					"name": ability.name,
-					"type": ability.type,
-					"category": ability.category,
-					"shortcut": ability.shortcut if "shortcut" in ability else "",
-					"tooltip": ability.description,
-					"ability_id": ability_id
-				})
-	
-	# Update the action bar
-	hud.update_action_bar(actions)
-
-# Handle ability with cooldown
-func use_ability_with_cooldown(ability_id, cooldown_time):
-	# Put ability on cooldown
-	ability_cooldowns[ability_id] = cooldown_time
-	
-	# Start a timer to remove the cooldown
-	var timer = get_tree().create_timer(cooldown_time)
-	timer.timeout.connect(func(): ability_cooldowns.erase(ability_id))
-	
-	# Update action bar to show cooldown
-	if "abilities" in player and ability_id in player.abilities:
-		var ability = player.abilities[ability_id]
-		hud.show_action_cooldown(ability.name, cooldown_time)
-	
-	# Update available actions to exclude this ability
-	update_available_actions()
-
-# Handle action button press
-func _on_action_button_pressed(action_data):
-	var action_name = action_data.name
-	var action_type_str = action_data.type
-	var attack_type = Player.AttackType.MELEE  # Default
-	
-	# Convert string to enum
-	match action_type_str:
-		"MELEE":
-			attack_type = Player.AttackType.MELEE
-		"RANGED":
-			attack_type = Player.AttackType.RANGED
-		"MAGIC":
-			attack_type = Player.AttackType.MAGIC
-	
-	# Display action text
-	game_label.text = "You use " + action_name + "!"
-	
-	# Execute the attack
-	var attack_result = player.attack_enemy(enemy, attack_type)
-	var damage = attack_result["damage"]
-	
-	if enemy.is_alive():
-		var enemy_damage = enemy.attack_enemy(player)
-		
-		# Clear previous text and append combat results
-		game_label.text = ""
-		
-		# Add player attack text
-		if attack_result["critical"]:
-			game_label.append_text("[color=#ffff00]Critical hit! [/color]")  # Yellow for crits
-			# Add critical hit effects
-			combat_effects.screen_shake(1.5)
-			combat_effects.flash_screen(Color(1, 1, 0, 0.2))
-		game_label.append_text("Your " + action_name.to_lower() + " hits " + enemy.name + " for [color=#ff5555]" + str(damage) + "[/color] damage!\n")
-		
-		 # Show blood particles for enemy hit
-		var enemy_position = Vector2(1280, 400)  # Use approximate position
-		combat_effects.show_blood(enemy_position, damage / 10.0)
-		
-		# Add enemy attack text
-		game_label.append_text(enemy.name + " hits you for [color=#ff5555]" + str(enemy_damage) + "[/color] damage!")
-		
-		# Show player damage effects if significant damage
-		if enemy_damage > player.max_health / 10:
-			combat_effects.screen_shake(0.8)
-			combat_effects.flash_screen(Color(1, 0, 0, 0.15))
-		
-		hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
-		hud.update_enemy_hp([enemy])
-	else:
-		handle_enemy_defeat()
-
 # Add this function to give player a new item from database
 func give_player_item(item_id: String):
-	if player and item_db:
-		var item = item_db.get_item(item_id)
-		if item:
-			player.inventory.append(item)
-			game_label.text = "You received: " + item.name
-			hud.update_inventory(player.inventory)
-			return true
-	return false
+	return item_manager.give_player_item(item_id)
 
-# Example function for enemy drops
-func handle_enemy_defeat():
-	game_label.text = "You defeated the " + enemy.name + "!"
-	
-	# Give XP and possibly loot
-	var xp_gained = 10
-	var leveled_up = player.gain_xp(xp_gained)
-	game_label.append_text("\nYou gained [color=#ffff55]" + str(xp_gained) + " XP[/color]!")
-	
-	if leveled_up:
-		game_label.append_text("\n[color=#ffff00]Level up! You are now level " + str(player.level) + "![/color]")
-		game_label.append_text("\n[color=#00ffff]You gained a talent point![/color]")
-		game_label.append_text("\n[color=#00ffff]You gained 3 stat points![/color]")
-		hud.update_talent_points(player.talent_points)
-		hud.update_stat_points(player.stat_points)
-	
-	# Generate loot
-	var enemy_level = 1  # This would come from the enemy's actual level
-	var loot = item_db.generate_enemy_loot(enemy_level)
-	
-	if loot.size() > 0:
-		game_label.text += "\nThe enemy dropped:"
-		for item in loot:
-			game_label.text += "\n- " + item.name
-			player.inventory.append(item)
-	
-	# Update the HUD with current values (don't reset health/mana)
-	hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
-	hud.update_inventory(player.inventory)
-	
-	# Change submit button to "Continue" to start a new battle
-	submit_button.text = "Continue"
-	submit_button.show()
-	
-	# Disconnect any existing signals first (safer approach)
-	if submit_button.pressed.is_connected(_on_continue_pressed):
-		submit_button.pressed.disconnect(_on_continue_pressed)
-	# Connect to continue function
-	submit_button.pressed.connect(_on_continue_pressed)
+# Delegate action handling to ability manager first, then combat manager
+func _on_action_button_pressed(action_data):
+	# First check if it's an ability
+	if "ability_id" in action_data:
+		ability_manager.process_ability_action(action_data)
+	else:
+		# Otherwise, it's a regular combat action
+		combat_manager.process_combat_action(action_data)
 
 # Add a stub for the old function to avoid errors during disconnection attempts
 func _on_attack_pressed():
@@ -403,7 +243,7 @@ func _on_attack_pressed():
 # Add new function to handle continuing to next battle
 func _on_continue_pressed():
 	# Create a new enemy but keep the same player
-	enemy = Enemy.new()
+	current_enemy = Enemy.new()
 	
 	# Disconnect continue button and prepare for next battle
 	if submit_button.pressed.is_connected(_on_continue_pressed):
@@ -425,16 +265,6 @@ func test_progress_bars():
 		
 		# Also update the console
 		print("Test values applied: HP=75, Mana=25, XP=50")
-
-# Debug function to help diagnose equipping issues
-func print_item_debug_info(item):
-	print("Item Debug Info:")
-	print("- Name: ", item.name)
-	print("- Type: ", item.type)
-	print("- Slot: ", item.slot)
-	print("- Level Req: ", item.level_requirement)
-	print("- Stats: ", item.stats)
-	print("- Player level: ", player.level)
 
 # Item interaction handlers
 func _on_inventory_item_selected(index):
@@ -476,164 +306,41 @@ func _on_equipped_item_selected(slot):
 		
 		hud.show_item_dialog(true, item.name, true, item_data)
 
-# Handle equip button
+# Handle equip button - delegate to item manager
 func _on_equip_button_pressed():
 	var index = hud.selected_inventory_index
-	if player and index >= 0 and index < player.inventory.size():
-		var item = player.inventory[index]
-		
-		# Debug output
-		print_item_debug_info(item)
-		
-		if item.slot != "":  # Make sure it's an equippable item
-			if player.equip_item(item):
-				game_label.text = "Equipped: " + item.name
-				
-				# Update the HUD
-				hud.update_inventory(player.inventory)
-				hud.update_equipped_from_player(player)
-				
-				# Update player stats display
-				var stats = {
-					"STR": player.strength,
-					"STAM": player.stamina,
-					"INT": player.intelligence,
-					"AGI": player.agility,
-					"armor": player.armor,
-					"resistance": player.resistance
-				}
-				hud.update_stats(stats)
-				
-				# Reset selection
-				hud.selected_inventory_index = -1
-				
-				# Update action bar to reflect the new weapon
-				update_available_actions()
-			else:
-				game_label.text = "Cannot equip: " + item.name + " (Level requirement: " + str(item.level_requirement) + ")"
-		else:
-			game_label.text = "This item cannot be equipped."
-	
+	if item_manager.handle_equip_item(index):
+		# Success - handled by item_manager
+		pass
 	item_dialog.hide()
 
-# Handle unequip button
+# Handle unequip button - delegate to item manager
 func _on_unequip_button_pressed():
 	var slot = hud.selected_equipped_slot
-	if player and slot != "":
-		var item = player.unequip_item(slot)
-		if item:
-			game_label.text = "Unequipped: " + item.name
-			
-			# Update the HUD
-			hud.update_inventory(player.inventory)
-			hud.update_equipped_from_player(player)
-			
-			# Update player stats display
-			var stats = {
-				"STR": player.strength,
-				"STAM": player.stamina,
-				"INT": player.intelligence,
-				"AGI": player.agility,
-				"armor": player.armor,
-				"resistance": player.resistance
-			}
-			hud.update_stats(stats)
-			
-			# Reset selection
-			hud.selected_equipped_slot = ""
-			
-			# Update action bar to reflect the unequipped weapon
-			update_available_actions()
+	if item_manager.handle_unequip_item(slot):
+		# Success - handled by item_manager
+		pass
+	item_dialog.hide()
+
+# Handle destroy button - delegate to item manager
+func _on_destroy_button_pressed():
+	var index = hud.selected_inventory_index
+	var slot = hud.selected_equipped_slot
+	
+	var item_name = item_manager.handle_destroy_item(index, slot)
+	if item_name != "":
+		game_label.text = "Destroyed: " + item_name
 	
 	item_dialog.hide()
 
-# Handle destroy button
-func _on_destroy_button_pressed():
-	if hud.selected_inventory_index >= 0:
-		# Destroy from inventory
-		var index = hud.selected_inventory_index
-		if player and index >= 0 and index < player.inventory.size():
-			var item = player.inventory[index]
-			player.inventory.remove_at(index)
-			game_label.text = "Destroyed: " + item.name
-			
-			# Update the HUD
-			hud.update_inventory(player.inventory)
-			
-			# Reset selection
-			hud.selected_inventory_index = -1
-	
-	elif hud.selected_equipped_slot != "":
-		# Destroy equipped item
-		var slot = hud.selected_equipped_slot
-		if player and player.equipped_items.has(slot) and player.equipped_items[slot] != null:
-			var item = player.equipped_items[slot]
-			player.equipped_items[slot] = null
-			
-			game_label.text = "Destroyed: " + item.name
-			
-			# Update the HUD
-			hud.update_equipped_from_player(player)
-			
-			# Update player stats display
-			var stats = {
-				"STR": player.strength,
-				"STAM": player.stamina,
-				"INT": player.intelligence,
-				"AGI": player.agility,
-				 "armor": player.armor,
-				"resistance": player.resistance
-			}
-			hud.update_stats(stats)
-			
-			# Reset selection
-			hud.selected_equipped_slot = ""
-	
-	if item_dialog:
-		item_dialog.hide()
-
-# Add this function to handle using items (like potions)
+# Delegate to item manager
 func _on_use_button_pressed():
 	var index = hud.selected_inventory_index
-	if player and index >= 0 and index < player.inventory.size():
-		var item = player.inventory[index]
-		
-		# Check for both Consumable and Potion types
-		if item.type == "Consumable" or item.type == "Potion":
-			var used = false
-			
-			# Handle healing potions - check for both "heal" and "health_restore" properties
-			if "heal" in item.stats:
-				var heal_amount = item.stats["heal"]
-				player.health = min(player.health + heal_amount, player.max_health)
-				game_label.text = "Used " + item.name + " and restored [color=#55ff55]" + str(heal_amount) + " health[/color]!"
-				used = true
-			elif "health_restore" in item.stats:
-				var heal_amount = item.stats["health_restore"]
-				player.health = min(player.health + heal_amount, player.max_health)
-				game_label.text = "Used " + item.name + " and restored [color=#55ff55]" + str(heal_amount) + " health[/color]!"
-				used = true
-			
-			# Handle mana potions - check for mana property
-			if "mana" in item.stats:
-				var mana_amount = item.stats["mana"]
-				player.mana = min(player.mana + mana_amount, player.max_mana)
-				game_label.text = "Used " + item.name + " and restored [color=#5555ff]" + str(mana_amount) + " mana[/color]!"
-				used = true
-			
-			if used:
-				# Remove the item after use
-				player.inventory.remove_at(index)
-				
-				# Update the HUD
-				hud.update_inventory(player.inventory)
-				hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
-				
-				# Reset selection
-				hud.selected_inventory_index = -1
+	if item_manager.handle_use_item(index):
+		# Success - handled by item_manager
+		pass
 	
-	if item_dialog:
-		item_dialog.hide()
+	item_dialog.hide()
 
 # Handle cancel button
 func _on_cancel_button_pressed():
@@ -647,35 +354,7 @@ func _on_cancel_button_pressed():
 # Update stats display in the new location
 func update_player_stats_display():
 	if player:
-		# Update derived stats first
-		var stats = {
-			"STR": player.strength,
-			"STAM": player.stamina,
-			"INT": player.intelligence,
-			"AGI": player.agility,
-			"armor": player.armor,
-			"resistance": player.resistance
-		}
-		
-		# Update the HUD
-		hud.update_stats(stats)
-		hud.update_player_stats(player.health, player.max_health, player.mana, player.max_mana, player.xp, player.max_xp)
-		
-		# Update individual stats in the grid if it exists
-		var stats_grid = hud.get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer")
-		if stats_grid:
-			if stats_grid.get_node_or_null("STRValue"): 
-				stats_grid.get_node("STRValue").text = str(player.strength)
-			if stats_grid.get_node_or_null("STAMValue"): 
-				stats_grid.get_node("STAMValue").text = str(player.stamina)
-			if stats_grid.get_node_or_null("INTValue"): 
-				stats_grid.get_node("INTValue").text = str(player.intelligence)
-			if stats_grid.get_node_or_null("AGIValue"): 
-				stats_grid.get_node("AGIValue").text = str(player.agility)
-			if stats_grid.get_node_or_null("DEFValue"): 
-				stats_grid.get_node("DEFValue").text = str(player.armor)
-			if stats_grid.get_node_or_null("RESValue"): 
-				stats_grid.get_node("RESValue").text = str(player.resistance)
+		item_manager.update_stats_display()
 
 func _on_talent_button_pressed():
 	if player:
@@ -705,13 +384,13 @@ func update_game_text(text, text_type = "normal"):
 	
 	game_label.text = colored_text
 
-func add_to_game_log(text: String, color: Color = Color.WHITE, clear_first: bool = false):
+func add_to_game_log(text: String, clear_first: bool = false):
 	if hud:
 		hud.add_text_to_log(text, clear_first)
 
 func _on_story_updated(text, clear_text = false):
 	# Add the text to the game log, clearing first if requested
-	add_to_game_log(text, Color.WHITE, clear_text)
+	add_to_game_log(text, clear_text)
 	
 	# Clear any existing story choice buttons when main text changes
 	# (but not for item acquisition notifications)
@@ -809,23 +488,23 @@ func start_combat_with_enemy(enemy_id: String):
 	}
 	
 	if enemy_id in enemy_data:
-		enemy = Enemy.new()
+		current_enemy = Enemy.new()
 		var data = enemy_data[enemy_id]
-		enemy.name = data.name
-		enemy.health = data.health
-		enemy.max_health = data.max_health
-		enemy.attack = data.attack
-		enemy.defense = data.defense
+		current_enemy.name = data.name
+		current_enemy.health = data.health
+		current_enemy.max_health = data.max_health
+		current_enemy.attack = data.attack
+		current_enemy.defense = data.defense
 		if "xp_reward" in data:
-			enemy.xp_reward = data.xp_reward
+			current_enemy.xp_reward = data.xp_reward
 		if "gold_reward" in data:
-			enemy.gold_reward = data.gold_reward
+			current_enemy.gold_reward = data.gold_reward
 		
 		start_battle()
 	else:
 		print("Unknown enemy ID: ", enemy_id)
 		# Create default enemy as fallback
-		enemy = Enemy.new()
+		current_enemy = Enemy.new()
 		start_battle()
 
 # Process keyboard shortcuts for abilities

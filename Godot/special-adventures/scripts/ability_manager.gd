@@ -97,3 +97,75 @@ func _on_keybind_button_pressed(ability_id):
     
     dialog.set_meta("input_handler", handler)
     dialog.gui_input.connect(handler)
+
+class_name AbilityManager
+extends RefCounted
+
+var game
+var player
+var hud
+var ability_cooldowns = {}
+
+func _init(p_game):
+    game = p_game
+    player = game.player
+    hud = game.hud
+
+func use_ability_with_cooldown(ability_id, cooldown_time):
+    # Put ability on cooldown
+    ability_cooldowns[ability_id] = cooldown_time
+    
+    # Start a timer to remove the cooldown
+    var timer = game.get_tree().create_timer(cooldown_time)
+    timer.timeout.connect(func(): ability_cooldowns.erase(ability_id))
+    
+    # Update action bar to show cooldown
+    if "abilities" in player and ability_id in player.abilities:
+        var ability = player.abilities[ability_id]
+        hud.show_action_cooldown(ability.name, cooldown_time)
+    
+    # Update available actions to exclude this ability
+    game.combat_manager.update_available_actions()
+
+func process_ability_action(action_data):
+    # Handle abilities with special effects
+    if "ability_id" in action_data:
+        var ability_id = action_data.ability_id
+        var ability = player.abilities[ability_id]
+        
+        # Use ability and apply cooldown
+        var result = player.use_ability(ability_id, game.current_enemy)
+        
+        if result.success:
+            game.add_to_game_log(result.message)
+            
+            # Apply cooldown if specified
+            if "cooldown" in ability:
+                use_ability_with_cooldown(ability_id, ability.cooldown)
+            
+            # Process damage or other effects
+            if "damage" in result:
+                if result.type == Player.AttackType.MAGIC:
+                    game.current_enemy.take_magical_damage(result.damage)
+                else:
+                    game.current_enemy.take_damage(result.damage)
+                
+                game.add_to_game_log("The ability deals [color=#ff5555]" + 
+                    str(result.damage) + "[/color] damage!")
+                
+                # Update enemy health display
+                hud.update_enemy_hp([game.current_enemy])
+                
+                # Check if enemy died
+                if not game.current_enemy.is_alive():
+                    game.combat_manager.handle_enemy_defeat()
+            
+            # Update player stats after ability use
+            hud.update_player_stats(player.health, player.max_health, 
+                player.mana, player.max_mana, player.xp, player.max_xp)
+            
+            return true
+        else:
+            game.add_to_game_log("[color=#ff5555]" + result.message + "[/color]")
+    
+    return false
