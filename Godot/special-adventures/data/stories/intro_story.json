@@ -1,11 +1,11 @@
 {
-  "title": "Beginning of the Journey",
+  "title": "The Journy of the Silver Amulet",
   "author": "You",
   "version": "1.0",
   "start_node": "intro_1",
   "nodes": {
     "intro_1": {
-      "text": "You awaken in a dimly lit room, the air thick with the smell of dust and forgotten memories. Your head throbs with a dull ache, and you can't quite remember how you got here.\n\nAs your eyes adjust to the darkness, you notice a wooden door to the north and a small window to the east.",
+      "text": "You awaken in a dimly lit room, the air thick with the smell of smoke. Your head throbs with a dull ache, and you can't quite remember how you got here.\n\nAs your eyes adjust to the darkness, you notice a wooden door to the north and a small window to the east.",
       "choices": [
         {
           "text": "Examine the room more carefully",
@@ -39,7 +39,7 @@
       ]
     },
     "read_parchment": {
-      "text": "You unfold the parchment carefully, its edges crumbling slightly at your touch. Written in an elegant script, you read:\n\n'If you are reading this, then the spell worked. Your memories will return in time, but for now, know this: you are in grave danger. The amulet must be protected at all costs. Find me at the Crescent Moon tavern in Aldermere.'\n\nThe note is signed simply with the letter 'M'.",
+      "text": "You pick up the Parchment, and see a silver amulet underneath./n/nWritten in an elegant script, you read:\n\n'I have done what I can for you, and the rest is between you and the Gods.\n\n If you do regain consiousness seek out the Crescent Moon tavern in Aldermere.\n\nMay the Gods guide you.\n\nS'\n\nThe note is signed with a simple symbol that you can't quite make out.",
       "actions": [
         {
           "type": "set_flag",
@@ -49,8 +49,8 @@
       ],
       "choices": [
         {
-          "text": "Check if you have an amulet",
-          "next": "check_amulet"
+          "text": "pick up the Amulet",
+          "next": "collect_amulet"
         },
         {
           "text": "Return to examining the room",
@@ -58,21 +58,13 @@
         }
       ]
     },
-    "check_amulet": {
-      "text": "You instinctively reach for your neck and feel a smooth, cold object beneath your shirt. Pulling it out, you discover a silver amulet with a strange symbol etched into its surface—a crescent moon intertwined with what looks like a key.\n\nAs you hold it, the amulet seems to pulse faintly with an inner light, resonating with something deep within you.",
-      "actions": [
-        {
-          "type": "set_flag",
-          "flag": "found_amulet",
-          "value": true
-        },
-        {
-          "type": "add_item",
-          "item_id": "silver_amulet",
-          "quantity": 1
-        }
-      ],
+    "collect_amulet": {
+      "text": "You instinctively reach for the Amulet, cold to touch you bring it up to the light. A silver amulet with a strange symbol etched into its surface—a crescent moon intertwined with what looks like a key.\n\nAs you hold it, the amulet seems to pulse faintly with an inner light, as if responding to your touch.",
       "choices": [
+        {
+          "text": "Take the Amulet",
+          "next": "take_amulet"
+        },
         {
           "text": "Return to examining the room",
           "next": "examine_room"
@@ -82,6 +74,31 @@
           "next": "wooden_door"
         }
       ]
+    },
+    "take_amulet": {
+      "text": "You slip the amulet around your neck, feeling a strange sense of familiarity as it settles against your chest. The symbol on the amulet seems to resonate with something deep within you, though you can't quite place it.\n\nAs you wear the amulet, you feel a sense of protection and guidance, as if it's watching over you.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "found_amulet",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Try the wooden door",
+          "next": "wooden_door"
+        },
+        {
+          "text": "Look out the window",
+          "next": "window"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        }
+      ]
+    }
     },
     "wooden_door": {
       "text": "You approach the wooden door and test the handle. It turns with a slight creak, surprisingly unlocked. Beyond lies a narrow stone corridor dimly lit by torch sconces spaced along the walls.\n\nThe corridor extends about thirty feet before turning to the right. You can hear faint sounds—perhaps voices—coming from somewhere beyond the bend.",
@@ -179,16 +196,6 @@
     "behind_tapestry": {
       "text": "You carefully move the tapestry aside and discover a small alcove in the wall. Within it lies a dusty leather-bound book and a simple dagger with unusual runes etched along its blade.",
       "actions": [
-        {
-          "type": "add_item",
-          "item_id": "runed_dagger",
-          "quantity": 1
-        },
-        {
-          "type": "add_item",
-          "item_id": "mysterious_book",
-          "quantity": 1
-        }
       ],
       "choices": [
         {
@@ -205,9 +212,14 @@
       "text": "You take the book and dagger, feeling oddly like they were meant for you. The dagger fits comfortably in your hand, and despite its age, the blade looks remarkably sharp.\n\nAs you touch the book, brief flashes of memory stir—unfamiliar symbols, whispered incantations, and the sensation of power flowing through your fingertips. Perhaps you were once a practitioner of the arcane?",
       "actions": [
         {
-          "type": "modify_stat",
-          "stat": "attack",
-          "amount": 2
+          "type": "add_item",
+          "item_id": "runed_dagger",
+          "quantity": 1
+        },
+        {
+          "type": "add_item",
+          "item_id": "mysterious_book",
+          "quantity": 1
         }
       ],
       "next": "examine_room"
