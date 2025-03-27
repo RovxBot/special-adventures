@@ -18,6 +18,9 @@ func _ready():
 func setup(p_player):
 	player = p_player
 	available_points = player.stat_points if "stat_points" in player else 0
+	
+	# Force a full update of all values when window opens
+	print("Stats window opening - Current DEF: " + str(player.def))
 	update_ui()
 
 func connect_stat_button(stat_name):

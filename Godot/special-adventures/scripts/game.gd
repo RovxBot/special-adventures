@@ -465,6 +465,9 @@ func _on_story_choices_available(choices):
 	# Debug output to verify choices are being received
 	print("Received " + str(choices.size()) + " story choices")
 	
+	# Make sure the action container is visible for story choices
+	show_story_ui(true)
+	
 	# Create buttons for each choice
 	for i in range(choices.size()):
 		var choice = choices[i]
@@ -602,6 +605,22 @@ func show_combat_ui(visible: bool):
 	if !visible:
 		if submit_button:
 			submit_button.visible = false
+
+# Show story UI with choice buttons
+func show_story_ui(visible: bool):
+	var action_container = hud.get_node_or_null("MainLayout/ActionButtonsContainer")
+	if action_container:
+		action_container.visible = visible
+		print("Story UI visibility set to: " + str(visible))
+	
+	# If hiding story UI, also hide the submit button if it's visible
+	if !visible and submit_button:
+		submit_button.visible = false
+
+# When story is done or buttons should be cleared
+func clear_story_ui():
+	clear_action_buttons()
+	show_story_ui(false)
 
 # When equipping items, don't automatically update the action bar unless in combat
 func update_equipment_ui():

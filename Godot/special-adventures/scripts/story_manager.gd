@@ -94,14 +94,16 @@ func select_choice(choice_index: int):
 	
 	var choice = node.choices[choice_index]
 	
-	## ...existing code...
-	
 	if choice.has("actions"):
 		process_actions(choice.actions)
 	
 	# Move to the next node specified by this choice
 	if choice.has("next"):
 		process_node(choice.next)
+	else:
+		# If no next node, hide the story UI
+		if game_node:
+			game_node.clear_story_ui()
 
 func process_actions(actions: Array):
 	for action in actions:

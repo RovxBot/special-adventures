@@ -167,10 +167,11 @@ func update_stats_display():
 		"STAM": player.stamina,
 		"INT": player.intelligence,
 		"AGI": player.agility,
-			"DEF": player.def,           # Changed from armor to def
-		"resistance": player.resistance
+		"DEF": player.def,           # Changed from armor to def
+		"RES": player.resistance     # Changed from "resistance" to "RES" for consistency
 	}
 	
+	print("Updating HUD stats display. Current DEF: " + str(player.def))
 	hud.update_stats(stats)
 
 func equip_item(item, slot):
@@ -304,19 +305,18 @@ func apply_item_stats(item, add_stats: bool = true):
 		print("WARNING: RES went negative (" + str(player.resistance) + "). Resetting to 0.")
 		player.resistance = 0
 	
-	# Update the HUD with the new stats
-	update_player_stats_display()
+	# Force an immediate update of the HUD stats to ensure they're in sync
+	var stats = {
+		"STR": player.strength,
+		"STAM": player.stamina,
+		"INT": player.intelligence,
+		"AGI": player.agility,
+		"DEF": player.def,
+		"RES": player.resistance
+	}
+	print("DIRECT STATS UPDATE - DEF: " + str(player.def) + ", RES: " + str(player.resistance))
+	hud.update_stats(stats)
 
-# Add this new function to refresh stats display after item operations
+# Replacing the existing function to avoid redundancy
 func update_player_stats_display():
-	# Update stats display in HUD
-	if hud:
-		var stats = {
-			"STR": player.strength,
-			"STAM": player.stamina,
-			"INT": player.intelligence,
-			"AGI": player.agility,
-			"DEF": player.def,
-			"RES": player.resistance  # Use "RES" consistently as the key
-		}
-		hud.update_stats(stats)
+	update_stats_display() # Call our standardized function

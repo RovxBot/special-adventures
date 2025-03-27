@@ -57,10 +57,11 @@ func _ready():
 	update_talent_points(0)
 	update_stat_points(0)
 	
-	# Hide combat UI elements initially
+	# Hide action buttons container initially
 	var action_container = get_node_or_null("MainLayout/ActionButtonsContainer")
 	if action_container:
 		action_container.visible = false
+		print("Action container initially hidden")
 
 # Helper function to configure progress bar appearance
 func _configure_progress_bar(bar):
@@ -269,8 +270,12 @@ func update_stats(stats_dict):
 	var int_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/INTValue")
 	var agi_value = get_node_or_null("MainLayout/BottomSection/PlayerStatsSection/PlayerStatusPanel/MarginContainer/PlayerStats/StatsGridContainer/AGIValue")
 	
-	# Print debug info 
+	# Print full debug info 
 	print("Updating HUD stats: " + str(stats_dict))
+	
+	# Check if we found the DEF node
+	if def_value == null:
+		print("ERROR: Could not find DEF value node in HUD!")
 	
 	# Update the displayed values if the nodes exist
 	if str_value and "STR" in stats_dict:
@@ -280,21 +285,23 @@ func update_stats(stats_dict):
 		stam_value.text = str(stats_dict["STAM"])
 	
 	if def_value and "DEF" in stats_dict:
+		var old_value = def_value.text
 		def_value.text = str(stats_dict["DEF"])
-		print("DEF display updated to: " + str(stats_dict["DEF"]))
+		print("DEF display updated from " + old_value + " to: " + str(stats_dict["DEF"]))
 	
 	if res_value:
-		# Check for both possible key names for resistance
+		# Only check for RES now (standardized)
 		if "RES" in stats_dict:
 			res_value.text = str(stats_dict["RES"])
-		elif "resistance" in stats_dict:
-			res_value.text = str(stats_dict["resistance"])
 	
 	if int_value and "INT" in stats_dict:
 		int_value.text = str(stats_dict["INT"])
 	
 	if agi_value and "AGI" in stats_dict:
 		agi_value.text = str(stats_dict["AGI"])
+	
+	# Force UI update
+	queue_redraw()
 
 # Update equipped items with colors
 func update_equipped(equipped_items: Dictionary, equipped_colors: Dictionary = {}):
