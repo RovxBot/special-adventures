@@ -1,0 +1,81 @@
+# Act 1: Human start
+
+## The keep
+### Start
+The player wkaed in a dark smoke filled room with a single candle flickering on the bedside table. as he looks around the room he can see a fireplace on the north wall with a wooden door beside it, a small window on the east wall, and a large tapestry on the south wall. A small wooden table beside the player holds the flickering candle, and a partchment note.
+The player can interact with the Wooden door, the window, the tapestry, and the small table.
+
+### Wooden door
+The player walks over to the wooden door and tries the large iron handle. The door is locked. The player can interact with the door to try and open it again to the same result, or walk back to the center of the room.
+
+### Window
+The player walks to the window and looks out. You can see rolling hills and a forest in the distance. Flickering lights indicate the presance of a village. The player can Interact with the window and try to open it, or walk back to the center of the room.
+
+    ### Open window (no amulet)
+    the player tries to open the window to no avail. The player must have collected the amulet to open the window. The player can walk back to the center of the room.
+
+    ### Open window (with amulet)
+    The player tries to open the window and notices a small mark on the window sill. Its faded and hard to make out, but it looks like the same mark on the amulet. The player can interact with the mark to open the window, or walk back to the center of the room.
+
+    #### Interact with mark
+    The player touches the amulet to the mark on the window sil, and the window shimmers and fades away. The player can jump through the window (stam check) or walk back to the center of the room.
+
+        #### Jump through window (stam check)
+        The player jumps through the window and lands in a small courtyard garden. Looking around you can see the forest in the distance. You can also hear talking coming from aroud the corner of the building you jumped from. The player can walk around the corner, move towards the forest, or walk back to the window.
+
+            ##### Walk around the corner
+            The player walks around the corner and sees what look like guards talking. The player can listen in on the conversation, or walk back to the garden.
+
+                #### Listen in on the conversation
+                The player listens in on the conversation and hears the group making idle conversation. The player can make their presance known, or walk back to the garden.
+                
+                    ##### Make their presance known
+                    The player makes their presance known and the guards are startled. The player can talk to the guards, or walk back to the garden.
+
+                        #### Talk to the guards
+                        The player talks to the guards and they ask the player who they are and what they are doing here. The player can tell the guards the truth, or lie to them.
+
+                            ##### Tell the guards the truth
+                            The player tells the guards the truth and the gaurds make to grab the player. Combat starts with black keep gaurds. (2x level 1 human wariors)
+                            After combat if the player is victorious the player can return to the garden, or continue around the side of the building.
+
+                            ##### Lie to the guards
+                            The player lies to the guards and they are suspicious. The player can try to convince the guards that they are a friend, or try and walk away.
+
+                                #### Try to convince the guards that they are a friend
+                                The player tries to convince the guards that they are a friend and the guards are still suspicious. The player can try to bribe the guards, or try and walk away.
+
+                                    ##### Try to bribe the guards
+                                    The player tries to bribe the guards and they accept. The player must have 10 gold to bribe the gaurds. If the player dosent have the coin then combat will start with black keep gaurds. (2x level 1 human wariors)
+                                    After combat if the player is victorious the player can return to the garden, or continue around the side of the building.
+
+                                    ##### Try and walk away
+                                    The player tries to walk away and the guards grab the player. Combat starts with black keep gaurds. (2x level 1 human wariors)
+                                    After combat if the player is victorious the player can return to the garden, or continue around the side of the building.
+
+                                #### Try and walk away
+                                The player tries to walk away and the guards grab the player. Combat starts with black keep gaurds. (2x level 1 human wariors)
+                                After combat if the player is victorious the player can return to the garden, or continue around the side of the building.
+
+            ##### Move towards the forest
+            The player moves towards the forest and sees a small path leading into the trees. The player can walk down the path, or walk back to the garden.
+
+                #### Walk down the path
+                The player walks down the path and sees a small clearing with a large tree in the center. The player can walk towards the tree, or walk back to the path.
+
+                    ##### Walk towards the tree
+                    The player walks towards the tree and sees a small chest at the base of the tree. The player can open the chest, or walk back to the clearing.
+
+                        #### Open the chest
+                        The player opens the chest and finds a small amulet inside. The player can take the amulet, or walk back to the clearing.
+
+                            ##### Take the amulet
+                            The player takes the amulet and feels a strange power emanating from it. The player can walk back to the clearing.
+
+    #### Walk back to the center of the room
+    The player walks back to the center of the room.
+
+### Tapestry
+The palyer walks over to the tapestry and examins it. The tapestry depicts a large black keep with a forest on the outskirts, and a small village  in the distance. 
+
+### Small table
