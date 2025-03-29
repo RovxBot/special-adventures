@@ -8,6 +8,36 @@ The player can interact with the Wooden door, the window, the tapestry, and the 
 ### Wooden door
 The player walks over to the wooden door and tries the large iron handle. The door is locked. The player can interact with the door to try and open it again to the same result, or walk back to the center of the room.
 
+### Tapestry
+The palyer walks over to the tapestry and examins it. The tapestry depicts a large black keep with a forest on the outskirts, and a small village in the distance. (If you have looked out the window already add the following: "You can tell that the tapestry depicts the keep that you are currently in and the surrounding ariea.")
+The player can interact with the tapestry to try and pull it down, or walk back to the center of the room.
+
+    #### Pull down the tapestry
+    The player pulls down the tapestry and finds a small wooden door behind it. There is a marking on the middle of the door. (If the player has the Amulet: You notice that the marking is the same as what is on the locket you have found!) The player can attempt to open the door, or walk back to the center of the room.
+
+        ##### Attempt to open the door (with amulet)
+        You place the Amulet up to the door. A low hium fills the room and you hear the door click. You open the door to find a small knife, and a small leather book. The player can take the knife and book, or walk back to the center of the room.
+
+            #### Take the knife and book
+            The player takes the knife and book. The player can walk back to the center of the room.
+            (Add Small Knife and Small leather book to inventory)
+
+### Small table
+The player walks to the small table and examines it. The table is small and made of oak. There is a flickering candle on the table, and a small parchment note. The player can interact with the candle, the parchment note, or walk back to the center of the room.
+
+    #### Candle
+    The player picks up the candle and notices that it is almost burnt out. The player can put the candle back down (back to Small table), or walk back to the center of the room.
+
+    #### Parchment note
+    The player picks up the parchment note and reads it. It says nothing or importance, but there is a diagram of a strange symbol on the back. The symbol depicts a circle with a rune of some kind inside of it. The player notices a small silver amulet under the parchment. The player can take the Amulet, or walk back to the centre of the room.
+
+        ##### Take the Amulet
+        The player takes the amulet and feels a strange power emanating from it. The player can walk back to the center of the room.
+        (Add Amulet to inventory)
+        (If the player has already looked out the window, add the following: "You notice that the amulet has a small mark on it. It looks like the same mark that is on the window sill.")
+        (If the player has already pulled down the tapestry, add the following: "You notice that the amulet has a small mark on it. It looks like the same mark that is on the door behind the tapestry.")
+        (If the player has done both of the above, add the following: "You notice that the amulet has a small mark on it. It looks like the same mark that is on the door behind the tapestry and the window sill.")
+
 ### Window
 The player walks to the window and looks out. You can see rolling hills and a forest in the distance. Flickering lights indicate the presance of a village. The player can Interact with the window and try to open it, or walk back to the center of the room.
 
@@ -57,25 +87,79 @@ The player walks to the window and looks out. You can see rolling hills and a fo
                                 The player tries to walk away and the guards grab the player. Combat starts with black keep gaurds. (2x level 1 human wariors)
                                 After combat if the player is victorious the player can return to the garden, or continue around the side of the building.
 
+                                    #### Continue around the side of the building
+                                    The player continues around the side of the building and sees a tall iron fence blocking off the garden from the rest of the keep. Your path is blocked you will have to go back to the garden and try another way. The player can walk back to the garden.
+                                    (The player moves back to the garden but will not run into any guards this time.)
+
             ##### Move towards the forest
-            The player moves towards the forest and sees a small path leading into the trees. The player can walk down the path, or walk back to the garden.
+            The player moves towards the forest and sees a small path leading into the trees. The forest path is dark but you can just make out some flickering lights in the distance. The player can walk down the path, or walk back to the garden.
 
                 #### Walk down the path
-                The player walks down the path and sees a small clearing with a large tree in the center. The player can walk towards the tree, or walk back to the path.
+                The player walks down the path and sees a small clearing open up with a large tree in the center. The player can walk towards the tree, or walk back to the path.
 
                     ##### Walk towards the tree
-                    The player walks towards the tree and sees a small chest at the base of the tree. The player can open the chest, or walk back to the clearing.
+                    The player walks towards the tree and hears a howl in the distance. The player is surounded by darkness but can hear low growling. The player is attacked by wolfs. (2x level 1 wolves)
+                    After combat if the player is victorious the player can walk back to the path, or continue towards the tree.
+                        
+                            #### Continue towards the tree
+                            The player continues towards the tree and sees a small stone altar at the base of the tree. The player can examine the altar, or walk back to the path.
+    
+                                ##### Examine the altar
+                                The player examines the altar and sees a small mouldy bag, and a worn logging axe. There must have been someone logging the aria. We are getting closer to the village. The player can take the axe, walk back to the path, or press on towards the village.
+    
+                                    #### Take the axe
+                                    Player takes the axe (Add Worn logging axe to inventory)
+                                    The player can walk back to the path, or press on towards the village.
 
-                        #### Open the chest
-                        The player opens the chest and finds a small amulet inside. The player can take the amulet, or walk back to the clearing.
+                                    #### Press on towards the village
+                                    The player presses through the darkness towards the village. The player can see a fire in the distance, notices the smell of cooking meat. the murmewr of voices can be heard. The player can walk towards the fire, or walk back to the tree.
 
-                            ##### Take the amulet
-                            The player takes the amulet and feels a strange power emanating from it. The player can walk back to the clearing.
+                                        ##### Walk towards the fire
+                                        The player walks towards the fire and sees a small camp with a few people sitting around it. This is a village hunting party. The player can approach the camp, or walk back to the path.
+
+                                            #### Approach the camp
+                                            The player approaches the camp and the people notice you. They are startled and ask who you are. The player can tell them the truth, or lie to them.
+
+                                                ##### Tell them the truth
+                                                The player tells them the truth and they are visably shocked. "Someone from the keep! Any you made it out alive lad! Never has anyone been taken in and managed to make it back out again" The group lowers their weapons and the player can talk to them, or walk away back to the path.
+
+                                                    #### Continue taking to the hunters
+                                                    The player continues talking to the hunters and they tell you that they are a hunting party from the village. They were out hunting when they heard a howl in the distance. They are worried about the wolves in the area. The player can ask directions to the village, Tell them you killed the wolfs and they are no longer a threat, or Say good bye and walk away.
+                                                        
+                                                        
+                                                            ##### Ask directions to the village
+                                                            The player asks for directions to the village and they tell you that it is just down the path. The player can walk towards the village, or walk back to the path.
+    
+                                                            ##### Tell them you killed the wolfs and they are no longer a threat
+                                                            The player tells them that they killed the wolfs and they are no longer a threat. The hunters are impressed and ask if you would like to join them for dinner. The player can accept, or decline.
+    
+                                                                #### Accept
+                                                                The player accepts and joins them for dinner. After dinner the hunters tell you that they have some supplies that they can spare. The player can take some supplies, or walk away.
+    
+                                                                    ##### Take some supplies
+                                                                    The player takes some supplies (Add 5 rations to inventory)
+                                                                    The player can walk towards the village, or walk back to the path.
+    
+                                                                    ##### Walk away
+                                                                    The player walks away and heads towards the village.
+    
+                                                            ##### Say good bye and walk away
+                                                            The player says good bye and walks away towards the village.
+
+                                                ##### Lie to them
+                                                The player lies to them and they are suspicious. The player can try to convince them that you are a friend, or try and walk away.
+
+                                                    #### Try and convince them that you are a friend
+                                                    The player tries to convince them that you are a friend and they are still suspicious. The player can try to bribe them, or try and walk away.
+
+                                                        ##### Try to bribe them
+                                                        The player tries to bribe them and they accept. The player must have 10 gold to bribe them. If the player dosent have the coin then combat will start with village hunters. (2x level 1 human hunters)
+                                                        After combat if the player is victorious they can return to the path, or continue towards the village.
+
+                                                        ##### Try and walk away
+                                                        The player tries to walk away and they grab you. Wow ther lad, not so fast. if you came from that keep you must tell us who you are. cant be letting just anyone wander back towards out home. The player can tell the truth, or pick a fight with the hunters.
+                                                        
 
     #### Walk back to the center of the room
     The player walks back to the center of the room.
 
-### Tapestry
-The palyer walks over to the tapestry and examins it. The tapestry depicts a large black keep with a forest on the outskirts, and a small village  in the distance. 
-
-### Small table

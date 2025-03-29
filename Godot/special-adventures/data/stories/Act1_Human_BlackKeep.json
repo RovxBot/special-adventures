@@ -1,0 +1,340 @@
+{
+  "title": "Act 1: Human Start - The Black Keep",
+  "Author": "Sam Cooke",
+  "start_node": "start",
+  "nodes": {
+    "start": {
+      "text": "You awaken in a dark, smoke-filled room with a single candle flickering on the bedside table. As you look around, you see a fireplace on the north wall with a wooden door beside it, a small window on the east wall, and a large tapestry on the south wall. A small wooden table beside you holds the flickering candle and a parchment note.",
+      "choices": [
+        { "text": "Examine the wooden door", "next": "wooden_door" },
+        { "text": "Examine the tapestry", "next": "tapestry" },
+        { "text": "Examine the small table", "next": "small_table" },
+        { "text": "Examine the window", "next": "window" }
+      ]
+    },
+    "wooden_door": {
+      "text": "You walk over to the wooden door and try the large iron handle. The door is locked.",
+      "choices": [
+        { "text": "Try to open the door again", "next": "wooden_door" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "tapestry": {
+      "text": "You walk over to the tapestry and examine it. The tapestry depicts a large black keep with a forest on the outskirts and a small village in the distance.",
+      "conditions": [
+        {
+          "type": "flag",
+          "flag": "looked_out_window",
+          "value": true,
+          "text": "You can tell that the tapestry depicts the keep you are currently in and the surrounding area."
+        }
+      ],
+      "choices": [
+        { "text": "Pull down the tapestry", "next": "pull_tapestry" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "pull_tapestry": {
+      "text": "You pull down the tapestry and find a small wooden door behind it. There is a marking on the middle of the door.",
+      "conditions": [
+        {
+          "type": "flag",
+          "flag": "has_amulet",
+          "value": true,
+          "text": "You notice that the marking is the same as the one on the amulet you found!"
+        }
+      ],
+      "choices": [
+        { "text": "Attempt to open the door", "next": "open_hidden_door" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "open_hidden_door": {
+      "conditions": [
+        {
+          "type": "flag",
+          "flag": "has_amulet",
+          "value": true,
+          "text": "You place the amulet up to the door. A low hum fills the room, and you hear the door click. You open the door to find a small knife and a small leather book."
+        }
+      ],
+      "choices": [
+        { "text": "Take the knife and book", "next": "take_hidden_items" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "take_hidden_items": {
+      "text": "You take the knife and book.",
+      "actions": [
+        { "type": "add_item", "item_id": "small_knife", "quantity": 1 },
+        { "type": "add_item", "item_id": "small_leather_book", "quantity": 1 }
+      ],
+      "choices": [
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "small_table": {
+      "text": "You walk to the small table and examine it. The table is small and made of oak. There is a flickering candle on the table and a small parchment note.",
+      "choices": [
+        { "text": "Examine the candle", "next": "candle" },
+        { "text": "Examine the parchment note", "next": "parchment_note" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "candle": {
+      "text": "You pick up the candle and notice that it is almost burnt out.",
+      "choices": [
+        { "text": "Put the candle back down", "next": "small_table" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "parchment_note": {
+      "text": "You pick up the parchment note and read it. It says nothing of importance, but there is a diagram of a strange symbol on the back. The symbol depicts a circle with a rune of some kind inside it. You notice a small silver amulet under the parchment.",
+      "choices": [
+        { "text": "Take the amulet", "next": "take_amulet" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "take_amulet": {
+      "text": "You take the amulet and feel a strange power emanating from it.",
+      "actions": [
+        { "type": "set_flag", "flag": "has_amulet", "value": true }
+      ],
+      "conditions": [
+        {
+          "type": "flag",
+          "flag": "looked_out_window",
+          "value": true,
+          "text": "You notice that the amulet has a small mark on it. It looks like the same mark that is on the window sill."
+        },
+        {
+          "type": "flag",
+          "flag": "pulled_tapestry",
+          "value": true,
+          "text": "You notice that the amulet has a small mark on it. It looks like the same mark that is on the door behind the tapestry."
+        }
+      ],
+      "choices": [
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "window": {
+      "text": "You walk to the window and look out. You can see rolling hills and a forest in the distance. Flickering lights indicate the presence of a village.",
+      "choices": [
+        { "text": "Try to open the window", "next": "open_window" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "open_window": {
+      "conditions": [
+        {
+          "type": "flag",
+          "flag": "has_amulet",
+          "value": true,
+          "text": "You notice a small mark on the window sill. It looks like the same mark on the amulet. You touch the amulet to the mark, and the window shimmers and fades away."
+        }
+      ],
+      "choices": [
+        { "text": "Jump through the window", "next": "jump_window" },
+        { "text": "Walk back to the center of the room", "next": "start" }
+      ]
+    },
+    "jump_window": {
+      "text": "You jump through the window and land in a small courtyard garden. Looking around, you can see the forest in the distance. You can also hear talking coming from around the corner of the building you jumped from.",
+      "choices": [
+        { "text": "Walk around the corner", "next": "corner" },
+        { "text": "Move towards the forest", "next": "forest_path" },
+        { "text": "Walk back to the window", "next": "start" }
+      ]
+    },
+    "corner": {
+      "text": "You walk around the corner and see what look like guards talking. They seem unaware of your presence.",
+      "choices": [
+        { "text": "Listen in on the conversation", "next": "listen_conversation" },
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "listen_conversation": {
+      "text": "You listen in on the conversation and hear the guards making idle chatter. They seem relaxed, but one of them mentions something about 'keeping an eye on the prisoner.'",
+      "choices": [
+        { "text": "Make your presence known", "next": "make_presence_known" },
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "make_presence_known": {
+      "text": "You step forward and make your presence known. The guards are startled and quickly turn to face you.",
+      "choices": [
+        { "text": "Talk to the guards", "next": "talk_to_guards" },
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "talk_to_guards": {
+      "text": "The guards demand to know who you are and what you're doing here.",
+      "choices": [
+        { "text": "Tell the guards the truth", "next": "truth_to_guards" },
+        { "text": "Lie to the guards", "next": "lie_to_guards" }
+      ]
+    },
+    "truth_to_guards": {
+      "text": "You tell the guards the truth about waking up in the room and not knowing how you got here. The guards exchange glances before one of them steps forward.",
+      "choices": [
+        { "text": "Prepare for combat", "next": "combat_guards" },
+        { "text": "Try to reason with them", "next": "reason_with_guards" }
+      ]
+    },
+    "lie_to_guards": {
+      "text": "You lie to the guards, claiming to be a new recruit sent to assist them. They look skeptical.",
+      "choices": [
+        { "text": "Try to convince them", "next": "convince_guards" },
+        { "text": "Walk away", "next": "jump_window" }
+      ]
+    },
+    "convince_guards": {
+      "text": "You try to convince the guards of your story, but they remain suspicious. One of them steps forward, hand on his weapon.",
+      "choices": [
+        { "text": "Bribe the guards", "next": "bribe_guards" },
+        { "text": "Prepare for combat", "next": "combat_guards" }
+      ]
+    },
+    "bribe_guards": {
+      "text": "You offer the guards some gold to let you pass. They hesitate before accepting your bribe.",
+      "actions": [
+        { "type": "remove_gold", "amount": 10 }
+      ],
+      "choices": [
+        { "text": "Continue around the side of the building", "next": "side_building" },
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "combat_guards": {
+      "text": "The guards draw their weapons and prepare to attack you.",
+      "actions": [
+        { "type": "trigger_combat", "enemy_id": "black_keep_guards", "quantity": 2 }
+      ],
+      "choices": [
+        { "text": "Return to the garden after combat", "next": "jump_window" },
+        { "text": "Continue around the side of the building", "next": "side_building" }
+      ]
+    },
+    "side_building": {
+      "text": "You continue around the side of the building and see a tall iron fence blocking off the garden from the rest of the keep. Your path is blocked, and you'll have to go back to the garden and try another way.",
+      "choices": [
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "forest_path": {
+      "text": "You move towards the forest and see a small path leading into the trees. The forest path is dark, but you can just make out some flickering lights in the distance.",
+      "choices": [
+        { "text": "Walk down the path", "next": "forest_clearing" },
+        { "text": "Walk back to the garden", "next": "jump_window" }
+      ]
+    },
+    "forest_clearing": {
+      "text": "You walk down the path and see a small clearing open up with a large tree in the center.",
+      "choices": [
+        { "text": "Walk towards the tree", "next": "approach_tree" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "approach_tree": {
+      "text": "You walk towards the tree and hear a howl in the distance. You are surrounded by darkness but can hear low growling. Suddenly, you are attacked by wolves.",
+      "actions": [
+        { "type": "trigger_combat", "enemy_id": "wolves", "quantity": 2 }
+      ],
+      "choices": [
+        { "text": "Walk back to the path after combat", "next": "forest_path" },
+        { "text": "Continue towards the tree", "next": "tree_altar" }
+      ]
+    },
+    "tree_altar": {
+      "text": "You continue towards the tree and see a small stone altar at its base. There is a moldy bag and a worn logging axe on the altar.",
+      "choices": [
+        { "text": "Examine the altar", "next": "examine_altar" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "examine_altar": {
+      "text": "You examine the altar and find a moldy bag and a worn logging axe. It seems someone was logging the area. You feel closer to the village.",
+      "choices": [
+        { "text": "Take the axe", "next": "take_axe" },
+        { "text": "Press on towards the village", "next": "village_path" }
+      ]
+    },
+    "take_axe": {
+      "text": "You take the axe.",
+      "actions": [
+        { "type": "add_item", "item_id": "worn_logging_axe", "quantity": 1 }
+      ],
+      "choices": [
+        { "text": "Press on towards the village", "next": "village_path" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "village_path": {
+      "text": "You press through the darkness towards the village. You see a fire in the distance and smell cooking meat. The murmur of voices can be heard.",
+      "choices": [
+        { "text": "Walk towards the fire", "next": "village_camp" },
+        { "text": "Walk back to the tree", "next": "tree_altar" }
+      ]
+    },
+    "village_camp": {
+      "text": "You walk towards the fire and see a small camp with a few people sitting around it. This appears to be a village hunting party.",
+      "choices": [
+        { "text": "Approach the camp", "next": "approach_camp" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "approach_camp": {
+      "text": "You approach the camp, and the people notice you. They are startled and ask who you are.",
+      "choices": [
+        { "text": "Tell them the truth", "next": "truth_to_hunters" },
+        { "text": "Lie to them", "next": "lie_to_hunters" }
+      ]
+    },
+    "truth_to_hunters": {
+      "text": "You tell them the truth, and they are visibly shocked. 'Someone from the keep! And you made it out alive! Never has anyone been taken in and managed to make it back out again.'",
+      "choices": [
+        { "text": "Continue talking to the hunters", "next": "talk_hunters" },
+        { "text": "Say goodbye and walk away", "next": "village_path" }
+      ]
+    },
+    "talk_hunters": {
+      "text": "The hunters tell you they are from the village and were out hunting when they heard a howl in the distance. They are worried about wolves in the area.",
+      "choices": [
+        { "text": "Ask directions to the village", "next": "directions_to_village" },
+        { "text": "Tell them you killed the wolves", "next": "killed_wolves" },
+        { "text": "Say goodbye and walk away", "next": "village_path" }
+      ]
+    },
+    "directions_to_village": {
+      "text": "The hunters tell you the village is just down the path.",
+      "choices": [
+        { "text": "Walk towards the village", "next": "village_entry" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "killed_wolves": {
+      "text": "You tell the hunters you killed the wolves. They are impressed and invite you to join them for dinner.",
+      "choices": [
+        { "text": "Accept the invitation", "next": "dinner_with_hunters" },
+        { "text": "Decline and walk away", "next": "village_path" }
+      ]
+    },
+    "dinner_with_hunters": {
+      "text": "You join the hunters for dinner. Afterward, they offer you some supplies.",
+      "actions": [
+        { "type": "add_item", "item_id": "rations", "quantity": 5 }
+      ],
+      "choices": [
+        { "text": "Walk towards the village", "next": "village_entry" },
+        { "text": "Walk back to the path", "next": "forest_path" }
+      ]
+    },
+    "village_entry": {
+      "text": "You arrive at the village, the lights of the Crescent Moon tavern beckoning you inside.",
+      "choices": [
+        { "text": "Enter the tavern", "next": "tavern_entry" }
+      ]
+    }
+  }
+}
