@@ -1,0 +1,11 @@
+[gd_scene load_steps=5 format=3]
+
+[node name="InventoryWindow" type="Panel"]
+# Inventory window: inventory grid, quick-use/equip buttons, close button.
+
+[node name="InventoryGrid" type="GridContainer" parent="."]
+columns = 5
+# Add ItemSlot instances for inventory items.
+
+[node name="ButtonBar" type="HBoxContainer" parent="."]
+# Quick-use, Equip, Close buttons (ActionButton instances).

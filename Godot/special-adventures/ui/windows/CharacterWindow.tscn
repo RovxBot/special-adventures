@@ -1,0 +1,24 @@
+[gd_scene load_steps=10 format=3]
+
+[node name="CharacterWindow" type="Panel"]
+# Character window: portrait, name/level, stats, equipment, inventory, buttons.
+
+[node name="Portrait" type="TextureRect" parent="."]
+# Placeholder for character portrait.
+
+[node name="NameLevel" type="Label" parent="."]
+text = "Name (Lv.1)"
+
+[node name="StatBlock" type="VBoxContainer" parent="."]
+# Add StatBar instances for HP, MP, STR, DEX, etc.
+
+[node name="EquipmentSlots" type="GridContainer" parent="."]
+columns = 3
+# Add ItemSlot instances for head, chest, legs, etc.
+
+[node name="InventoryGrid" type="GridContainer" parent="."]
+columns = 5
+# Add ItemSlot instances for inventory.
+
+[node name="ButtonBar" type="HBoxContainer" parent="."]
+# Equip, Unequip, Close buttons (ActionButton instances).

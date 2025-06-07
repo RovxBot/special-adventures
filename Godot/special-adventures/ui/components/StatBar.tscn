@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[node name="StatBar" type="HBoxContainer"]
+# Reusable stat bar for HP/MP/XP, customizable color/label.
+
+[node name="Label" type="Label" parent="."]
+text = "HP"
+
+[node name="Bar" type="ProgressBar" parent="."]
+min_value = 0
+max_value = 100
+value = 100

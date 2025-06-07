@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3]
+
+[node name="MainGameUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+# Health/Resource Bars (top)
+[node name="HealthResourceBars" type="HBoxContainer" parent="."]
+anchor_left = 0.25
+anchor_right = 0.75
+anchor_top = 0.02
+anchor_bottom = 0.08
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+
+# Main Text Area (center)
+[node name="MainTextArea" type="Panel" parent="."]
+anchor_left = 0.15
+anchor_right = 0.85
+anchor_top = 0.10
+anchor_bottom = 0.80
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+
+# Action Bar (bottom center)
+[node name="ActionBar" type="HBoxContainer" parent="."]
+anchor_left = 0.30
+anchor_right = 0.70
+anchor_top = 0.85
+anchor_bottom = 0.95
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+
+# Character Window (side panel, toggleable)
+[node name="CharacterWindow" type="Control" parent="."]
+visible = false
+anchor_left = 0.0
+anchor_right = 0.15
+anchor_top = 0.10
+anchor_bottom = 0.80
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+
+# Inventory Window (side panel, toggleable)
+[node name="InventoryWindow" type="Control" parent="."]
+visible = false
+anchor_left = 0.85
+anchor_right = 1.0
+anchor_top = 0.10
+anchor_bottom = 0.80
+margin_left = 0
+margin_top = 0
+margin_right = 0
+margin_bottom = 0
+
+# Tooltip Popup (singleton/autoload placeholder)
+[node name="TooltipPopup" type="Control" parent="."]
+visible = false
+
+# Auxiliary Elements (optional, e.g., MiniMap, QuestTracker)
+[node name="AuxiliaryElements" type="Control" parent="."]
+visible = false

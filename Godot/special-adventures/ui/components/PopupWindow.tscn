@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3]
+
+[node name="PopupWindow" type="Panel"]
+# Reusable popup window for tooltips, notifications, and modal dialogs.
+
+[node name="Label" type="Label" parent="."]
+text = "Popup text"
