@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Special Adventures"
-run/main_scene="res://scenes/MainMenu.tscn"
+config/name="special-adventures"
+run/main_scene="res://ui/MainGameUI.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -26,10 +26,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep_height"
-
-[gui]
-
-theme/custom="res://resources/dark_theme.tres"
+mouse_cursor/custom_image="uid://xpupdkkppuaq"
 
 [input]
 
