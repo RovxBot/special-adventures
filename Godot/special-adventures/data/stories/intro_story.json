@@ -1,0 +1,304 @@
+{
+  "title": "The Journy of the Silver Amulet",
+  "author": "You",
+  "version": "1.0",
+  "start_node": "intro_1",
+  "nodes": {
+    "intro_1": {
+      "text": "You awaken in a dimly lit room, the air thick with the smell of smoke. Your head throbs with a dull ache, and you can't quite remember how you got here.\n\nAs your eyes adjust to the darkness, you notice a wooden door to the north and a small window to the east.",
+      "choices": [
+        {
+          "text": "Examine the room more carefully",
+          "next": "examine_room"
+        },
+        {
+          "text": "Try the wooden door",
+          "next": "wooden_door"
+        },
+        {
+          "text": "Look out the window",
+          "next": "window"
+        }
+      ]
+    },
+    "examine_room": {
+      "text": "You take a moment to survey your surroundings. The room is sparsely furnished with only a rickety bed—the one you just rose from—and a small table beside it.\n\nOn the table is an unlit candle and what appears to be a folded piece of parchment. The stone walls are bare except for a faded tapestry depicting a mountain landscape.",
+      "choices": [
+        {
+          "text": "Read the parchment",
+          "next": "read_parchment"
+        },
+        {
+          "text": "Examine the tapestry",
+          "next": "examine_tapestry"
+        },
+        {
+          "text": "Return to your previous options",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "read_parchment": {
+      "text": "You pick up the Parchment, and see a silver amulet underneath./n/nWritten in an elegant script, you read:\n\n'I have done what I can for you, and the rest is between you and the Gods.\n\n If you do regain consiousness seek out the Crescent Moon tavern in Aldermere.\n\nMay the Gods guide you.\n\nS'\n\nThe note is signed with a simple symbol that you can't quite make out.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "read_note",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "pick up the Amulet",
+          "next": "collect_amulet"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        }
+      ]
+    },
+    "collect_amulet": {
+      "text": "You instinctively reach for the Amulet, cold to touch you bring it up to the light. A silver amulet with a strange symbol etched into its surface—a crescent moon intertwined with what looks like a key.\n\nAs you hold it, the amulet seems to pulse faintly with an inner light, as if responding to your touch.",
+      "choices": [
+        {
+          "text": "Take the Amulet",
+          "next": "take_amulet"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        },
+        {
+          "text": "Try the wooden door",
+          "next": "wooden_door"
+        }
+      ]
+    },
+    "take_amulet": {
+      "text": "You slip the amulet around your neck, feeling a strange sense of familiarity as it settles against your chest. The symbol on the amulet seems to resonate with something deep within you, though you can't quite place it.\n\nAs you wear the amulet, you feel a sense of protection and guidance, as if it's watching over you.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "found_amulet",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Try the wooden door",
+          "next": "wooden_door"
+        },
+        {
+          "text": "Look out the window",
+          "next": "window"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        }
+      ]
+    }
+    },
+    "wooden_door": {
+      "text": "You approach the wooden door and test the handle. It turns with a slight creak, surprisingly unlocked. Beyond lies a narrow stone corridor dimly lit by torch sconces spaced along the walls.\n\nThe corridor extends about thirty feet before turning to the right. You can hear faint sounds—perhaps voices—coming from somewhere beyond the bend.",
+      "choices": [
+        {
+          "text": "Step into the corridor",
+          "next": "enter_corridor"
+        },
+        {
+          "text": "Return to the room",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "window": {
+      "text": "You approach the small window and peer outside. You appear to be in a tower of some sort, as the ground is at least three stories below. The landscape beyond is a mix of dense forest and rolling hills under a twilight sky.\n\nIn the distance, you can make out the twinkling lights of what must be a town or village, perhaps a few hours' journey away.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "seen_village",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Try to open the window",
+          "next": "open_window"
+        },
+        {
+          "text": "Return to the center of the room",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "open_window": {
+      "text": "You attempt to open the window, but it appears to be sealed shut—whether by design or years of disuse, you can't tell. As you press against the glass, you notice a symbol etched into the lower corner that matches the one on your amulet.\n\nPerhaps there's a connection?",
+      "choices": [
+        {
+          "text": "Touch the amulet to the symbol",
+          "next": "use_amulet_on_window",
+          "conditions": [
+            {
+              "type": "flag",
+              "flag": "found_amulet",
+              "value": true
+            }
+          ]
+        },
+        {
+          "text": "Return to the center of the room",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "use_amulet_on_window": {
+      "text": "As you bring the amulet close to the etched symbol, both begin to glow with a soft blue light. The window shimmers and suddenly becomes translucent, like a veil of water rather than solid glass.\n\nYou sense that you could pass through it now if you wished, though a jump from this height would surely be dangerous.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "window_activated",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Step through the window (risky!)",
+          "next": "take_window_exit"
+        },
+        {
+          "text": "Back away and return to the room",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "examine_tapestry": {
+      "text": "You approach the faded tapestry for a closer look. What initially appeared to be a simple mountain scene reveals more details upon inspection. The mountains form a range with a distinctive peak in the center that looks oddly like a crown.\n\nIn the foreground, tiny figures seem to be engaged in some kind of ritual around a circular structure. One figure, separate from the others, holds up what might be an amulet.",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "examined_tapestry",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Pull aside the tapestry",
+          "next": "behind_tapestry"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        }
+      ]
+    },
+    "behind_tapestry": {
+      "text": "You carefully move the tapestry aside and discover a small alcove in the wall. Within it lies a dusty leather-bound book and a simple dagger with unusual runes etched along its blade.",
+      "actions": [
+      ],
+      "choices": [
+        {
+          "text": "Take the items",
+          "next": "take_hidden_items"
+        },
+        {
+          "text": "Return to examining the room",
+          "next": "examine_room"
+        }
+      ]
+    },
+    "take_hidden_items": {
+      "text": "You take the book and dagger, feeling oddly like they were meant for you. The dagger fits comfortably in your hand, and despite its age, the blade looks remarkably sharp.\n\nAs you touch the book, brief flashes of memory stir—unfamiliar symbols, whispered incantations, and the sensation of power flowing through your fingertips. Perhaps you were once a practitioner of the arcane?",
+      "actions": [
+        {
+          "type": "add_item",
+          "item_id": "runed_dagger",
+          "quantity": 1
+        },
+        {
+          "type": "add_item",
+          "item_id": "mysterious_book",
+          "quantity": 1
+        }
+      ],
+      "next": "examine_room"
+    },
+    "enter_corridor": {
+      "text": "You step cautiously into the corridor, your footsteps echoing slightly on the stone floor. The air is cooler here, and you can feel a slight breeze from somewhere ahead.\n\nAs you approach the bend in the corridor, the voices become clearer—two people are engaged in a heated discussion, though you can't make out the words yet.",
+      "next": "corridor_choice"
+    },
+    "corridor_choice": {
+      "text": "You have a decision to make: do you proceed cautiously to eavesdrop on the conversation, or announce your presence?",
+      "choices": [
+        {
+          "text": "Move quietly to listen in on the conversation",
+          "next": "eavesdrop"
+        },
+        {
+          "text": "Announce your presence",
+          "next": "announce_presence"
+        },
+        {
+          "text": "Return to your room",
+          "next": "intro_1"
+        }
+      ]
+    },
+    "eavesdrop": {
+      "text": "You move stealthily toward the bend in the corridor, pressing yourself against the wall as you inch closer to the voices.\n\n\"The spell was stronger than anticipated,\" says a deep voice with a hint of frustration. \"Their memory should have been completely wiped, but the connection to the amulet remains.\"\n\n\"Then we must act quickly,\" responds a higher, more urgent voice. \"If they remember too soon, everything we've worked for will be undone.\"\n\nThere's a pause, and then: \"Wait. Did you hear something?\"",
+      "next": "discovered"
+    },
+    "discovered": {
+      "text": "Before you can retreat, a figure steps around the corner—a tall man dressed in dark robes with silver embroidery. His eyes widen in shock when he sees you.\n\n\"They're awake!\" he calls to his companion. \"Quick, sound the alarm!\"\n\nThe man reaches for something at his belt—it appears to be a wand or rod of some kind.",
+      "choices": [
+        {
+          "text": "Attack the robed figure",
+          "next": "combat_dark_acolyte"
+        },
+        {
+          "text": "Try to run back to your room",
+          "next": "flee_to_room"
+        },
+        {
+          "text": "Attempt to reason with him",
+          "next": "reason_with_acolyte"
+        }
+      ]
+    },
+    "combat_dark_acolyte": {
+      "text": "Acting on instinct, you lunge forward before the robed man can use his wand.",
+      "actions": [
+        {
+          "type": "trigger_combat",
+          "enemy_id": "dark_acolyte"
+        }
+      ],
+      "next": "after_acolyte_combat"
+    },
+    "take_window_exit": {
+      "text": "With a deep breath, you step through the shimmering window. Instead of falling, you feel yourself floating gently downward, as if carried by an invisible force.\n\nYou land softly on the ground below, the tower looming above you. You find yourself at the edge of a forest path leading away from the tower toward the distant lights of the village you spotted earlier.\n\nThe window above returns to solid glass with a faint shimmer, closing this route back into the tower.",
+      "next": "forest_path_start"
+    },
+    "forest_path_start": {
+      "text": "The forest path stretches before you, winding through ancient trees whose branches form a canopy overhead. The twilight is deepening into night, and strange sounds echo from the depths of the woods.\n\nYou recall the note's mention of 'Aldermere' and the Crescent Moon tavern. Perhaps that's the village whose lights you can see in the distance?",
+      "actions": [
+        {
+          "type": "set_flag",
+          "flag": "escaped_tower",
+          "value": true
+        }
+      ],
+      "choices": [
+        {
+          "text": "Follow the path toward the village",
+          "next": "toward_village"
+        },
+        {
+          "text": "Explore the woods around the tower",
+          "next": "explore_woods"
+        }
+      ]
+    }
+  }
+}

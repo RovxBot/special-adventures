@@ -1,0 +1,195 @@
+[gd_scene load_steps=3 format=3 uid="uid://b053u7mo1ccb4"]
+
+[ext_resource type="Script" uid="uid://dgq601by5sqtc" path="res://scripts/main_menu.gd" id="1_yqorp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_84jwn"]
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.6, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.34902)
+shadow_size = 6
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yqorp")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.070588, 0.027451, 0.027451, 1)
+
+[node name="GameTitle" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -294.0
+offset_top = 50.0
+offset_right = 306.0
+offset_bottom = 176.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[center][wave amp=50.0 freq=5.0][color=#d4c769][font_size=48]SPECIAL-ADVENTURES[/font_size][/color][/wave]
+[color=#a9a9a9][font_size=24]A Text-Based Adventure[/font_size][/color][/center]"
+
+[node name="MenuPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -157.0
+offset_top = -82.0
+offset_right = 157.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_84jwn")
+
+[node name="MenuContainer" type="VBoxContainer" parent="MenuPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="StartButton" type="Button" parent="MenuPanel/MenuContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../LoadButton")
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "New Game"
+flat = true
+
+[node name="LoadButton" type="Button" parent="MenuPanel/MenuContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("../OptionButton")
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Load Game"
+flat = true
+
+[node name="OptionButton" type="Button" parent="MenuPanel/MenuContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../LoadButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Options"
+flat = true
+
+[node name="QuitButton" type="Button" parent="MenuPanel/MenuContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../OptionButton")
+focus_neighbor_bottom = NodePath("../StartButton")
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Quit"
+flat = true
+
+[node name="Decorations" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopLeftDecoration" type="Label" parent="Decorations"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "✦"
+
+[node name="TopRightDecoration" type="Label" parent="Decorations"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "✦"
+
+[node name="BottomLeftDecoration" type="Label" parent="Decorations"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = -20.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "✦"
+
+[node name="BottomRightDecoration" type="Label" parent="Decorations"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "✦"
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -29.0
+offset_right = 115.0
+offset_bottom = -6.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.545098, 0.545098, 0.545098, 1)
+text = "Version 0.1.0"

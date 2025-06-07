@@ -1,0 +1,42 @@
+[
+  {
+    "id": "farmers_shirt",
+    "name": "Farmer's Shirt",
+    "rarity": "Common",
+    "type": "Cloth Armor",
+    "slot": "Chest",
+    "stats": {"DEF": 1},
+    "description": "A simple shirt worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "farmers_slacks",
+    "name": "Farmer's Slacks",
+    "rarity": "Common",
+    "type": "Cloth Armor",
+    "slot": "Legs",
+    "stats": {"DEF": 1},
+    "description": "Simple pants worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "farmers_boots",
+    "name": "Farmer's Boots",
+    "rarity": "Common",
+    "type": "Cloth Armor",
+    "slot": "Feet",
+    "stats": {"DEF": 1},
+    "description": "Simple boots worn by farmers.",
+    "level_requirement": 1
+  },
+  {
+    "id": "simple_linen_cape",
+    "name": "Simple Linen Cape",
+    "rarity": "Common",
+    "type": "Cloth Armor",
+    "slot": "Back",
+    "stats": {"DEF": 1},
+    "description": "A flowing travelers cape.",
+    "level_requirement": 1
+  }
+]

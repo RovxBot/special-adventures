@@ -1,0 +1,8 @@
+{
+  "default": {
+    "weapon": "rusty_dagger",
+    "chest": "farmers_shirt",
+    "legs": "farmers_slacks",
+    "feet": "farmers_boots"
+  }
+}

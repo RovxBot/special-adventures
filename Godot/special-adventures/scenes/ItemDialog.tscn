@@ -1,0 +1,151 @@
+[gd_scene load_steps=2 format=3 uid="uid://qxvfo675yc0b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25ben"]
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_size = 8
+
+[node name="ItemDialog" type="Window"]
+title = "Ancient Artifact"
+position = Vector2i(200, 36)
+size = Vector2i(500, 400)
+transient = true
+exclusive = true
+unresizable = true
+theme_override_colors/title_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_constants/title_height = 36
+theme_override_styles/embedded_border = SubResource("StyleBoxFlat_25ben")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_25ben")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ItemName" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+text = "Item Name"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ItemDetails" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="ItemDescription" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.945098, 0.945098, 0.945098, 1)
+text = "Item description will appear here."
+autowrap_mode = 2
+
+[node name="StatsContainer" type="GridContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+layout_mode = 2
+columns = 2
+
+[node name="TypeLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type:"
+
+[node name="TypeValue" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Weapon"
+horizontal_alignment = 2
+
+[node name="ValueLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Value:"
+
+[node name="ValueAmount" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "25 gold"
+horizontal_alignment = 2
+
+[node name="EffectLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Effects:"
+
+[node name="EffectsContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ScrollContainer/ItemDetails"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="EquipButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.8, 0.2, 0.2, 1)
+text = "Equip"
+
+[node name="UnequipButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+visible = false
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Unequip"
+
+[node name="UseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Use"
+
+[node name="DestroyButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.945098, 0.419608, 0.419608, 1)
+text = "Destroy"
+
+[node name="CancelButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"

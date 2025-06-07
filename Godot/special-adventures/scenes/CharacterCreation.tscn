@@ -1,0 +1,250 @@
+[gd_scene load_steps=3 format=3 uid="uid://bad8dl3r2c63s"]
+
+[ext_resource type="Script" uid="uid://bv21mkavwxdg1" path="res://scripts/character_creation.gd" id="1_exd8k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7r8no"]
+bg_color = Color(0.070588, 0.027451, 0.027451, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.8)
+shadow_size = 10
+
+[node name="CharacterCreation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_exd8k")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.070588, 0.027451, 0.027451, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(800, 700)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7r8no")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 32
+text = "Character Creation"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameSection" type="HBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NameLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/NameSection"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Character Name:"
+
+[node name="NameInput" type="LineEdit" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/NameSection"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Enter your character name"
+max_length = 20
+
+[node name="RaceSection" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RaceLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection"]
+layout_mode = 2
+text = "Select Race:"
+
+[node name="RaceOptions" type="GridContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection"]
+layout_mode = 2
+columns = 2
+
+[node name="HumanButton" type="CheckBox" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection/RaceOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+button_pressed = true
+text = "Human"
+
+[node name="ElfButton" type="CheckBox" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection/RaceOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Elf"
+
+[node name="DwarfButton" type="CheckBox" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection/RaceOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Dwarf"
+
+[node name="GnomeButton" type="CheckBox" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection/RaceOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gnome"
+
+[node name="RaceBonusLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/RaceSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Human: Balanced stats (+0 all attributes)"
+autowrap_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StatsSection" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PointsLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection"]
+layout_mode = 2
+text = "Attribute Points Remaining: 10"
+
+[node name="StatsGrid" type="GridContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="StrengthLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+tooltip_text = "Strength determines your physical power. It affects melee damage, carrying capacity, and certain physical actions."
+mouse_filter = 0
+text = "Strength:"
+
+[node name="StrengthValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+
+[node name="StrengthMinus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "-"
+
+[node name="StrengthPlus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "+"
+
+[node name="AgilityLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+tooltip_text = "Agility affects your character's reflexes. It determines dodge chance, attack speed, and overall movement capabilities."
+mouse_filter = 0
+text = "Agility:"
+
+[node name="AgilityValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+
+[node name="AgilityMinus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "-"
+
+[node name="AgilityPlus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "+"
+
+[node name="StaminaLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+tooltip_text = "Stamina determines your physical endurance. It directly increases your maximum health points (10 HP per point)."
+mouse_filter = 0
+text = "Stamina:"
+
+[node name="StaminaValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+
+[node name="StaminaMinus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "-"
+
+[node name="StaminaPlus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "+"
+
+[node name="IntelligenceLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+tooltip_text = "Intelligence represents your mental aptitude. It affects magic damage, maximum mana (10 MP per point), and spell effectiveness."
+mouse_filter = 0
+text = "Intelligence:"
+
+[node name="IntelligenceValue" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+layout_mode = 2
+text = "10"
+horizontal_alignment = 1
+
+[node name="IntelligenceMinus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "-"
+
+[node name="IntelligencePlus" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/StatsSection/StatsGrid"]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 2
+text = "+"
+
+[node name="Spacer" type="Control" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CreateButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.776471, 0.729412, 0.407843, 1)
+text = "Create Character"
+
+[node name="CancelButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.945098, 0.419608, 0.419608, 1)
+text = "Cancel"

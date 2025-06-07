@@ -19,4 +19,9 @@
 - Block Chance = 5% Base + STR * 0.1 = % Chance to Block (Max 50%) (Only if shield equipped)
 - Parry Chance = 1% Base + AGI * 0.1 = % Chance to Parry (Max 30%) (Only if dual-wielding)
 
+# Level bonuses
 
+1. Every level, you gain 5 stat points to distribute as you see fit.
+2. Every level you gain 1 talent point to spend on ANY talent tree.
+
+# race

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "wizards_staff_of_resiistance",
+    "name": "Wizard's Staff of Resistance",
+    "rarity": "Rare",
+    "type": "Staff",
+    "slot": "Weapon",
+    "stats": {"attack": 4, "INT": 3, "RES": 2},
+    "description": "A magical staff that enhances spellcasting.",
+    "level_requirement": 10
+  },
+  {
+    "id": "rusty_dagger",
+    "name": "Rusty Dagger",
+    "rarity": "Common",
+    "type": "Dagger",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "An old, rusty dagger.",
+    "level_requirement": 1
+  },
+  {
+    "id": "flimsy_hunters_bow",
+    "name": "Flimsy Hunter's Bow",
+    "rarity": "Common",
+    "type": "Bow",
+    "slot": "Weapon",
+    "stats": {"attack": 1},
+    "description": "A weak but functional hunting bow.",
+    "level_requirement": 1
+  }
+]
